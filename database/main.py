@@ -26,6 +26,7 @@ class Product(Base):
     name = Column(String, unique=True)
     description = Column(String)
     amount = Column(Integer, default=None)
+    service = Column(BOOLEAN, default=False)
     price = Column(Float, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
