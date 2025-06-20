@@ -176,23 +176,16 @@ export default function BlockTwo() {
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
                                                                 onClick={() => decreaseAmount(item.id)}
-                                                                disabled={item.amount <= 1}
-                                                            >
-                                                                -
-                                                            </button>
+                                                                disabled={item.amount <= 1}>-</button>
                                                             <input
                                                                 type="text"
                                                                 className="form-control text-center"
-                                                                value={item.amount}
-                                                            />
+                                                                value={item.amount}/>
                                                             <button
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
                                                                 onClick={() => increaseAmount(item.id)}
-                                                                disabled={item.amount == item.amounts}
-                                                            >
-                                                                +
-                                                            </button>
+                                                                disabled={item.amount === item.amounts}>+</button>
                                                         </div>
                                                     </td>
                                                     <td><input
@@ -206,8 +199,7 @@ export default function BlockTwo() {
                                                     <td>
                                                         <button
                                                             className="btn btn-warning"
-                                                            onClick={() => removeFromCart(item.id)}
-                                                        >
+                                                            onClick={() => removeFromCart(item.id)}>
                                                             Remove
                                                         </button>
                                                     </td>

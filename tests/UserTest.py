@@ -1,17 +1,18 @@
 import sys
 
-sys.path.append("D:/dev/python/projects/bot_order")
 
+
+sys.path.append("D:/dev/python/projects/bot_order")
+from helps.help import hash_password
 import pytest
 from database.User import UserManager
 from database.main import async_session_maker
-from helps.help import hash_password
 
 @pytest.mark.asyncio
 async def test_create_user():
     async with async_session_maker() as session:
         user_manager = UserManager(session)
-        user = await user_manager.create_user("Alex", "12345678")
+        user = await user_manager.create_user("Alex", "12345678", "8000000000")
         assert user == True
 
 
@@ -43,6 +44,8 @@ async def test_get_user():
         user_manager = UserManager(session)
         query = await user_manager.get_user(1)
         assert query.username == "Alex"
+        assert query.email is None
+        assert query.phone == "8000000000"
         assert query.status == 0
         assert query.password == hash_password("0000")
         assert query.comments == "TEST"

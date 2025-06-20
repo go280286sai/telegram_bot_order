@@ -15,11 +15,12 @@ class UserManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_user(self, username: str, password: str) -> bool:
+    async def create_user(self, username: str, password: str, phone: str) -> bool:
         try:
             username = escape(username)
             password = hash_password(escape(password))
-            user = User(username=username, password=password)
+            phone = escape(phone)
+            user = User(username=username, password=password, phone=phone)
             self.session.add(user)
             await self.session.commit()
             return True

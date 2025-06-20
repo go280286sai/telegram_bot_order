@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from sqlalchemy import Column, Integer, String, DateTime, BOOLEAN, Float, ForeignKey
 
 DATABASE_URL = "sqlite+aiosqlite:///./data.db"
@@ -15,6 +15,8 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, unique=True, index=True)
     password = Column(String)
+    email = Column(String, nullable=True)
+    phone = Column(String, nullable=False)
     status = Column(BOOLEAN, default=True)
     comments = Column(String, nullable=True, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
@@ -36,7 +38,20 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     product_id = Column(Integer, ForeignKey(Product.id), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    delivery_id = Column(Integer, ForeignKey("deliveries.id"), nullable=False)
+    total = Column(Float, default=None)
     status = Column(BOOLEAN, default=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    product = relationship("Product", lazy="joined")
+    user = relationship("User", lazy="joined")
+    delivery = relationship("Delivery", lazy="joined")
+
+class Delivery(Base):
+    __tablename__ = "deliveries"
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String, unique=True)
+    city = Column(String, unique=True)
+    address = Column(String)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
 
