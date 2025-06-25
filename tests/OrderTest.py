@@ -1,13 +1,12 @@
 import sys
-
-sys.path.append("D:/dev/python/projects/bot_order")
-
 import pytest
 from database.Orders import OrderManager
 from database.Products import ProductManager
 from database.User import UserManager
 from database.Deliveries import DeliveryManager
 from database.main import async_session_maker
+
+sys.path.append("D:/dev/python/projects/bot_order")
 
 
 @pytest.mark.asyncio
@@ -31,10 +30,20 @@ async def test_get_order():
     async with async_session_maker() as session:
         # Product
         product_manager = ProductManager(session)
-        await product_manager.create_product("Product 1", "Product 1", 1, 500.00)
+        await product_manager.create_product(
+            name="Product 1",
+            description="Product 1",
+            amount=1,
+            price=500.00
+        )
         # User
         user_manager = UserManager(session)
-        await user_manager.create_user(username="Alex", password="0000", phone="0123456789")
+        await user_manager.create_user(
+            username="Alex",
+            password="0000",
+            phone="0123456789",
+            email="admin@admin.com"
+        )
         # Delivery
         delivery_manager = DeliveryManager(session)
         await delivery_manager.create_delivery("Post", "City", "street")
@@ -73,6 +82,19 @@ async def test_get_orders():
             assert query.delivery.name == "Post"
             assert query.delivery.city == "City"
             assert query.delivery.address == "street"
+
+
+@pytest.mark.asyncio
+async def test_get_order_two():
+    async with async_session_maker() as session:
+        order_manager = OrderManager(session)
+        orders = await order_manager.get_orders_user(1)
+        for query in orders:
+            assert query.user_id == 1
+            assert query.delivery_id == 1
+            assert query.total == 500.00
+            assert query.product.name == "Product 1"
+
 
 @pytest.mark.asyncio
 async def test_delete_order():

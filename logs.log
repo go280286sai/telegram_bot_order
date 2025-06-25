@@ -1,0 +1,10 @@
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+25-06-25 15:07:54 - sqlalchemy.engine.Engine - INFO - COMMIT

@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.filters import CommandStart, Command
 from aiogram.types import BotCommand, Message, CallbackQuery
 
-bot = Bot(os.getenv("BOT_KEY"))
+bot = Bot(str(os.getenv("BOT_KEY")), parse_mode='HTML')
 dp = Dispatcher()
 
 

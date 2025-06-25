@@ -1,13 +1,17 @@
 import asyncio
-import json
-from typing import List, Dict
-
-from fastapi import FastAPI, Cookie, Response, Request
+import logging
+from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from database.Products import ProductManager
-from database.main import get_db, engine, Base, async_session_maker
+from routers import CartRouter, UserRouter, OrderRouter
+from database.main import engine, Base
+
 app = FastAPI()
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    filename="logs.log", filemode='w', datefmt='%d-%m-%y %H:%M:%S'
+)
 
 
 async def init_db():
@@ -16,139 +20,28 @@ async def init_db():
 
 
 asyncio.run(init_db())
+
 origins = [
-    "http://localhost:3000",  # React по умолчанию
+    "http://localhost:3000",
     "http://127.0.0.1:3000"
 ]
 
-# Добавление middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,            # Разрешённые домены
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],              # Разрешённые методы (GET, POST и т.д.)
-    allow_headers=["*"],              # Разрешённые заголовки
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+app.include_router(CartRouter.router, prefix="/cart", tags=["Carts"])
+app.include_router(UserRouter.router, prefix="/user", tags=["Users"])
+app.include_router(OrderRouter.router, prefix="/order", tags=["Orders"])
 
 
 @app.get("/")
 async def index():
     return {"Hello": "World"}
-
-@app.get("/products")
-async def products():
-    async with async_session_maker() as session:
-        product_manager = ProductManager(session)
-        products = await product_manager.get_products()
-        return {"products": products}
-
-@app.post("/cart/add/{product_id}")
-async def add_to_cart(product_id: int, response: Response, cart: str = Cookie(default="{}")):
-    try:
-        cart_items = json.loads(cart)
-        if not isinstance(cart_items, dict):
-            cart_items = {}
-    except json.JSONDecodeError:
-        cart_items = {}
-
-    # Преобразуем ключи в int
-    cart_items = {int(k): v for k, v in cart_items.items()}
-
-    # Увеличиваем количество, если уже есть
-    if product_id in cart_items:
-        cart_items[product_id] += 1
-    else:
-        cart_items[product_id] = 1
-
-    # Преобразуем обратно в строковый JSON со строковыми ключами
-    cookie_value = json.dumps({str(k): v for k, v in cart_items.items()})
-
-    response.set_cookie(key="cart", value=cookie_value, httponly=True)
-    return {"cart": cart_items}
-
-@app.post("/cart/increase/{product_id}")
-async def increase_amount(product_id: int, response: Response, cart: str = Cookie(default="{}")):
-    try:
-        cart_items = json.loads(cart)
-        if not isinstance(cart_items, dict):
-            cart_items = {}
-    except json.JSONDecodeError:
-        cart_items = {}
-
-    cart_items = {int(k): v for k, v in cart_items.items()}
-
-    if product_id in cart_items:
-        cart_items[product_id] += 1
-    else:
-        cart_items[product_id] = 1
-
-    response.set_cookie(
-        key="cart",
-        value=json.dumps({str(k): v for k, v in cart_items.items()}),
-        httponly=True
-    )
-    return {"cart": cart_items}
-@app.post("/cart/decrease/{product_id}")
-async def decrease_amount(product_id: int, response: Response, cart: str = Cookie(default="{}")):
-    try:
-        cart_items = json.loads(cart)
-        if not isinstance(cart_items, dict):
-            cart_items = {}
-    except json.JSONDecodeError:
-        cart_items = {}
-
-    cart_items = {int(k): v for k, v in cart_items.items()}
-
-    if product_id in cart_items:
-        if cart_items[product_id] > 1:
-            cart_items[product_id] -= 1
-        else:
-            del cart_items[product_id]  # удаляем, если количество стало 0
-
-    response.set_cookie(
-        key="cart",
-        value=json.dumps({str(k): v for k, v in cart_items.items()}),
-        httponly=True
-    )
-    return {"cart": cart_items}
-
-@app.post("/cart/remove/{product_id}")
-async def remove_from_cart(product_id: int, response: Response, cart: str = Cookie(default="{}")):
-    cart_items = json.loads(cart)
-    if product_id in cart_items:
-        del cart_items[product_id]
-    response.set_cookie(key="cart", value=json.dumps(cart_items), httponly=True)
-    return {"cart": cart_items}
-
-@app.get("/cart")
-async def get_cart(request: Request):
-    raw_cart_cookie = request.cookies.get("cart")
-    cart_items: Dict[int, int] = {}
-
-    if raw_cart_cookie:
-        try:
-            cart_items = json.loads(raw_cart_cookie)
-            cart_items = {int(k): v for k, v in cart_items.items()}
-        except json.JSONDecodeError:
-            cart_items = {}
-
-    async with async_session_maker() as session:
-        product_manager = ProductManager(session)
-        products = []
-        for product_id, amount in cart_items.items():
-            product = await product_manager.get_product(product_id)
-            if product:
-                product_data = product.to_dict() if hasattr(product, "to_dict") else {
-                    "id": product.id,
-                    "name": product.name,
-                    "price": product.price,
-                    "description": product.description,
-                    "amounts": product.amount,
-                }
-                product_data["amount"] = amount
-                products.append(product_data)
-
-    return {"cart": products}
 
 
 if __name__ == "__main__":

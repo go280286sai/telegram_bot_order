@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import trash from "../assets/img/trash.png";
 
 export default function BlockTwo() {
+    const [showAlert, setShowAlert] = useState(false);
     const [products, setProducts] = useState([]);
     const addToCart = async (id) => {
-        await fetch(`http://localhost:8000/cart/add/${id}`, {
+        await fetch(`http://localhost:8000/cart/increase/${id}`, {
             method: "POST",
-            credentials: "include", // важно для работы с cookie
+            credentials: "include",
         });
-        await fetchCart()
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000); // Скрыть через 3 секунды
+        await fetchCart();
     };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:8000/products");
+                const response = await fetch("http://localhost:8000/cart/products");
                 const data = await response.json();
                 console.log("Полученные данные:", data);
-                setProducts(data.products); // ← вот это ключевой момент
+                setProducts(data.data.products); // ← вот это ключевой момент
             } catch (error) {
                 console.error("Ошибка при получении данных:", error);
             }
@@ -53,12 +57,12 @@ export default function BlockTwo() {
     const fetchCart = async () => {
         try {
             const response = await fetch("http://localhost:8000/cart", {
-                method: "GET",
+                method: "POST",
                 credentials: "include",
             });
             const data = await response.json();
             console.log(data)
-            setCartItems(data.cart); // Обновляем cart
+            setCartItems(data.data.cart); // Обновляем cart
         } catch (error) {
             console.error("Ошибка при получении данных:", error);
         }
@@ -86,6 +90,12 @@ export default function BlockTwo() {
     return (
         <div className="row block_1">
             <div className="col-12">
+                {showAlert && (
+                    <div className="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+                        Add to cart success!
+                        <button type="button" className="btn-close" onClick={() => setShowAlert(false)}></button>
+                    </div>
+                )}
                 <table className="table table-info service">
                     <thead>
                     <tr>
@@ -130,8 +140,11 @@ export default function BlockTwo() {
                                 <strong className="price">${product.price}</strong>
                             </td>
                             <td>
-                                <button className="btn btn-success" onClick={() => addToCart(product.id)}>Add to Cart
+
+                                <button type="button" className="btn btn-success"
+                                        onClick={() => addToCart(product.id)}>Add to Cart
                                 </button>
+
                             </td>
                         </tr>
                     ))}
@@ -153,7 +166,7 @@ export default function BlockTwo() {
                                 <div className="modal-body">
                                     <div className="table-responsive">
                                         <table className="table">
-                                            <thead>
+                                        <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Name</th>
@@ -176,16 +189,16 @@ export default function BlockTwo() {
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
                                                                 onClick={() => decreaseAmount(item.id)}
-                                                                disabled={item.amount <= 1}>-</button>
+                                                                disabled={item.amount > 1}>-</button>
                                                             <input
                                                                 type="text"
                                                                 className="form-control text-center"
-                                                                value={item.amount}/>
+                                                                value={(item.amount>=item.amounts? item.amounts:item.amount)}/>
                                                             <button
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
                                                                 onClick={() => increaseAmount(item.id)}
-                                                                disabled={item.amount === item.amounts}>+</button>
+                                                                disabled={item.amount >= item.amounts}>+</button>
                                                         </div>
                                                     </td>
                                                     <td><input
