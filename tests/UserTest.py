@@ -1,10 +1,7 @@
-import sys
 from helps.help import hash_password
 import pytest
 from database.User import UserManager
 from database.main import async_session_maker
-
-sys.path.append("D:/dev/python/projects/bot_order")
 
 
 @pytest.mark.asyncio

@@ -382,4 +382,10 @@ body {
   padding: 10px;
   border-radius: 10px;
 }
+.error {
+  color: red;
+}
+.order {
+  margin: 3% 20%;
+}
 /*# sourceMappingURL=style.css.map */

@@ -9,11 +9,11 @@ class OrderManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self, product_id: int, user_id: int,
+    async def create_order(self, products: str, user_id: int,
                            delivery_id: int, total: float) -> bool:
         """
         Create a new order
-        :param product_id:
+        :param products:
         :param user_id:
         :param delivery_id:
         :param total:
@@ -21,7 +21,7 @@ class OrderManager:
         """
         try:
             order = Order(
-                product_id=int(product_id),
+                products=str(products),
                 user_id=int(user_id),
                 delivery_id=int(delivery_id),
                 total=float(total))
@@ -41,7 +41,6 @@ class OrderManager:
         """
         try:
             query = (select(Order, Product.name)
-                     .join(Product, Order.product_id == Product.id)
                      .join(User, Order.user_id == User.id)
                      .join(Delivery, Order.delivery_id == Delivery.id)
                      .where(Order.id == idx))
@@ -76,7 +75,6 @@ class OrderManager:
         """
         try:
             query = (select(Order, Product.name)
-                     .join(Product, Order.product_id == Product.id)
                      .join(User, Order.user_id == User.id)
                      .join(Delivery, Order.delivery_id == Delivery.id))
             result = await self.session.execute(query)
@@ -93,7 +91,6 @@ class OrderManager:
         """
         try:
             query = (select(Order, Product.name)
-                     .join(Product, Order.product_id == Product.id)
                      .join(User, Order.user_id == User.id)
                      .join(Delivery, Order.delivery_id == Delivery.id)
                      .where(User.id == idx))

@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import trash from "../assets/img/trash.png";
-
+import log from "../helps/logs.mjs";
 export default function BlockTwo() {
     const [showAlert, setShowAlert] = useState(false);
     const [products, setProducts] = useState([]);
     const addToCart = async (id) => {
-        await fetch(`http://localhost:8000/cart/increase/${id}`, {
-            method: "POST",
-            credentials: "include",
-        });
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000); // Скрыть через 3 секунды
-        await fetchCart();
+        try {
+            await fetch(`http://localhost:8000/cart/increase/${id}`, {
+                method: "POST",
+                credentials: "include",
+            })
+            setShowAlert(true);
+            setTimeout(() => setShowAlert(false), 3000);
+            await fetchCart();
+        } catch (error) {
+            await log("error", "add to cart", error);
+        }
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:8000/cart/products");
-                const data = await response.json();
-                console.log("Полученные данные:", data);
-                setProducts(data.data.products); // ← вот это ключевой момент
+                const response = await fetch("http://localhost:8000/product/products");
+                const result = await response.json();
+                setProducts(result.data.products);
             } catch (error) {
-                console.error("Ошибка при получении данных:", error);
+                await log("error", "get products", error);
             }
         };
 
@@ -30,17 +33,6 @@ export default function BlockTwo() {
         fetchCart();
     }, []);
     const [cartItems, setCartItems] = useState([]);
-    const increaseAmount = async (id) => {
-        try {
-            await fetch(`http://localhost:8000/cart/increase/${id}`, {
-                method: "POST",
-                credentials: "include",
-            });
-            fetchCart(); // обновить корзину после изменения
-        } catch (error) {
-            console.error("Ошибка при увеличении количества:", error);
-        }
-    };
 
     const decreaseAmount = async (id) => {
         try {
@@ -50,7 +42,7 @@ export default function BlockTwo() {
             });
             fetchCart();
         } catch (error) {
-            console.error("Ошибка при уменьшении количества:", error);
+            await log("error", "decrease into cart", error);
         }
     };
 
@@ -60,11 +52,10 @@ export default function BlockTwo() {
                 method: "POST",
                 credentials: "include",
             });
-            const data = await response.json();
-            console.log(data)
-            setCartItems(data.data.cart); // Обновляем cart
+            const result = await response.json();
+            setCartItems(result.data.cart);
         } catch (error) {
-            console.error("Ошибка при получении данных:", error);
+            await log("error", "get all from carts", error);
         }
     };
 
@@ -80,13 +71,11 @@ export default function BlockTwo() {
                 method: "POST",
                 credentials: "include",
             });
-            // После удаления обновляем корзину
             setCartItems((prev) => prev.filter((item) => item.id !== id));
         } catch (error) {
-            console.error("Ошибка при удалении товара:", error);
+            await log("error", "remove from cart", error);
         }
     };
-
     return (
         <div className="row block_1">
             <div className="col-12">
@@ -166,7 +155,7 @@ export default function BlockTwo() {
                                 <div className="modal-body">
                                     <div className="table-responsive">
                                         <table className="table">
-                                        <thead>
+                                            <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Name</th>
@@ -189,16 +178,18 @@ export default function BlockTwo() {
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
                                                                 onClick={() => decreaseAmount(item.id)}
-                                                                disabled={item.amount > 1}>-</button>
+                                                                disabled={item.amount === 1}>-
+                                                            </button>
                                                             <input
                                                                 type="text"
                                                                 className="form-control text-center"
-                                                                value={(item.amount>=item.amounts? item.amounts:item.amount)}/>
+                                                                value={item.amount}/>
                                                             <button
                                                                 className="btn btn-outline-secondary"
                                                                 type="button"
-                                                                onClick={() => increaseAmount(item.id)}
-                                                                disabled={item.amount >= item.amounts}>+</button>
+                                                                onClick={() => addToCart(item.id)}
+                                                                disabled={item.amount >= item.amounts}>+
+                                                            </button>
                                                         </div>
                                                     </td>
                                                     <td><input
@@ -221,7 +212,7 @@ export default function BlockTwo() {
                                             </tbody>
                                             <tfoot>
                                             <tr>
-                                                <td colSpan="4" className="text-end"><strong>Итого:</strong></td>
+                                                <td colSpan="4" className="text-end"><strong>Total:</strong></td>
                                                 <td colSpan="2"><strong>{calculateTotal()} $</strong></td>
                                             </tr>
                                             </tfoot>
@@ -232,14 +223,15 @@ export default function BlockTwo() {
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
                                         Продолжить покупки
                                     </button>
-                                    <button type="button" className="btn btn-success">Оформить заказ</button>
+                                    <a href="/order"><div className="btn btn-success">Оформить заказ</div></a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="btn trash" data-bs-toggle="modal" data-bs-target="#cartModal">
-                        <span className="badge text-bg-dark">{cartItems.length}</span><img src={trash} alt="Trash" title="Trash"/>
+                        <span className="badge text-bg-dark">{cartItems.length}</span><img src={trash} alt="Trash"
+                                                                                           title="Trash"/>
                     </div>
                 </div>
             </div>

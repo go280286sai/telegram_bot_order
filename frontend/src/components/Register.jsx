@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import log from "../helps/logs.mjs";
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -30,14 +31,14 @@ export default function Register() {
                 email: formData.email,
                 phone: formData.phone}),
             credentials: "include" // если используешь cookie или сессию
-        }).then((data)=> {
-            if(data.status){
-                window.location.reload()
-            } else {
-                console.log(data.status)
-            }
-
-        }).catch(data=>console.log(data));
+        }).then(res => res.json())
+            .then((data) => {
+                if (data.success) {
+                    window.location.reload()
+                } else {
+                    log("error", "register error", data);
+                }
+            }).catch(data => log("error", "login error", data));
     };
 
     return (
@@ -52,6 +53,7 @@ export default function Register() {
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Username</label>
                             <input type="text" className="form-control" id="username" name="username"
+                                   autoComplete="new-login"
                                    value={formData.username} onChange={handleChange} required/>
                         </div>
                         <div className="mb-3">
@@ -67,11 +69,13 @@ export default function Register() {
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
                             <input type="password" className="form-control" id="password" name="password"
+                                   autoComplete="new-password"
                                    value={formData.password} onChange={handleChange} required/>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                             <input type="password" className="form-control" id="confirmPassword" name="confirmPassword"
+                                   autoComplete="new-password"
                                    value={formData.confirmPassword} onChange={handleChange} required/>
                         </div>
                     </div>

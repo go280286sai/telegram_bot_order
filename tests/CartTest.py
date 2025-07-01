@@ -85,3 +85,47 @@ async def test_remove_product():
             product_manager = ProductManager(session)
             query = await product_manager.delete_product(idx)
             assert query is True
+
+
+@pytest.mark.asyncio
+async def test_add_delivery():
+    response = client.post("http://127.0.0.1:8000/cart/delivery",
+                           headers={"Content-Type": "application/json"},
+                           json={
+                               "post_id": "1",
+                               "city_id": "1",
+                               "address_id": "1",
+                           })
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["data"] is None
+    assert data["error"] is None
+
+
+@pytest.mark.asyncio
+async def test_get_delivery():
+    response = client.post("http://127.0.0.1:8000/cart/delivery/get")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["data"]["post_id"] == 1
+    assert data["data"]["city_id"] == 1
+    assert data["data"]["address_id"] == 1
+    assert data["error"] is None
+
+
+@pytest.mark.asyncio
+async def test_delete_delivery():
+    response = client.post("http://127.0.0.1:8000/cart/delivery/delete")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["data"] is None
+    assert data["error"] is None
+    response = client.post("http://127.0.0.1:8000/cart/delivery/get")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["data"] is None
+    assert data["error"] is None

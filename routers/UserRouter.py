@@ -30,7 +30,7 @@ async def register(user: User) -> JSONResponse:
                 status_code=status.HTTP_200_OK,
                 content={
                     "success": True,
-                    "data": {"register": True},
+                    "data": None,
                     "error": None
                 }
             )
@@ -46,7 +46,7 @@ async def register(user: User) -> JSONResponse:
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
-                "data": {"status": False},
+                "data": None,
                 "error": "User already exists"
             }
         )
@@ -214,5 +214,36 @@ async def update_profile(user: UpdateUser) -> JSONResponse:
                 "success": False,
                 "data": False,
                 "error": "Failed to update user"
+            }
+        )
+
+
+@router.post("/delete/{idx}")
+async def user_delete(idx: int) -> JSONResponse:
+    """
+    Delete user's data.'
+    :param idx:
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            await user_manager.delete_user(idx)
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"User delete failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": False,
+                "error": "Failed to delete user"
             }
         )

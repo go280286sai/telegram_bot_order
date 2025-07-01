@@ -3,14 +3,15 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from routers import CartRouter, UserRouter, OrderRouter
+from routers import CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter, \
+    DeliveryRouter, PostRouter, CityRouter, AddressRouter
 from database.main import engine, Base
 
 app = FastAPI()
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    filename="logs.log", filemode='w', datefmt='%d-%m-%y %H:%M:%S'
+    filename="logs.log", filemode='a+', datefmt='%d-%m-%y %H:%M:%S'
 )
 
 
@@ -37,6 +38,14 @@ app.add_middleware(
 app.include_router(CartRouter.router, prefix="/cart", tags=["Carts"])
 app.include_router(UserRouter.router, prefix="/user", tags=["Users"])
 app.include_router(OrderRouter.router, prefix="/order", tags=["Orders"])
+app.include_router(LogsRouter.router, prefix="/logs", tags=["Logs"])
+app.include_router(FrontRouter.router, prefix="/front", tags=["Fronts"])
+app.include_router(ProductRouter.router, prefix="/product", tags=["Products"])
+app.include_router(ReviewRouter.router, prefix="/review", tags=["Reviews"])
+app.include_router(PostRouter.router, prefix="/post", tags=["Posts"])
+app.include_router(CityRouter.router, prefix="/city", tags=["Cities"])
+app.include_router(AddressRouter.router, prefix="/address", tags=["Addresses"])
+app.include_router(DeliveryRouter.router, prefix="/delivery", tags=["Deliveries"])
 
 
 @app.get("/")

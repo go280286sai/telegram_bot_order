@@ -1,6 +1,5 @@
 import json
 import logging
-from typing import Dict, Any
 
 from fastapi import APIRouter, Response, Request, Cookie, status
 from helps.help import parse_cart
@@ -8,46 +7,124 @@ from database.Products import ProductManager
 from database.main import async_session_maker
 from starlette.responses import JSONResponse
 
+from models.DeliveryModel import Delivery
+
 router = APIRouter()
 
 
-@router.get("/products")
-async def products() -> JSONResponse:
+@router.post("/delivery")
+async def set_delivery(delivery: Delivery) -> JSONResponse:
     """
-    Get all products
+    Create a new delivery.
+    :param delivery:
+    :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
-            query = await product_manager.get_products()
-            if not query:
-                raise Exception("No products")
-            products_ = [
-                {
-                    "id": p.id,
-                    "name": p.name,
-                    "price": p.price,
-                    "description": p.description,
-                    "amount": p.amount,
-                } for p in query
-            ]
-
-            return JSONResponse(
-                status_code=status.HTTP_200_OK,
-                content={
-                    "success": True,
-                    "data": {"products": products_},
-                    "error": None
-                }
-            )
+        post_id = delivery.post_id
+        city_id = delivery.city_id
+        address_id = delivery.address_id
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "success": True,
+                "data": None,
+                "error": None
+            }
+        )
+        response.set_cookie(
+            key="delivery",
+            value=json.dumps({
+                "post_id": post_id,
+                "city_id": city_id,
+                "address_id": address_id,
+            }),
+            httponly=True)
+        return response
     except Exception as e:
-        logging.exception(f"Failed to fetch products: {e}")
+        logging.exception(f"Delivery registration failed {str(e)}")
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch products"
+                "error": "Delivery registration failed"
+            }
+        )
+
+
+@router.post("/delivery/get")
+async def get_delivery(request: Request) -> JSONResponse:
+    """
+    Get delivery
+    :return:
+    """
+    try:
+        delivery = request.cookies.get("delivery")
+        if delivery is None:
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "success": True,
+                "data": json.loads(delivery),
+                "error": None
+            }
+        )
+    except Exception as e:
+        logging.exception(f"Delivery is failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Delivery is failed"
+            }
+        )
+
+
+@router.post("/delivery/delete")
+async def delete_delivery(request: Request, response: Response) -> JSONResponse:
+    """
+    Delete delivery cookie from session
+    """
+    try:
+        delivery = request.cookies.get("delivery")
+
+        if delivery is None:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "success": False,
+                    "data": None,
+                    "error": "Delivery cookie not found"
+                }
+            )
+
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "success": True,
+                "data": None,
+                "error": None
+            }
+        )
+        response.delete_cookie("delivery")
+        return response
+    except Exception as e:
+        logging.exception(f"Delivery is failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Delivery is failed"
             }
         )
 
@@ -149,8 +226,7 @@ async def get_cart(request: Request) -> JSONResponse:
                         "description": product.description,
                         "amounts": product.amount,
                     }
-                    product_data["amount"] = min(int(amount or 1),
-                                                 int(product.amount or 1))
+                    product_data["amount"] = amount
                     products_.append(product_data)
 
         return JSONResponse(

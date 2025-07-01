@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-
+import log from "../helps/logs.mjs";
 export default function Profile(props) {
-    const [orders, setOrders] = useState([]); // изначально массив
+    const [orders, setOrders] = useState([]);
     const [formData, setFormData] = useState({
         password: "",
         confirmPassword: ""
@@ -39,8 +39,8 @@ export default function Profile(props) {
                     alert("Password is update")
                     window.location.reload();
                 } else {
-                    alert("Ошибка при обновлении профиля");
-                    console.log(data);
+                    alert("Error update password");
+                    log("error", "Error update password", data)
                 }
             })
             .catch(err => {
@@ -58,14 +58,14 @@ export default function Profile(props) {
                     "Content-Type": "application/json"
                 }
             });
-            const data = await response.json();
-            if (Array.isArray(data.data.orders)) {
-                setOrders(data.data.orders);
+            const result = await response.json();
+            if (Array.isArray(result.data.orders)) {
+                setOrders(result.data.orders);
             } else {
-                console.warn("Неверный формат данных заказов:", data.data.orders);
+                console.warn("Error format data:", result.data.orders);
             }
         } catch (error) {
-            console.error("Ошибка при получении данных:", error);
+            log("error", "Error get orders users", error)
         }
     };
 

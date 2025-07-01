@@ -89,7 +89,10 @@ class ProductManager:
         try:
             query = select(Product)
             result = await self.session.execute(query)
-            return result.scalars().all()
+            products = result.scalars().all()
+            if products is None:
+                return None
+            return products
         except Exception as e:
             logging.exception(e)
             return None

@@ -1,49 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import woman from "../assets/img/women.webp";
 import man from "../assets/img/man.webp";
+import log from "../helps/logs.mjs";
 
 export default function AboutUs() {
+    const [reviews, setReviews] = useState([]);
+    const avatar = {
+        0: woman,
+        1: man
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/review/reviews");
+                const result = await response.json();
+                setReviews(result?.data?.reviews || []);
+            } catch (error) {
+                console.log(error);
+                await log("error", "get reviews", error);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <div className="row">
             <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
-
-                    <div className="carousel-item active">
-                        <div className="about_us d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: "300px" }}>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src={man} alt="Client" />
-                                <div>
-                                    <p>Пожалуй, сложный человек, но работает на все 100%! Спасибо за отличную работу!</p>
-                                    <h5>Senor Oso</h5>
+                    {reviews.length > 0 ? (
+                        reviews.map((item, index) => (
+                            <div
+                                className={`carousel-item ${index === 0 ? "active" : ""}`}
+                                key={index}
+                            >
+                                <div
+                                    className="about_us d-flex flex-column align-items-center justify-content-center text-center"
+                                    style={{ minHeight: "300px" }}
+                                >
+                                    <div className="d-flex align-items-center gap-4">
+                                        <img
+                                            src={avatar[item.gender] || man}
+                                            alt={`${item.name}'s avatar`}
+                                        />
+                                        <div>
+                                            <p>{item.text}</p>
+                                            <h5>{item.name}</h5>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="carousel-item">
-                        <div className="about_us d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: "300px" }}>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src={man} alt="Client" />
-                                <div>
-                                    <p>Excellente gestion des fermes. Travailler avec vous est un vrai plaisir. Moins de souci pour moi — je recommande Sonic sans hésiter !</p>
-                                    <h5>Djo</h5>
-                                </div>
+                        ))
+                    ) : (
+                        <div className="carousel-item active">
+                            <div
+                                className="about_us d-flex flex-column align-items-center justify-content-center text-center"
+                                style={{ minHeight: "300px" }}>
+                                <p className="text-muted">Отзывы пока отсутствуют.</p>
                             </div>
                         </div>
-                    </div>
-
-                    <div className="carousel-item">
-                        <div className="about_us d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: "300px" }}>
-                            <div className="d-flex align-items-center gap-4">
-                                <img src={woman} alt="Client" />
-                                <div>
-                                    <p>Быстрый сервис, хорошие цены, приятное общение — за пару месяцев сотрудничества только плюсы!</p>
-                                    <h5>Angel</h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    )}
                 </div>
 
                 <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">

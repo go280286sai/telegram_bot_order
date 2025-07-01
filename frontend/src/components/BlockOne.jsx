@@ -3,10 +3,20 @@ import Social from "./Social";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
+import log from "../helps/logs.mjs"
 
 export default function BlockOne() {
-    const [user, setUser] = useState({"user":{"username":"None", "email":"None", "phone":"None", "status":false}});
+    const [user, setUser] = useState({
+        "user":
+            {
+                "username": "None",
+                "email": "None",
+                "phone": "None",
+                "status": false
+            }
+    });
     const [statusUser, setStatusUser] = useState(false)
+
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -23,10 +33,9 @@ export default function BlockOne() {
                     setStatusUser(true);
                 }
             } catch (error) {
-                console.error("Ошибка при получении данных:", error);
+                await log("error", "is_auth", error);
             }
         };
-
         fetchUser();
     }, []);
 
@@ -44,7 +53,7 @@ export default function BlockOne() {
                 setStatusUser(false);
             }
         } catch (error) {
-            console.error("Ошибка при получении данных:", error);
+            await log("error", "is_auth", error);
         }
     }
     return (
@@ -55,7 +64,7 @@ export default function BlockOne() {
             <div className="col-5 block_top">
                 <Register/>
                 <Login/>
-                <Profile user={user} />
+                <Profile user={user}/>
                 {statusUser === true ? (
                     <div className="text-end register">
                         <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas"
@@ -63,19 +72,19 @@ export default function BlockOne() {
                                 aria-controls="staticBackdrop">
                             Profile
                         </button>
-                    | <button type="button" className="btn btn-primary" onClick={logout}>Logout
+                        | <button type="button" className="btn btn-primary" onClick={logout}>Logout
                     </button>
                     </div>
-                    ) : (
+                ) : (
                     <div className="text-end register">
-                    <button type="button" className="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#login">Login
-                    </button>
-                    | <button type="button" className="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#register">Register
+                        <button type="button" className="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#login">Login
+                        </button>
+                        | <button type="button" className="btn btn-primary" data-bs-toggle="modal"
+                                  data-bs-target="#register">Register
                     </button>
                     </div>
-                    )}
+                )}
                 <h1 className={"title_h1"}>Exclusive Items</h1>
                 <p className={"title_pre"}>We offer farm construction, auto shield, exclusive skins, pirate search, and
                     more at unbeatable
@@ -83,6 +92,5 @@ export default function BlockOne() {
                 <Social/>
             </div>
         </div>
-    )
-        ;
+    );
 }
