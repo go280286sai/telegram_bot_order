@@ -1,11 +1,29 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import OrderDelivery from "./OrderDelivery";
+import log from "../../helps/logs.mjs";
 
-export default function OrderCart({ items }){
+export default function OrderCart(){
+    const [cartItems, setCartItems] = useState([]);
     const calculateTotal = () => {
-        return items
+        return cartItems
             .reduce((sum, item) => sum + item.amount * item.price, 0)
             .toFixed(2);
     };
+    const fetchCart = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/cart", {
+                method: "POST",
+                credentials: "include",
+            });
+            const result = await response.json();
+            setCartItems(result.data.cart);
+        } catch (error) {
+            await log("error", "get all from carts", error);
+        }
+    };
+    useEffect(()=>{
+        fetchCart();
+    }, [])
     return(
         <div className={"col-8"}>
                 <table className="table table-dark">
@@ -19,7 +37,7 @@ export default function OrderCart({ items }){
                     </tr>
                     </thead>
                     <tbody>
-                    {items.map((item, index) => (
+                    {cartItems.map((item, index) => (
                         <tr key={item.id}>
                             <td>{index + 1}</td>
                             <td>{item.name}</td>
@@ -40,6 +58,7 @@ export default function OrderCart({ items }){
                     </tr>
                     </tfoot>
                 </table>
+            <OrderDelivery total={calculateTotal()}/>
         </div>
     )
 }

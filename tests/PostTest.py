@@ -32,7 +32,6 @@ async def test_update_post():
         )
         assert delivery is True
 
-
 @pytest.mark.asyncio
 async def test_get_posts():
     async with async_session_maker() as session:

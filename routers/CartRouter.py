@@ -2,27 +2,23 @@ import json
 import logging
 
 from fastapi import APIRouter, Response, Request, Cookie, status
+
+from database.Deliveries import DeliveryManager
 from helps.help import parse_cart
 from database.Products import ProductManager
 from database.main import async_session_maker
 from starlette.responses import JSONResponse
 
-from models.DeliveryModel import Delivery
-
 router = APIRouter()
 
 
-@router.post("/delivery")
-async def set_delivery(delivery: Delivery) -> JSONResponse:
+@router.post("/delivery/create/{idx}")
+async def set_delivery(idx: int) -> JSONResponse:
     """
     Create a new delivery.
-    :param delivery:
     :return:
     """
     try:
-        post_id = delivery.post_id
-        city_id = delivery.city_id
-        address_id = delivery.address_id
         response = JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -33,11 +29,7 @@ async def set_delivery(delivery: Delivery) -> JSONResponse:
         )
         response.set_cookie(
             key="delivery",
-            value=json.dumps({
-                "post_id": post_id,
-                "city_id": city_id,
-                "address_id": address_id,
-            }),
+            value=str(idx),
             httponly=True)
         return response
     except Exception as e:
@@ -55,38 +47,57 @@ async def set_delivery(delivery: Delivery) -> JSONResponse:
 @router.post("/delivery/get")
 async def get_delivery(request: Request) -> JSONResponse:
     """
-    Get delivery
+    Get a delivery.
+    :param request:
     :return:
     """
     try:
-        delivery = request.cookies.get("delivery")
-        if delivery is None:
+        async with async_session_maker() as session:
+            delivery_id = request.cookies.get("delivery")
+            if delivery_id is None:
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content={
+                        "success": False,
+                        "data": None,
+                        "error": "Delivery is not selected"
+                    }
+                )
+
+            delivery_manager = DeliveryManager(session)
+
+            query = await delivery_manager.get_delivery(idx=int(delivery_id))
+
+            if query is None:
+                return JSONResponse(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    content={
+                        "success": False,
+                        "data": None,
+                        "error": "Delivery not found"
+                    }
+                )
+
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
                     "success": True,
-                    "data": None,
+                    "data": query,
                     "error": None
                 }
             )
-        return JSONResponse(
-            status_code=status.HTTP_200_OK,
-            content={
-                "success": True,
-                "data": json.loads(delivery),
-                "error": None
-            }
-        )
+
     except Exception as e:
-        logging.exception(f"Delivery is failed {str(e)}")
+        logging.exception("Failed to get delivery")
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={
                 "success": False,
                 "data": None,
-                "error": "Delivery is failed"
+                "error": str(e)
             }
         )
+
 
 
 @router.post("/delivery/delete")

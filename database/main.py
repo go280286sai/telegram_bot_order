@@ -107,18 +107,20 @@ class Order(Base):
                                       ForeignKey("deliveries.id"),
                                       nullable=False)
     total: Mapped[float] = mapped_column(Float, nullable=False)
+    transaction_id: Mapped[str] = Column(String, nullable=False)
     status: Mapped[int] = Column(Integer, default=0)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     user: Mapped[User] = relationship("User", lazy="joined")
     delivery: Mapped[Delivery] = relationship("Delivery", lazy="joined")
 
     def __init__(self, products: str, user_id: int,
-                 delivery_id: int, total: float, **kwargs):
+                 delivery_id: int, total: float, transaction_id:str, **kwargs):
         super().__init__(**kwargs)
         self.products = products
         self.user_id = user_id
         self.delivery_id = delivery_id
         self.total = total
+        self.transaction_id=transaction_id
 
 
 class Carousel(Base):
@@ -158,6 +160,7 @@ async_session_maker = async_sessionmaker(
     engine,
     class_=AsyncSession,
     expire_on_commit=False)
+
 
 
 async def get_db() -> AsyncSession:

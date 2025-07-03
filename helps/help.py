@@ -1,6 +1,8 @@
 import hashlib
 import json
 from typing import Dict
+from string import ascii_letters, digits, ascii_lowercase, ascii_uppercase
+import random
 
 
 def hash_password(password):
@@ -25,3 +27,10 @@ def parse_cart(cart: str) -> Dict[int, int]:
     except json.JSONDecodeError:
         cart_items = {}
     return {int(k): v for k, v in cart_items.items()}
+
+
+def generate_transaction():
+    text = ""
+    for _ in range(20):
+        text += random.choice(ascii_letters + digits + ascii_lowercase + ascii_uppercase)
+    return text

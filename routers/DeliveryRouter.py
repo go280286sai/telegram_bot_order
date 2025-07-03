@@ -128,7 +128,6 @@ async def get_deliveries() -> JSONResponse:
         async with async_session_maker() as session:
             delivery_manager = DeliveryManager(session)
             query = await delivery_manager.get_deliveries()
-            print(query)
             if query is None:
                 raise Exception("Failed to get deliveries")
 

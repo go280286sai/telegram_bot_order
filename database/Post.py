@@ -67,19 +67,6 @@ class PostManager:
             logging.exception(e)
             return False
 
-    async def get_posts(self) -> Sequence[Post] | None:
-        """
-        Gets all posts.
-        :return:
-        """
-        try:
-            query = select(Post)
-            result = await self.session.execute(query)
-            return result.scalars().all()
-        except Exception as e:
-            logging.exception(e)
-            return None
-
     async def delete_post(self, idx: int) -> bool:
         """
         Deletes a post.

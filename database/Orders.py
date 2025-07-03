@@ -3,16 +3,17 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Order, Product, User, Delivery
 import logging
 from typing import Sequence
-
+from datetime import datetime
 
 class OrderManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
     async def create_order(self, products: str, user_id: int,
-                           delivery_id: int, total: float) -> bool:
+                           delivery_id: int, total: float, transaction_id: str) -> bool:
         """
         Create a new order
+        :param transaction_id:
         :param products:
         :param user_id:
         :param delivery_id:
@@ -24,7 +25,8 @@ class OrderManager:
                 products=str(products),
                 user_id=int(user_id),
                 delivery_id=int(delivery_id),
-                total=float(total))
+                total=float(total),
+                transaction_id=str(transaction_id))
             self.session.add(order)
             await self.session.commit()
             return True
@@ -83,19 +85,26 @@ class OrderManager:
             logging.error(e)
             return None
 
-    async def get_orders_user(self, idx: int) -> Sequence[Order] | None:
+    async def get_orders_user(self, idx: int):
         """
         Get all orders for a specific user
         :param idx:
         :return:
         """
         try:
-            query = (select(Order, Product.name)
-                     .join(User, Order.user_id == User.id)
-                     .join(Delivery, Order.delivery_id == Delivery.id)
-                     .where(User.id == idx))
-            result = await self.session.execute(query)
-            return result.scalars().all()
+            query = (select(Order)
+                     .where(Order.user_id == idx))
+            orders = await self.session.execute(query)
+            result = orders.scalars().all()
+            orders_ = [{
+                "id": p.id,
+                "total": p.total,
+                "status": p.status,
+                "created_at": p.created_at.strftime("%Y-%m-%d"),
+            }
+                for p in result
+            ]
+            return orders_
         except Exception as e:
             logging.exception(e)
             return None

@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers import CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter, \
     DeliveryRouter, PostRouter, CityRouter, AddressRouter
 from database.main import engine, Base
-
+from starlette.middleware.sessions import SessionMiddleware
 app = FastAPI()
 logging.basicConfig(
     level=logging.INFO,
@@ -29,12 +29,16 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+app.add_middleware(
+    SessionMiddleware,
+    secret_key="123456789"  # только для session middleware
+)
 app.include_router(CartRouter.router, prefix="/cart", tags=["Carts"])
 app.include_router(UserRouter.router, prefix="/user", tags=["Users"])
 app.include_router(OrderRouter.router, prefix="/order", tags=["Orders"])
