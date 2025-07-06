@@ -113,14 +113,19 @@ class Order(Base):
     user: Mapped[User] = relationship("User", lazy="joined")
     delivery: Mapped[Delivery] = relationship("Delivery", lazy="joined")
 
-    def __init__(self, products: str, user_id: int,
-                 delivery_id: int, total: float, transaction_id:str, **kwargs):
+    def __init__(self,
+                 products: str,
+                 user_id: int,
+                 delivery_id:
+                 int, total: float,
+                 transaction_id: str,
+                 **kwargs):
         super().__init__(**kwargs)
         self.products = products
         self.user_id = user_id
         self.delivery_id = delivery_id
         self.total = total
-        self.transaction_id=transaction_id
+        self.transaction_id = transaction_id
 
 
 class Carousel(Base):
@@ -155,12 +160,41 @@ class Review(Base):
         self.created_at = datetime.utcnow()
 
 
+class Subscriber(Base):
+    __tablename__ = "subscribers"
+    id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
+    email: Mapped[str] = Column(String, unique=True, nullable=False)
+    hashed_active: Mapped[str] = Column(String, nullable=True)
+    hashed_destroy: Mapped[str] = Column(String, nullable=True, default=None)
+    status: Mapped[int] = Column(Integer, default=0)
+    created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+
+    def __init__(self, email: str, hashed_active: str, **kwargs):
+        super().__init__(**kwargs)
+        self.email = email
+        self.hashed_active = hashed_active
+
+
+class Temlate(Base):
+    __tablename__ = "templates"
+    id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
+    header: Mapped[str] = Column(String, nullable=False)
+    title: Mapped[str] = Column(String, nullable=False)
+    body: Mapped[str] = Column(String, nullable=False)
+    created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+
+    def __init__(self, header: str, title: str, body: str, **kwargs):
+        super().__init__(**kwargs)
+        self.header = header
+        self.title = title
+        self.body = body
+
+
 engine = create_async_engine(DATABASE_URL, echo=True)
 async_session_maker = async_sessionmaker(
     engine,
     class_=AsyncSession,
     expire_on_commit=False)
-
 
 
 async def get_db() -> AsyncSession:

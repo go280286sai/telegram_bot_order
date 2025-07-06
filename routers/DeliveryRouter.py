@@ -129,7 +129,14 @@ async def get_deliveries() -> JSONResponse:
             delivery_manager = DeliveryManager(session)
             query = await delivery_manager.get_deliveries()
             if query is None:
-                raise Exception("Failed to get deliveries")
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content={
+                        "success": True,
+                        "data": None,
+                        "error": None
+                    }
+                )
 
             return JSONResponse(
                 status_code=status.HTTP_200_OK,

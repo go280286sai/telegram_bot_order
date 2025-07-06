@@ -4,9 +4,12 @@ from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from routers import CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter, \
-    DeliveryRouter, PostRouter, CityRouter, AddressRouter
+    DeliveryRouter, PostRouter, CityRouter, AddressRouter, SubscriberRouter, TemplateRouter
 from database.main import engine, Base
 from starlette.middleware.sessions import SessionMiddleware
+from dotenv import load_dotenv
+
+load_dotenv()
 app = FastAPI()
 logging.basicConfig(
     level=logging.INFO,
@@ -37,7 +40,7 @@ app.add_middleware(
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key="123456789"  # только для session middleware
+    secret_key="123456789"
 )
 app.include_router(CartRouter.router, prefix="/cart", tags=["Carts"])
 app.include_router(UserRouter.router, prefix="/user", tags=["Users"])
@@ -50,6 +53,8 @@ app.include_router(PostRouter.router, prefix="/post", tags=["Posts"])
 app.include_router(CityRouter.router, prefix="/city", tags=["Cities"])
 app.include_router(AddressRouter.router, prefix="/address", tags=["Addresses"])
 app.include_router(DeliveryRouter.router, prefix="/delivery", tags=["Deliveries"])
+app.include_router(SubscriberRouter.router, prefix="/subscriber", tags=["Subscribers"])
+app.include_router(TemplateRouter.router, prefix="/template", tags=["Templates"])
 
 
 @app.get("/")

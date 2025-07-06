@@ -10,7 +10,7 @@ class CityManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_city(self, name: str) -> bool:
+    async def create_city(self, name: str) -> City | None:
         """
         Creates a new city.
         :param name:
@@ -20,11 +20,11 @@ class CityManager:
             city_ = City(name=name)
             self.session.add(city_)
             await self.session.commit()
-            return True
+            return city_
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
-            return False
+            return None
 
     async def get_city(self, idx: int) -> City | None:
         """

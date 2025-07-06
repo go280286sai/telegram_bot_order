@@ -99,15 +99,15 @@ async def products() -> JSONResponse:
         async with async_session_maker() as session:
             product_manager = ProductManager(session)
             query = await product_manager.get_products()
-            # if query is None:
-            #     return JSONResponse(
-            #         status_code=status.HTTP_200_OK,
-            #         content={
-            #             "success": True,
-            #             "data": None,
-            #             "error": None
-            #         }
-            #     )
+            if query is None:
+                return JSONResponse(
+                    status_code=status.HTTP_200_OK,
+                    content={
+                        "success": True,
+                        "data": None,
+                        "error": None
+                    }
+                )
             products_ = [
                 {
                     "id": p.id,

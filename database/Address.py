@@ -10,7 +10,7 @@ class AddressManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_address(self, name: str) -> bool:
+    async def create_address(self, name: str) -> Address | None:
         """
         Creates a new address.
         :param name:
@@ -20,11 +20,11 @@ class AddressManager:
             address_ = Address(name=name)
             self.session.add(address_)
             await self.session.commit()
-            return True
+            return address_
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
-            return False
+            return None
 
     async def get_address(self, idx: int) -> Address | None:
         """

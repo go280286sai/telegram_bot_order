@@ -3,14 +3,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Order, Product, User, Delivery
 import logging
 from typing import Sequence
-from datetime import datetime
+
 
 class OrderManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self, products: str, user_id: int,
-                           delivery_id: int, total: float, transaction_id: str) -> bool:
+    async def create_order(self,
+                           products: str,
+                           user_id: int,
+                           delivery_id: int,
+                           total: float,
+                           transaction_id: str
+                           ) -> bool:
         """
         Create a new order
         :param transaction_id:
@@ -42,7 +47,7 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order, Product.name)
+            query = (select(Order)
                      .join(User, Order.user_id == User.id)
                      .join(Delivery, Order.delivery_id == Delivery.id)
                      .where(Order.id == idx))
@@ -76,7 +81,7 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order, Product.name)
+            query = (select(Order)
                      .join(User, Order.user_id == User.id)
                      .join(Delivery, Order.delivery_id == Delivery.id))
             result = await self.session.execute(query)
@@ -93,7 +98,9 @@ class OrderManager:
         """
         try:
             query = (select(Order)
-                     .where(Order.user_id == idx))
+                     .join(User, Order.user_id==User.id)
+                     .join(Delivery, Delivery.id==Order.delivery_id)
+                     .where(Order.id == idx))
             orders = await self.session.execute(query)
             result = orders.scalars().all()
             orders_ = [{

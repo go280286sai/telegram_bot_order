@@ -1,17 +1,15 @@
-from sqlalchemy import Row
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Post
 import logging
-from typing import Sequence, Any
-from html import escape
+from typing import Sequence
 
 
 class PostManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_post(self, name: str) -> bool:
+    async def create_post(self, name: str) -> None | Post:
         """
         Creates a new post.
         :param name:
@@ -21,13 +19,13 @@ class PostManager:
             post_ = Post(name=name)
             self.session.add(post_)
             await self.session.commit()
-            return True
+            return post_
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
-            return False
+            return None
 
-    async def get_post(self, idx: int) -> Row[Any] | None:
+    async def get_post(self, idx: int) -> Post | None:
         """
         Gets a post.
         :param idx:
@@ -44,10 +42,26 @@ class PostManager:
             logging.exception(e)
             return None
 
+    async def get_posts(self) -> Sequence[Post] | None:
+        """
+        Gets a posts.
+        :return:
+        """
+        try:
+            query = select(Post)
+            result = await self.session.execute(query)
+            post_ = result.scalars().all()
+            if post_ is None:
+                return None
+            return post_
+        except Exception as e:
+            logging.exception(e)
+            return None
+
     async def update_post(self,
-                              idx: int,
-                              name: str
-                              ) -> bool:
+                          idx: int,
+                          name: str
+                          ) -> bool:
         """
         Updates a post.
         :param idx:
@@ -60,7 +74,7 @@ class PostManager:
             post_ = result.scalar_one_or_none()
             if post_ is None:
                 return False
-            post_.name = escape(str(name))
+            post_.name = name
             await self.session.commit()
             return True
         except Exception as e:

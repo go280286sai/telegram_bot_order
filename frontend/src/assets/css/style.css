@@ -385,6 +385,9 @@ body {
 .error {
   color: red;
 }
+.success {
+  color: white;
+}
 .order {
   margin: 3% 20%;
 }

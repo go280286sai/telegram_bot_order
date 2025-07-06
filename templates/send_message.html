@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Новое предложение для вас!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .email-container {
+      width: 100%;
+      background-color: #ffffff;
+      max-width: 600px;
+      margin: 0 auto;
+      font-family: Arial, sans-serif;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .header {
+      background-color: #4A90E2;
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 30px 20px;
+      color: #333;
+      text-align: left;
+    }
+    .content h1 {
+      margin-top: 0;
+      color: #4A90E2;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 12px 25px;
+      margin-top: 20px;
+      background-color: #4A90E2;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .footer {
+      background-color: #eee;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">
+      <h2>🔥 Специальное предложение только для вас!</h2>
+    </div>
+    <div class="content">
+      <h1>Скидка 20% на все товары до конца недели!</h1>
+      <p>Не упустите свой шанс. Только сейчас — получите эксклюзивную скидку на нашу новую коллекцию товаров. Успейте воспользоваться предложением!</p>
+      <a class="cta-button" href="https://ваш-сайт.com">Перейти на сайт</a>
+    </div>
+    <div class="footer">
+      Вы получили это письмо, потому что подписались на рассылку.<br>
+      Если вы больше не хотите получать наши письма, <a href="{{ destroy_link }}">отпишитесь здесь</a>.
+    </div>
+  </div>
+</body>
+</html>

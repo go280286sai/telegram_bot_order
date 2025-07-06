@@ -70,7 +70,7 @@ async def get_delivery(request: Request) -> JSONResponse:
 
             if query is None:
                 return JSONResponse(
-                    status_code=status.HTTP_404_NOT_FOUND,
+                    status_code=status.HTTP_200_OK,
                     content={
                         "success": False,
                         "data": None,
@@ -99,9 +99,8 @@ async def get_delivery(request: Request) -> JSONResponse:
         )
 
 
-
 @router.post("/delivery/delete")
-async def delete_delivery(request: Request, response: Response) -> JSONResponse:
+async def delete_delivery(request: Request) -> JSONResponse:
     """
     Delete delivery cookie from session
     """

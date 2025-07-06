@@ -11,7 +11,7 @@ class ReviewManager:
         self.session = session
 
     async def create_review(self, name: str, text: str,
-                            gender: int) -> bool | Review:
+                            gender: int) -> None | Review:
         """
         Create a new review
         :param text:
@@ -30,7 +30,7 @@ class ReviewManager:
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
-            return False
+            return None
 
     async def update_review(
             self, idx: int,

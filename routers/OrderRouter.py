@@ -13,7 +13,11 @@ router = APIRouter()
 
 
 @router.post("/create")
-async def create_order(transact: Transaction, request: Request, response: Response):
+async def create_order(
+        transact: Transaction,
+        request: Request,
+        response: Response
+):
     try:
         async with async_session_maker() as session:
             transaction = transact.transaction

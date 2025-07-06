@@ -11,7 +11,7 @@ class ProductManager:
         self.session = session
 
     async def create_product(self, name: str, description: str,
-                             amount: int, price: float) -> bool | Product:
+                             amount: int, price: float) -> None | Product:
         """
         Creates a new product.
         :param name:
@@ -33,7 +33,7 @@ class ProductManager:
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
-            return False
+            return None
 
     async def get_product(self, idx: int) -> Product | None:
         """
