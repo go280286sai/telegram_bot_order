@@ -1,4 +1,6 @@
-from helps.help import hash_password
+import pytest_asyncio
+
+from helps.help import hash_password, generate_transaction
 import pytest
 from database.User import UserManager
 from database.main import async_session_maker, User
@@ -12,7 +14,8 @@ async def test_create_user():
             username="Alex",
             password="12345678",
             phone="8000000000",
-            email="admin@admin.com"
+            email="admin@admin.com",
+            hash_active=generate_transaction()
         )
         assert isinstance(user, User)
 
@@ -23,6 +26,7 @@ async def test_update_user():
         user_manager = UserManager(session)
         user = await user_manager.update_user(idx=1, password="0000")
         assert user is not False
+        assert user.password == hash_password('0000')
 
 
 @pytest.mark.asyncio
@@ -41,25 +45,28 @@ async def test_add_comments():
         assert user is True
 
 
-@pytest.mark.asyncio
+@pytest_asyncio.fixture
 async def test_resset_password():
     async with async_session_maker() as session:
         user_manager = UserManager(session)
         user = await user_manager.reset_password(1)
-        assert user is True
+        assert isinstance(user, str)
+        return user
 
 
-@pytest.mark.asyncio
-async def test_get_user():
+@pytest_asyncio.fixture()
+async def test_get_user(test_resset_password):
     async with async_session_maker() as session:
+        password = str(test_resset_password)
         user_manager = UserManager(session)
         query = await user_manager.get_user(1)
         assert query.username == "Alex"
         assert query.email is not None
         assert query.phone == "8000000000"
         assert query.status == 0
-        assert query.password == hash_password("0000")
+        assert query.password == hash_password(password)
         assert query.comments == "TEST"
+        return password
 
 
 @pytest.mark.asyncio
@@ -72,19 +79,47 @@ async def test_get_users():
 
 
 @pytest.mark.asyncio
-async def test_get_user_by_username():
+async def test_get_user_by_username(test_get_user):
+    password = str(test_get_user)
     async with async_session_maker() as session:
         user_manager = UserManager(session)
         query = await user_manager.get_user_by_username(
             username="Alex",
-            password="0000"
+            password=password
         )
         assert query.username == "Alex"
 
 
 @pytest.mark.asyncio
-async def test_delete_user():
-    async with (async_session_maker() as session):
+async def test_get_user_by_username_email():
+    async with async_session_maker() as session:
         user_manager = UserManager(session)
-        query = await user_manager.delete_user(1)
-        assert query is True
+        query = await user_manager.get_user_by_username_email(
+            username="Alex",
+            email="admin@admin.com"
+        )
+        assert isinstance(query, User)
+        query = await user_manager.get_user_by_username_email(
+            username="Alex2",
+            email="admin@admin.com"
+        )
+        assert query is None
+        query = await user_manager.get_user_by_username_email(
+            username="Alex",
+            email="admin@admin.com2"
+        )
+        assert query is None
+
+
+@pytest.mark.asyncio
+async def test_delete_user(test_get_user):
+    password = str(test_get_user)
+    async with async_session_maker() as session:
+        user_manager = UserManager(session)
+        query = await user_manager.get_user_by_username(
+            username="Alex",
+            password=password
+        )
+        assert query.username == "Alex"
+        user_ = await user_manager.delete_user(1)
+        assert user_ is True

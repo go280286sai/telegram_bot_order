@@ -29,7 +29,7 @@ export default function Profile(props) {
             },
             credentials: "include",
             body: JSON.stringify({
-                id: props.user.id,
+                idx: props.user.id,
                 password: formData.password,
             })
         })

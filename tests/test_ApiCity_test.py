@@ -61,4 +61,3 @@ async def test_delete_api_product():
         for item in data['data']['cities']:
             await client.post(f"/city/delete/{item['id']}")
             assert response.status_code == 200
-

@@ -39,6 +39,7 @@ async def create_subscriber_route(sub: Subscriber):
             )
             if send_email is None:
                 raise Exception("Failed to create subscriber")
+
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={

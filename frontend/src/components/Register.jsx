@@ -79,12 +79,13 @@ export default function Register() {
                                    value={formData.confirmPassword} onChange={handleChange} required/>
                         </div>
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer"><strong className={"error"}>After registration, confirm your email.</strong>
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
                         <button type="submit" className="btn btn-primary">Register</button>
                     </div>
                 </form>
             </div>
+
         </div>
     );
 }

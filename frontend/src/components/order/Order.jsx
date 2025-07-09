@@ -31,7 +31,9 @@ export default function Order() {
                 const data = await response.json();
                 if (data.data) {
                     setUser(data.data);
-                    setStatusUser(true);
+                    if(data.data.status){
+                        setStatusUser(true);
+                    }
                 }
             } catch (error) {
                 await log("error", "is_auth", error);

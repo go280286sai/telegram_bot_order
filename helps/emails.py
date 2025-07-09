@@ -16,7 +16,7 @@ async def create_subscriber_email(
         hash_active: str
 ) -> bool:
     if not is_valid_email(email):
-        return True
+        return False
 
     confirmation_link = \
         f"{URL_SERVER}/subscriber/confirm/{int(idx)}/{hash_active}"
@@ -36,8 +36,11 @@ async def send_emails(
         body: str,
         idx: int,
         email: str,
-        hash_active: str
+        hash_active: str,
+        footer: bool = True
 ) -> bool:
+    if not is_valid_email(email):
+        return False
     destroy_link = f"{URL_SERVER}/subscriber/destroy/{int(idx)}/{hash_active}"
     template = env.get_template("send_message.html")
     html_content = template.render(
@@ -45,11 +48,31 @@ async def send_emails(
         header=header,
         title=title,
         body=body,
-        host=os.getenv("SMTP_SERVER")
+        host=os.getenv("SMTP_SERVER"),
+        footer=footer
     )
 
     return send_html_email(
         subject=title,
+        recipient=email,
+        html_content=html_content
+    )
+
+
+async def register_user_confirm(
+        idx: int,
+        email: str,
+        hash_active: str
+) -> bool:
+    register_link = f"{URL_SERVER}/user/confirm/{int(idx)}/{hash_active}"
+    template = env.get_template("register_email.html")
+    html_content = template.render(
+        register_link=register_link,
+        host=os.getenv("SMTP_SERVER")
+    )
+
+    return send_html_email(
+        subject="Registration confirmation",
         recipient=email,
         html_content=html_content
     )

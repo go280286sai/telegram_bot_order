@@ -24045,3 +24045,1959 @@ CREATE TABLE orders (
 06-07-25 15:55:44 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_orders_id ON orders (id)
 06-07-25 15:55:44 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
 06-07-25 15:55:44 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("users")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("products")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("posts")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("cities")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("addresses")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("deliveries")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("orders")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("carousels")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("reviews")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("subscribers")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("templates")
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE users (
+	id INTEGER NOT NULL, 
+	username VARCHAR, 
+	password VARCHAR, 
+	email VARCHAR NOT NULL, 
+	phone VARCHAR, 
+	status INTEGER NOT NULL, 
+	comments VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (email), 
+	UNIQUE (phone)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00009s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - CREATE UNIQUE INDEX ix_users_username ON users (username)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00010s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_users_id ON users (id)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE products (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	description VARCHAR, 
+	amount INTEGER, 
+	service INTEGER, 
+	price FLOAT NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_products_id ON products (id)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE posts (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00014s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE cities (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE addresses (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE carousels (
+	id INTEGER NOT NULL, 
+	title VARCHAR NOT NULL, 
+	description VARCHAR, 
+	image VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE reviews (
+	id INTEGER NOT NULL, 
+	text TEXT NOT NULL, 
+	name VARCHAR NOT NULL, 
+	gender INTEGER NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE subscribers (
+	id INTEGER NOT NULL, 
+	email VARCHAR NOT NULL, 
+	hashed_active VARCHAR, 
+	hashed_destroy VARCHAR, 
+	status INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (email)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE templates (
+	id INTEGER NOT NULL, 
+	header VARCHAR NOT NULL, 
+	title VARCHAR NOT NULL, 
+	body VARCHAR NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE deliveries (
+	id INTEGER NOT NULL, 
+	post_id INTEGER, 
+	city_id INTEGER, 
+	address_id INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(post_id) REFERENCES posts (id), 
+	FOREIGN KEY(city_id) REFERENCES cities (id), 
+	FOREIGN KEY(address_id) REFERENCES addresses (id)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00015s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_deliveries_id ON deliveries (id)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE orders (
+	id INTEGER NOT NULL, 
+	products TEXT NOT NULL, 
+	user_id INTEGER NOT NULL, 
+	delivery_id INTEGER NOT NULL, 
+	total FLOAT NOT NULL, 
+	transaction_id VARCHAR NOT NULL, 
+	status INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(delivery_id) REFERENCES deliveries (id)
+)
+
+
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_orders_id ON orders (id)
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - [no key 0.00010s] ()
+08-07-25 15:17:59 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - [generated in 0.00027s] ()
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - [generated in 0.00020s] ()
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:03 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - [generated in 0.00038s] ()
+08-07-25 15:20:03 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - INSERT INTO users (username, password, email, phone, status, comments, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [generated in 0.00031s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 'admin@admin.ua', '+380953515257', 0, None, '2025-07-08 12:20:42.297832')
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [generated in 0.00063s] (1,)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [generated in 0.00043s] (1,)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [cached since 38.51s ago] ()
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [cached since 38.54s ago] ()
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - [cached since 38.55s ago] ()
+08-07-25 15:20:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - [cached since 232.7s ago] (1,)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - [cached since 232.7s ago] (1,)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - [cached since 271.2s ago] ()
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - [cached since 271.2s ago] ()
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - [cached since 271.2s ago] ()
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - [cached since 235.1s ago] (1,)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - [cached since 235.1s ago] (1,)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - [cached since 273.6s ago] ()
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - [cached since 273.6s ago] ()
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - [cached since 273.6s ago] ()
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:24:37 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [generated in 0.00034s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0')
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [cached since 275.1s ago] (1,)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [cached since 313.6s ago] ()
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [cached since 275.1s ago] (1,)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [cached since 313.6s ago] ()
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - [cached since 313.6s ago] ()
+08-07-25 15:25:17 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - [cached since 279s ago] (1,)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - [cached since 279s ago] (1,)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - [cached since 317.5s ago] ()
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - [cached since 317.5s ago] ()
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - [cached since 317.5s ago] ()
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [cached since 287s ago] (1,)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [cached since 287s ago] (1,)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [cached since 287s ago] (1,)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [cached since 325.8s ago] ()
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT deliveries.id, deliveries.post_id, deliveries.city_id, deliveries.address_id, deliveries.created_at, posts.name AS name, cities.name AS city, addresses.name AS address 
+FROM deliveries JOIN posts ON deliveries.post_id = posts.id JOIN cities ON deliveries.city_id = cities.id JOIN addresses ON deliveries.address_id = addresses.id
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [generated in 0.00025s] ()
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - SELECT deliveries.id, deliveries.post_id, deliveries.city_id, deliveries.address_id, deliveries.created_at, posts.name AS name, cities.name AS city, addresses.name AS address 
+FROM deliveries JOIN posts ON deliveries.post_id = posts.id JOIN cities ON deliveries.city_id = cities.id JOIN addresses ON deliveries.address_id = addresses.id
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - [cached since 0.006542s ago] ()
+08-07-25 15:25:29 - root - INFO - error - fetchAllDeliveries - TypeError: Cannot read properties of null (reading 'deliveries')
+08-07-25 15:25:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:25:29 - root - INFO - error - fetchAllDeliveries - TypeError: Cannot read properties of null (reading 'deliveries')
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - [cached since 339.1s ago] (1,)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - [cached since 339.1s ago] (1,)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - [cached since 339.1s ago] (1,)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - [cached since 377.6s ago] ()
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:21 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - [cached since 359.6s ago] (1,)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - [cached since 359.6s ago] (1,)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - [cached since 398.1s ago] ()
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - [cached since 398.2s ago] ()
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - [cached since 398.1s ago] ()
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 15:26:42 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("users")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("products")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("posts")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("cities")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("addresses")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("deliveries")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("orders")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("carousels")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("reviews")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("subscribers")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - PRAGMA temp.table_info("templates")
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE users (
+	id INTEGER NOT NULL, 
+	username VARCHAR, 
+	password VARCHAR, 
+	email VARCHAR NOT NULL, 
+	phone VARCHAR, 
+	status INTEGER NOT NULL, 
+	comments VARCHAR, 
+	hashed_active VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (email), 
+	UNIQUE (phone)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_users_id ON users (id)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00011s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - CREATE UNIQUE INDEX ix_users_username ON users (username)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE products (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	description VARCHAR, 
+	amount INTEGER, 
+	service INTEGER, 
+	price FLOAT NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00015s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_products_id ON products (id)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00014s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE posts (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00017s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE cities (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00013s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE addresses (
+	id INTEGER NOT NULL, 
+	name VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (name)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00017s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE carousels (
+	id INTEGER NOT NULL, 
+	title VARCHAR NOT NULL, 
+	description VARCHAR, 
+	image VARCHAR, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00015s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE reviews (
+	id INTEGER NOT NULL, 
+	text TEXT NOT NULL, 
+	name VARCHAR NOT NULL, 
+	gender INTEGER NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00012s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE subscribers (
+	id INTEGER NOT NULL, 
+	email VARCHAR NOT NULL, 
+	hashed_active VARCHAR, 
+	hashed_destroy VARCHAR, 
+	status INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (email)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00013s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE templates (
+	id INTEGER NOT NULL, 
+	header VARCHAR NOT NULL, 
+	title VARCHAR NOT NULL, 
+	body VARCHAR NOT NULL, 
+	created_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00019s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE deliveries (
+	id INTEGER NOT NULL, 
+	post_id INTEGER, 
+	city_id INTEGER, 
+	address_id INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(post_id) REFERENCES posts (id), 
+	FOREIGN KEY(city_id) REFERENCES cities (id), 
+	FOREIGN KEY(address_id) REFERENCES addresses (id)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00013s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_deliveries_id ON deliveries (id)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00013s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - 
+CREATE TABLE orders (
+	id INTEGER NOT NULL, 
+	products TEXT NOT NULL, 
+	user_id INTEGER NOT NULL, 
+	delivery_id INTEGER NOT NULL, 
+	total FLOAT NOT NULL, 
+	transaction_id VARCHAR NOT NULL, 
+	status INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(delivery_id) REFERENCES deliveries (id)
+)
+
+
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00013s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - CREATE INDEX ix_orders_id ON orders (id)
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - [no key 0.00014s] ()
+08-07-25 16:23:55 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:30:50 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:31:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:21 - sqlalchemy.engine.Engine - INFO - INSERT INTO users (username, password, email, phone, status, comments, hashed_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+08-07-25 16:31:21 - sqlalchemy.engine.Engine - INFO - [generated in 0.00048s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 'admin@admin.ua', '+380953515257', 0, None, 'Bx2zPkkg5wOkFerHndhS', '2025-07-08 13:31:21.046747')
+08-07-25 16:31:21 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - [generated in 0.00062s] (1,)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - [generated in 0.00018s] ()
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - [generated in 0.00051s] (1,)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - [generated in 0.00055s] ()
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - [generated in 0.00049s] ()
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:31:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:35:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:29 - sqlalchemy.engine.Engine - INFO - INSERT INTO users (username, password, email, phone, status, comments, hashed_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+08-07-25 16:35:29 - sqlalchemy.engine.Engine - INFO - [cached since 248.7s ago] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 'go280286sai@gmail.com', '+55454545', 0, None, 'W0YfaKSPOiEMO4ixGZDD', '2025-07-08 13:35:29.708261')
+08-07-25 16:35:29 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - [cached since 248.6s ago] (1,)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - [cached since 248.6s ago] (1,)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - [cached since 248.6s ago] ()
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - [cached since 248.9s ago] ()
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - [cached since 248.9s ago] ()
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:35:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:36:11 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:36:55 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:55 - sqlalchemy.engine.Engine - INFO - INSERT INTO users (username, password, email, phone, status, comments, hashed_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+08-07-25 16:36:55 - sqlalchemy.engine.Engine - INFO - [generated in 0.00020s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 'admin@admin.ua', '+385585255', 0, None, 'ssxZZsZmQqbYhMF4RMpl', '2025-07-08 13:36:55.956543')
+08-07-25 16:36:55 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - [generated in 0.00024s] (1,)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - [generated in 0.00014s] (1,)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - [generated in 0.00012s] ()
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - [generated in 0.00036s] ()
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - [generated in 0.00032s] ()
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:36:58 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:49:34 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 16:55:26 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00022s] (1,)
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - [cached since 0.002315s ago] (1,)
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - UPDATE users SET status=? WHERE users.id = ?
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00039s] (1, 1)
+08-07-25 16:55:35 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - [generated in 0.00050s] ()
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - [generated in 0.00048s] ()
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - [generated in 0.00062s] (1,)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - [cached since 3.85s ago] (1,)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - [generated in 0.00039s] ()
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:55:39 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:10 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:10 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 16:58:10 - sqlalchemy.engine.Engine - INFO - [generated in 0.00061s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0')
+08-07-25 16:58:10 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:10 - root - ERROR - Login failed User does not exist
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 147, in login
+    raise Exception("User does not exist")
+Exception: User does not exist
+08-07-25 16:58:11 - root - INFO - error - login error - [object Object]
+08-07-25 16:58:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:34 - sqlalchemy.engine.Engine - INFO - INSERT INTO users (username, password, email, phone, status, comments, hashed_active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+08-07-25 16:58:34 - sqlalchemy.engine.Engine - INFO - [generated in 0.00057s] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 'go280286sai@gmail.com', '+135456156', 0, None, 'o7TSFWFLDaXOmbJYTy3R', '2025-07-08 13:58:34.114824')
+08-07-25 16:58:34 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - [cached since 177.1s ago] (1,)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - [cached since 180.9s ago] (1,)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - [cached since 177.1s ago] ()
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - [cached since 177.1s ago] ()
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - [cached since 177.1s ago] ()
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:58:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - [cached since 230s ago] (1,)
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - [cached since 230s ago] (1,)
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - UPDATE users SET status=? WHERE users.id = ?
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - [cached since 230s ago] (1, 1)
+08-07-25 16:59:25 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - [cached since 229.4s ago] (1,)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - [cached since 233.2s ago] (1,)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - [cached since 229.4s ago] ()
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - [cached since 229.4s ago] ()
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - [cached since 229.4s ago] ()
+08-07-25 16:59:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [cached since 239.1s ago] (1,)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [cached since 243s ago] (1,)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [cached since 239.1s ago] ()
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [cached since 243s ago] (1,)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT deliveries.id, deliveries.post_id, deliveries.city_id, deliveries.address_id, deliveries.created_at, posts.name AS name, cities.name AS city, addresses.name AS address 
+FROM deliveries JOIN posts ON deliveries.post_id = posts.id JOIN cities ON deliveries.city_id = cities.id JOIN addresses ON deliveries.address_id = addresses.id
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [generated in 0.00018s] ()
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - SELECT deliveries.id, deliveries.post_id, deliveries.city_id, deliveries.address_id, deliveries.created_at, posts.name AS name, cities.name AS city, addresses.name AS address 
+FROM deliveries JOIN posts ON deliveries.post_id = posts.id JOIN cities ON deliveries.city_id = cities.id JOIN addresses ON deliveries.address_id = addresses.id
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - [cached since 0.003946s ago] ()
+08-07-25 16:59:38 - root - INFO - error - fetchAllDeliveries - TypeError: Cannot read properties of null (reading 'deliveries')
+08-07-25 16:59:38 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 16:59:38 - root - INFO - error - fetchAllDeliveries - TypeError: Cannot read properties of null (reading 'deliveries')
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - [cached since 978.3s ago] ()
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - [cached since 978.3s ago] ()
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - [cached since 978.3s ago] (1,)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - [cached since 982.1s ago] (1,)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - [cached since 978.3s ago] ()
+08-07-25 17:11:57 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - [cached since 1371s ago] ()
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - [cached since 1371s ago] ()
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - [cached since 1371s ago] ()
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:18:30 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:18:30 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - [cached since 1921s ago] ()
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - [cached since 1921s ago] ()
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:27:40 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - [cached since 1921s ago] ()
+08-07-25 17:27:40 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:32:27 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 17:32:27 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 17:32:27 - sqlalchemy.engine.Engine - INFO - [cached since 2057s ago] ('', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+08-07-25 17:32:27 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 17:32:27 - root - ERROR - Login failed User does not exist
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 147, in login
+    raise Exception("User does not exist")
+Exception: User does not exist
+08-07-25 17:32:27 - root - INFO - error - login error - [object Object]
+08-07-25 17:34:14 - root - INFO - error - recover error - [object Object]
+08-07-25 17:34:17 - root - INFO - error - recover error - [object Object]
+08-07-25 17:36:13 - root - INFO - error - recover error - [object Object]
+08-07-25 17:36:24 - root - INFO - error - recover error - [object Object]
+08-07-25 17:40:11 - root - INFO - error - recover error - [object Object]
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:01:56 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 18:02:15 - root - INFO - error - recover error - [object Object]
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - [generated in 0.00020s] ()
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - [generated in 0.00014s] ()
+08-07-25 18:04:29 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - [generated in 0.00013s] ()
+08-07-25 18:04:29 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - [cached since 263.3s ago] ()
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - [cached since 263.3s ago] ()
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - [cached since 263.3s ago] ()
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:08:52 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:08:52 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 18:09:14 - root - INFO - error - recover error - [object Object]
+08-07-25 18:09:43 - root - INFO - error - recover error - [object Object]
+08-07-25 18:10:16 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:10:16 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 18:10:16 - sqlalchemy.engine.Engine - INFO - [generated in 0.00083s] ('admin', 'admin@admin.ua')
+08-07-25 18:10:16 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:10:16 - root - ERROR - Email failed Invalid email error
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 315, in recovery
+    raise Exception("Invalid email error")
+Exception: Invalid email error
+08-07-25 18:10:16 - root - INFO - error - recover error - [object Object]
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:11:15 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 18:11:17 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:11:17 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 18:11:17 - sqlalchemy.engine.Engine - INFO - [generated in 0.00057s] ('admin', 'admin@admin.ua')
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:13:03 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 18:13:09 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:13:09 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 18:13:09 - sqlalchemy.engine.Engine - INFO - [generated in 0.00037s] ('admin', 'admin@admin.ua')
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [generated in 0.00024s] ()
+08-07-25 18:14:02 - root - INFO - error - is_auth - TypeError: Failed to fetch
+08-07-25 18:14:02 - root - INFO - error - get all from carts - TypeError: Failed to fetch
+08-07-25 18:14:02 - root - INFO - error - is_auth - TypeError: Failed to fetch
+08-07-25 18:14:02 - root - INFO - error - recover error - TypeError: Failed to fetch
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - [generated in 0.00022s] ()
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:14:02 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 18:14:02 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00042s] ('admin', 'go280286sai@gmail.com')
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00031s] (1,)
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00026s] ('6ac0a57c27e509535c93cf07faf2b94a9506b48f34d3a9a10073697be4dd8987', 1)
+08-07-25 18:14:13 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:45:11 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:45:20 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:45:20 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:45:20 - sqlalchemy.engine.Engine - INFO - [generated in 0.00055s] ('admin', 'admin@admin.ua')
+08-07-25 19:45:20 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:45:20 - root - ERROR - Email failed Invalid email error
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 315, in recovery
+    raise Exception("Invalid email error")
+Exception: Invalid email error
+08-07-25 19:45:20 - root - INFO - error - recover error - [object Object]
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - [cached since 23.89s ago] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - [generated in 0.00018s] (1,)
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - [generated in 0.00020s] ('9386f7f31f513e3773b498ff8c13abb1852c7d09ad0d5df7f2f967c4ea08e77a', 1)
+08-07-25 19:45:44 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:45:44 - root - ERROR - Email failed unexpected char '?' at 1357
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 319, in recovery
+    await send_emails(
+  File "D:\dev\python\projects\bot_order\helps\emails.py", line 43, in send_emails
+    template = env.get_template("send_message.html")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\send_message.html", line 64, in template
+    </div>{{ footer?
+jinja2.exceptions.TemplateSyntaxError: unexpected char '?' at 1357
+08-07-25 19:45:44 - root - INFO - error - recover error - [object Object]
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - [cached since 48.03s ago] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - [cached since 24.14s ago] (1,)
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - [cached since 24.14s ago] ('c82031171204c4ed4252bf7a12d71e4e12606f3601e4b2e90c70b872d7c280a8', 1)
+08-07-25 19:46:08 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:46:08 - root - ERROR - Email failed unexpected char '?' at 1357
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 319, in recovery
+    await send_emails(
+  File "D:\dev\python\projects\bot_order\helps\emails.py", line 43, in send_emails
+    template = env.get_template("send_message.html")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\send_message.html", line 64, in template
+    </div>{{ footer?
+jinja2.exceptions.TemplateSyntaxError: unexpected char '?' at 1357
+08-07-25 19:46:08 - root - INFO - error - recover error - [object Object]
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - [generated in 0.00048s] ()
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - [generated in 0.00050s] ()
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - [generated in 0.00040s] ()
+08-07-25 19:47:36 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:47:36 - root - INFO - error - Error get orders users - TypeError: Cannot read properties of null (reading 'orders')
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - [cached since 143.9s ago] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - [cached since 120s ago] (1,)
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - [cached since 120s ago] ('7917dad1279046045abc822a0c1f1e3f928eb3327ec688dbd77c27bfbf7eecd1', 1)
+08-07-25 19:47:44 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:47:44 - root - ERROR - Email failed unexpected char '?' at 1357
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 319, in recovery
+    await send_emails(
+  File "D:\dev\python\projects\bot_order\helps\emails.py", line 43, in send_emails
+    template = env.get_template("send_message.html")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\send_message.html", line 64, in template
+    </div>{{ footer?
+jinja2.exceptions.TemplateSyntaxError: unexpected char '?' at 1357
+08-07-25 19:47:44 - root - INFO - error - recover error - [object Object]
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:48:27 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:48:33 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:48:33 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:48:33 - sqlalchemy.engine.Engine - INFO - [generated in 0.00037s] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:50:06 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:50:06 - sqlalchemy.engine.Engine - INFO - [generated in 0.00183s] (1,)
+08-07-25 19:50:50 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:50:50 - sqlalchemy.engine.Engine - INFO - [generated in 0.00163s] ('040955b50a75bad43e30ed4b5c5ab3e00098ad1ec82a0252d3b8a40cedae947b', 1)
+08-07-25 19:50:50 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:51:30 - root - ERROR - Email failed unexpected char '?' at 1357
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 319, in recovery
+    await send_emails(
+  File "D:\dev\python\projects\bot_order\helps\emails.py", line 43, in send_emails
+    template = env.get_template("send_message.html")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\send_message.html", line 64, in template
+    </div>{{ footer?
+jinja2.exceptions.TemplateSyntaxError: unexpected char '?' at 1357
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:52:18 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - [generated in 0.00020s] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - [generated in 0.00013s] (1,)
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - [generated in 0.00012s] ('f41951e882048c5c59dd0943a6749b82c36c73c37360fb898efe884dd65e7a60', 1)
+08-07-25 19:52:27 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:52:27 - root - ERROR - Email failed unexpected char '?' at 1357
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 319, in recovery
+    await send_emails(
+  File "D:\dev\python\projects\bot_order\helps\emails.py", line 43, in send_emails
+    template = env.get_template("send_message.html")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\loaders.py", line 138, in load
+    code = environment.compile(source, name, filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 771, in compile
+    self.handle_exception(source=source_hint)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\send_message.html", line 64, in template
+    </div>{{ footer?
+jinja2.exceptions.TemplateSyntaxError: unexpected char '?' at 1357
+08-07-25 19:52:27 - root - INFO - error - recover error - [object Object]
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:53:19 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - [generated in 0.00019s] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - [generated in 0.00014s] (1,)
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - [generated in 0.00013s] ('ed37d1221822fb209df00dfc242ec74411d08bf2262893eba7102765306ba685', 1)
+08-07-25 19:53:24 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:54:22 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:54:22 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 19:54:22 - sqlalchemy.engine.Engine - INFO - [generated in 0.00030s] ('admin', '95bad70b1940a5506dad76aca94c3e7b7b4d575a4569db4299bb16910d398303')
+08-07-25 19:54:22 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:54:22 - root - ERROR - Login failed User does not exist
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 149, in login
+    raise Exception("User does not exist")
+Exception: User does not exist
+08-07-25 19:54:22 - root - INFO - error - login error - [object Object]
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 19:56:04 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.email = ?
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00044s] ('admin', 'go280286sai@gmail.com')
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00028s] (1,)
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - [generated in 0.00028s] ('50b519677749ea799738ef7aba6b5050bf0a909c421ebc22dcf6cab332c2ee6f', 1)
+08-07-25 19:56:13 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00033s] ('admin', '50b519677749ea799738ef7aba6b5050bf0a909c421ebc22dcf6cab332c2ee6f')
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00042s] (1,)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00027s] ()
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [cached since 22.11s ago] (1,)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00032s] ()
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - [generated in 0.00026s] ()
+08-07-25 19:56:35 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:56:46 - root - INFO - error - Error update password - [object Object]
+08-07-25 19:57:00 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:00 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 19:57:00 - sqlalchemy.engine.Engine - INFO - [cached since 25.83s ago] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0')
+08-07-25 19:57:00 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:00 - root - ERROR - Login failed User does not exist
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 149, in login
+    raise Exception("User does not exist")
+Exception: User does not exist
+08-07-25 19:57:00 - root - INFO - error - login error - [object Object]
+08-07-25 19:57:11 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:11 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 19:57:11 - sqlalchemy.engine.Engine - INFO - [cached since 36.59s ago] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0')
+08-07-25 19:57:11 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:11 - root - ERROR - Login failed User does not exist
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\routers\UserRouter.py", line 149, in login
+    raise Exception("User does not exist")
+Exception: User does not exist
+08-07-25 19:57:11 - root - INFO - error - login error - [object Object]
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - [cached since 57.77s ago] ('admin', '50b519677749ea799738ef7aba6b5050bf0a909c421ebc22dcf6cab332c2ee6f')
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - [cached since 57.17s ago] (1,)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - [cached since 79.27s ago] (1,)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - [cached since 57.17s ago] ()
+08-07-25 19:57:32 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - [cached since 57.48s ago] ()
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - [cached since 57.47s ago] ()
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:57:33 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - [cached since 135.6s ago] ()
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - [cached since 135.6s ago] ()
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - [cached since 135.7s ago] (1,)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - [cached since 157.8s ago] (1,)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - [cached since 135.7s ago] ()
+08-07-25 19:58:51 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 19:59:01 - root - INFO - error - Error update password - [object Object]
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:02:15 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 20:02:20 - root - INFO - error - Error update password - [object Object]
+08-07-25 20:02:33 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-3' coro=<Server.serve() done, defined at D:\dev\python\projects\bot_order\.venv\Lib\site-packages\uvicorn\server.py:68> exception=KeyboardInterrupt()>
+Traceback (most recent call last):
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\uvicorn\main.py", line 580, in run
+    server.run()
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\uvicorn\server.py", line 66, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\programs\JetBrains\JetBrains\PyCharm2024.1\plugins\python\helpers-pro\pydevd_asyncio\pydevd_nest_asyncio.py", line 135, in run
+    return loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\programs\JetBrains\JetBrains\PyCharm2024.1\plugins\python\helpers-pro\pydevd_asyncio\pydevd_nest_asyncio.py", line 229, in run_until_complete
+    self._run_once()
+  File "D:\programs\JetBrains\JetBrains\PyCharm2024.1\plugins\python\helpers-pro\pydevd_asyncio\pydevd_nest_asyncio.py", line 281, in _run_once
+    handle._run()
+  File "C:\Users\alexc\AppData\Local\Programs\Python\Python311\Lib\asyncio\events.py", line 80, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\alexc\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py", line 350, in __wakeup
+    self.__step()
+  File "D:\programs\JetBrains\JetBrains\PyCharm2024.1\plugins\python\helpers-pro\pydevd_asyncio\pydevd_nest_asyncio.py", line 390, in step
+    step_orig(task, exc)
+  File "C:\Users\alexc\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py", line 267, in __step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\uvicorn\server.py", line 69, in serve
+    with self.capture_signals():
+  File "C:\Users\alexc\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "D:\dev\python\projects\bot_order\.venv\Lib\site-packages\uvicorn\server.py", line 330, in capture_signals
+    signal.raise_signal(captured_signal)
+KeyboardInterrupt
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:03:04 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 20:03:10 - root - INFO - error - Error update password - [object Object]
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - [generated in 0.00077s] ()
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - [generated in 0.00070s] (1,)
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - [generated in 0.00049s] ()
+08-07-25 20:03:52 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("users")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("products")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("posts")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("cities")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("addresses")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("deliveries")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("orders")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("carousels")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("reviews")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("subscribers")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - PRAGMA main.table_info("templates")
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - [raw sql] ()
+08-07-25 20:04:02 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - [generated in 0.00041s] ('admin', '50b519677749ea799738ef7aba6b5050bf0a909c421ebc22dcf6cab332c2ee6f')
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - [generated in 0.00051s] (1,)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - [generated in 0.00043s] (1,)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - [generated in 0.00034s] ()
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:15 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - [generated in 0.00045s] ()
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - [generated in 0.00057s] ()
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:16 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - [cached since 5.128s ago] (1,)
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - UPDATE users SET password=? WHERE users.id = ?
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - [generated in 0.00139s] ('9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0', 1)
+08-07-25 20:04:21 - sqlalchemy.engine.Engine - INFO - COMMIT
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - [cached since 7.589s ago] (1,)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - [cached since 7.577s ago] (1,)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - [cached since 7.574s ago] ()
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - [cached since 7.575s ago] ()
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - [cached since 7.581s ago] ()
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:23 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:33 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:33 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.username = ? AND users.password = ?
+08-07-25 20:04:33 - sqlalchemy.engine.Engine - INFO - [cached since 18.48s ago] ('admin', '9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0')
+08-07-25 20:04:33 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - SELECT orders.id, orders.products, orders.user_id, orders.delivery_id, orders.total, orders.transaction_id, orders.status, orders.created_at, users_1.id AS id_1, users_1.username, users_1.password, users_1.email, users_1.phone, users_1.status AS status_1, users_1.comments, users_1.hashed_active, users_1.created_at AS created_at_1, deliveries_1.id AS id_2, deliveries_1.post_id, deliveries_1.city_id, deliveries_1.address_id, deliveries_1.created_at AS created_at_2 
+FROM orders JOIN users ON orders.user_id = users.id JOIN deliveries ON deliveries.id = orders.delivery_id LEFT OUTER JOIN users AS users_1 ON users_1.id = orders.user_id LEFT OUTER JOIN deliveries AS deliveries_1 ON deliveries_1.id = orders.delivery_id 
+WHERE orders.id = ?
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - [cached since 18.1s ago] (1,)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - SELECT products.id, products.name, products.description, products.amount, products.service, products.price, products.created_at 
+FROM products
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - [cached since 18.09s ago] ()
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - SELECT reviews.id, reviews.text, reviews.name, reviews.gender, reviews.created_at 
+FROM reviews
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - [cached since 18.07s ago] ()
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.password, users.email, users.phone, users.status, users.comments, users.hashed_active, users.created_at 
+FROM users 
+WHERE users.id = ?
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - [cached since 18.1s ago] (1,)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - SELECT carousels.id, carousels.title, carousels.description, carousels.image, carousels.created_at 
+FROM carousels
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - [cached since 18.1s ago] ()
+08-07-25 20:04:34 - sqlalchemy.engine.Engine - INFO - ROLLBACK

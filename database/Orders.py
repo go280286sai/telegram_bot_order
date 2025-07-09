@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Order, Product, User, Delivery
+from database.main import Order, User, Delivery
 import logging
 from typing import Sequence
 
@@ -98,8 +98,8 @@ class OrderManager:
         """
         try:
             query = (select(Order)
-                     .join(User, Order.user_id==User.id)
-                     .join(Delivery, Delivery.id==Order.delivery_id)
+                     .join(User, Order.user_id == User.id)
+                     .join(Delivery, Delivery.id == Order.delivery_id)
                      .where(Order.id == idx))
             orders = await self.session.execute(query)
             result = orders.scalars().all()

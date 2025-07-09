@@ -384,6 +384,7 @@ body {
 }
 .error {
   color: red;
+  margin-left: 10%;
 }
 .success {
   color: white;

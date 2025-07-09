@@ -4,6 +4,7 @@ from database.Products import ProductManager
 from database.User import UserManager
 from database.Deliveries import DeliveryManager
 from database.main import async_session_maker
+from helps.help import generate_transaction
 
 
 @pytest.mark.asyncio
@@ -44,7 +45,8 @@ async def test_get_order():
             username="Alex",
             password="0000",
             phone="0123456789",
-            email="admin@admin.com"
+            email="admin@admin.com",
+            hash_active=generate_transaction()
         )
         # Delivery
         delivery_manager = DeliveryManager(session)
@@ -94,4 +96,3 @@ async def test_delete_order():
         await user_manager.delete_user(1)
         delivery_manager = DeliveryManager(session)
         await delivery_manager.delete_delivery(1)
-

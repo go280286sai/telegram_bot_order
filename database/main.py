@@ -20,8 +20,9 @@ class User(Base):
     password: Mapped[str] = Column(String)
     email: Mapped[str] = Column(String, unique=True, nullable=False)
     phone: Mapped[str] = Column(String, unique=True, nullable=True)
-    status: Mapped[int] = Column(Integer, default=1, nullable=False)
+    status: Mapped[int] = Column(Integer, default=0, nullable=False)
     comments: Mapped[str] = Column(String, nullable=True, default=None)
+    hashed_active: Mapped[str] = Column(String, nullable=True)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
 
 
