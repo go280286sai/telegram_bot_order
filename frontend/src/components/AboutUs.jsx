@@ -56,7 +56,7 @@ export default function AboutUs() {
                             <div
                                 className="about_us d-flex flex-column align-items-center justify-content-center text-center"
                                 style={{ minHeight: "300px" }}>
-                                <p className="text-muted">Отзывы пока отсутствуют.</p>
+                                <p className="reviews">There are no reviews yet</p>
                             </div>
                         </div>
                     )}

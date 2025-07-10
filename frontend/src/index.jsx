@@ -13,6 +13,8 @@ import BlockOne from "./components/BlockOne";
 import Footer from "./components/Footer";
 import Order from "./components/order/Order";
 import Separation from "./components/Separation";
+import AdminSettings from "./components/admin/AdminSettings";
+import AdminHeader from "./components/admin/AdminHeader";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -30,6 +32,13 @@ root.render(
                     </>
                 }/>
                 <Route path={"/admin"} element={<AdminMain/>}/>
+                <Route path={"/admin/settings"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminSettings/>
+                    </>
+                }/>
             </Routes>
         </React.StrictMode>
     </BrowserRouter>

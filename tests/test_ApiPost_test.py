@@ -4,7 +4,7 @@ from main import app
 
 
 @pytest.mark.asyncio
-async def test_create_api_product():
+async def test_create_api_post():
     transport = ASGITransport(app=app)
     async with AsyncClient(
             transport=transport,
@@ -20,7 +20,7 @@ async def test_create_api_product():
 
 
 @pytest.mark.asyncio
-async def test_update_api_product():
+async def test_update_api_post():
     transport = ASGITransport(app=app)
     async with AsyncClient(
             transport=transport,
@@ -36,7 +36,7 @@ async def test_update_api_product():
 
 
 @pytest.mark.asyncio
-async def test_gets_api_products():
+async def test_gets_api_posts():
     transport = ASGITransport(app=app)
     async with AsyncClient(
             transport=transport,
@@ -53,7 +53,7 @@ async def test_gets_api_products():
 
 
 @pytest.mark.asyncio
-async def test_delete_api_product():
+async def test_delete_api_post():
     transport = ASGITransport(app=app)
     async with AsyncClient(
             transport=transport,

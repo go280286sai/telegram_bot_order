@@ -3,7 +3,7 @@ import Social from "./Social";
 import AboutUs from "./AboutUs";
 import log from "../helps/logs.mjs";
 
-export default function Footer() {
+export default function Footer({ setting }) {
     const [info, setInfo] = useState("")
     const [formData, setFormData] = useState({
         email: "",
@@ -40,7 +40,7 @@ export default function Footer() {
                     <AboutUs/>
                 </div>
                 <div className={"col-5"}>
-                    <Social/>
+                    <Social settings={setting}/>
                     <form action="" method="post">
                         <div className={"mb-2"}>
                             <label htmlFor="exampleFormControlInput1" className={"form-label"}>Subscriber</label>

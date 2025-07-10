@@ -191,6 +191,19 @@ class Temlate(Base):
         self.body = body
 
 
+class Setting(Base):
+    __tablename__ = "settings"
+    id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = Column(String, nullable=False)
+    value: Mapped[str] = Column(String, nullable=False)
+    created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+
+    def __init__(self, name: str, value: str, **kwargs):
+        super().__init__(**kwargs)
+        self.name = name
+        self.value = value
+
+
 engine = create_async_engine(DATABASE_URL, echo=True)
 async_session_maker = async_sessionmaker(
     engine,
