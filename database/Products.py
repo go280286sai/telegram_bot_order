@@ -53,7 +53,7 @@ class ProductManager:
             return None
 
     async def update_product(self, idx: int, name: str, description: str,
-                             amount: int, price: float) -> bool:
+                             amount: int, price: float, service: int) -> bool:
         """
         Updates a product.
         :param idx:
@@ -61,6 +61,7 @@ class ProductManager:
         :param description:
         :param amount:
         :param price:
+        :param service:
         :return:
         """
         try:
@@ -74,6 +75,7 @@ class ProductManager:
             product.description = escape(str(description))
             product.amount = amount
             product.price = price
+            product.service = service
 
             await self.session.commit()
             return True

@@ -421,4 +421,10 @@ body {
 .reviews {
   color: #ffffff;
 }
+.contacts {
+  margin-top: 3%;
+}
+.contacts .contact_title {
+  color: #d3640a;
+}
 /*# sourceMappingURL=style.css.map */

@@ -6,6 +6,7 @@ import Carousel from "./components/Carousel";
 import Footer from "./components/Footer";
 import {useState, useEffect} from "react";
 import log from "./helps/logs.mjs";
+import AboutUs from "./components/AboutUs";
 
 function App() {
     const [settings, setSettings] = useState({})
@@ -14,6 +15,10 @@ function App() {
     let telegram = "";
     let viber = "";
     let whatsapp = "";
+    let phone = "";
+    let email = "";
+    let address = "";
+    let map = "";
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -42,6 +47,18 @@ function App() {
                         if (item.name === "whatsapp") {
                             whatsapp = item.value;
                         }
+                        if (item.name === "phone") {
+                            phone = item.value;
+                        }
+                        if (item.name === "email") {
+                            email = item.value;
+                        }
+                        if (item.name === "address") {
+                            address = item.value;
+                        }
+                        if (item.name === "map") {
+                            map = item.value;
+                        }
                     }
                 }
                 setSettings({
@@ -49,7 +66,11 @@ function App() {
                     "description": description,
                     "telegram": telegram,
                     "viber": viber,
-                    "whatsapp": whatsapp
+                    "whatsapp": whatsapp,
+                    "phone": phone,
+                    "email": email,
+                    "address": address,
+                    "map": map
                 })
             } catch (error) {
                 await log("error", "is_auth", error);
@@ -64,6 +85,8 @@ function App() {
             <Carousel/>
             <Separation/>
             <BlockTwo/>
+            <Separation/>
+            <AboutUs/>
             <Separation/>
             <Footer settings={settings}/>
         </>

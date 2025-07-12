@@ -64,7 +64,8 @@ async def product_update(idx: int, item: Product) -> JSONResponse:
                 name=item.name,
                 description=item.description,
                 price=item.price,
-                amount=item.amount
+                amount=item.amount,
+                service=item.service
             )
             if query is False:
                 raise Exception("Error updating product")
@@ -115,6 +116,7 @@ async def products() -> JSONResponse:
                     "price": p.price,
                     "description": p.description,
                     "amount": p.amount,
+                    "service": p.service
                 } for p in query
             ]
             return JSONResponse(

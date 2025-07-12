@@ -4,6 +4,11 @@ import two from "../assets/img/carusel/2.webp"
 import three from "../assets/img/carusel/3.webp"
 import four from "../assets/img/carusel/4.webp"
 import five from "../assets/img/carusel/5.webp"
+import six from "../assets/img/carusel/1.webp"
+import seven from "../assets/img/carusel/2.webp"
+import eight from "../assets/img/carusel/3.webp"
+import nine from "../assets/img/carusel/4.webp"
+import ten from "../assets/img/carusel/5.webp"
 import log from "../helps/logs.mjs";
 export default function Carousel() {
     const mapImages = {
@@ -11,7 +16,12 @@ export default function Carousel() {
         "2": two,
         "3": three,
         "4": four,
-        "5": five
+        "5": five,
+        "6": six,
+        "7": seven,
+        "8": eight,
+        "9": nine,
+        "10": ten
     }
     const [images, setImages] = useState([])
     useEffect(() => {
@@ -29,7 +39,7 @@ export default function Carousel() {
                     setImages(result.data.carousels);
                 }
             } catch (error) {
-                await log("error", "is_auth", error);
+                await log("error", "carousels", error);
             }
         };
         fetchCarousel();
@@ -82,7 +92,7 @@ export default function Carousel() {
                 </button>
                 <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
                         data-bs-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="carousel-control-next-icon"  aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>
             </div>

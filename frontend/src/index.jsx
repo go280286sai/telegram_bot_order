@@ -15,8 +15,13 @@ import Order from "./components/order/Order";
 import Separation from "./components/Separation";
 import AdminSettings from "./components/admin/AdminSettings";
 import AdminHeader from "./components/admin/AdminHeader";
+import AdminCarousels from "./components/admin/AdminCarousels";
+import AdminReviews from "./components/admin/AdminReviews";
+import AdminProducts from "./components/admin/AdminProducts";
+import AdminDelivery from "./components/admin/AdminDelivery";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
     <BrowserRouter>
         <React.StrictMode>
@@ -24,11 +29,8 @@ root.render(
                 <Route path="/" element={<App/>}/>
                 <Route path={"/order"} element={
                     <>
-                        <BlockOne/>
-                        <Separation/>
                         <Order/>
                         <Separation/>
-                        <Footer/>
                     </>
                 }/>
                 <Route path={"/admin"} element={<AdminMain/>}/>
@@ -37,6 +39,30 @@ root.render(
                         <AdminHeader/>
                         <Separation/>
                         <AdminSettings/>
+                    </>
+                }/>
+                <Route path={"/admin/carousels"} element={
+                    <>
+                        <AdminHeader/>
+                        <AdminCarousels/>
+                    </>
+                }/>
+                <Route path={"/admin/reviews"} element={
+                    <>
+                        <AdminHeader/>
+                        <AdminReviews/>
+                    </>
+                }/>
+                <Route path={"/admin/products"} element={
+                    <>
+                        <AdminHeader/>
+                        <AdminProducts/>
+                    </>
+                }/>
+                <Route path={"/admin/delivery"} element={
+                    <>
+                        <AdminHeader/>
+                        <AdminDelivery/>
                     </>
                 }/>
             </Routes>

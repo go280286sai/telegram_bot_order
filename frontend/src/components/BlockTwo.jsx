@@ -85,7 +85,7 @@ export default function BlockTwo() {
                         <button type="button" className="btn-close" onClick={() => setShowAlert(false)}></button>
                     </div>
                 )}
-                <table className="table table-info service">
+                <table className="table table-borderless service">
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
@@ -111,7 +111,7 @@ export default function BlockTwo() {
                                                 data-bs-target={`#collapse${index}`}
                                                 aria-expanded="false"
                                                 aria-controls={`collapse${index}`}>
-                                                Подробнее
+                                                Details
                                             </button>
                                         </h2>
                                         <div
@@ -148,7 +148,7 @@ export default function BlockTwo() {
                         <div className="modal-dialog modal-lg">
                             <div className="modal-content">
                                 <div className="modal-header">
-                                    <h5 className="modal-title" id="cartModalLabel">Ваша корзина</h5>
+                                    <h5 className="modal-title" id="cartModalLabel">Your cart</h5>
                                     <button type="button" className="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                 </div>
@@ -221,16 +221,16 @@ export default function BlockTwo() {
                                 </div>
                                 <div className="modal-footer">
                                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                                        Продолжить покупки
+                                        Continue
                                     </button>
-                                    <a href="/order"><div className="btn btn-success">Оформить заказ</div></a>
+                                    <a href="/order"><div className="btn btn-success">Place an order</div></a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="btn trash" data-bs-toggle="modal" data-bs-target="#cartModal">
-                        <span className="badge text-bg-dark">{cartItems.length}</span><img src={trash} alt="Trash"
+                        <span className="badge text-bg-danger">{cartItems.length}</span><img src={trash} alt="Trash"
                                                                                            title="Trash"/>
                     </div>
                 </div>

@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import Social from "./Social";
-import AboutUs from "./AboutUs";
 import log from "../helps/logs.mjs";
+import Contacts from "./Contacts";
+import GoogleMaps from "./GoogleMaps";
 
-export default function Footer({ setting }) {
+export default function Footer({ settings }) {
     const [info, setInfo] = useState("")
     const [formData, setFormData] = useState({
         email: "",
@@ -37,10 +37,9 @@ export default function Footer({ setting }) {
         <div className={"row block_1"}>
             <div className={"row service"}>
                 <div className={"col-7"}>
-                    <AboutUs/>
+                <GoogleMaps settings={settings}/>
                 </div>
                 <div className={"col-5"}>
-                    <Social settings={setting}/>
                     <form action="" method="post">
                         <div className={"mb-2"}>
                             <label htmlFor="exampleFormControlInput1" className={"form-label"}>Subscriber</label>
@@ -60,7 +59,7 @@ export default function Footer({ setting }) {
                         </div>
                         <strong className={"success"}>{info}</strong>
                     </form>
-
+                    <Contacts settings={settings}/>
                 </div>
             </div>
         </div>

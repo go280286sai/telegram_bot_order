@@ -25,7 +25,7 @@ export default function AboutUs() {
     }, []);
 
     return (
-        <div className="row">
+        <div className="row block_1">
             <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
                     {reviews.length > 0 ? (

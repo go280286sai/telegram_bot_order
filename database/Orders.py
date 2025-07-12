@@ -99,8 +99,8 @@ class OrderManager:
         try:
             query = (select(Order)
                      .join(User, Order.user_id == User.id)
-                     .join(Delivery, Delivery.id == Order.delivery_id)
-                     .where(Order.id == idx))
+                     .join(Delivery, Order.delivery_id == Delivery.id)
+                     .where(Order.user_id == idx))
             orders = await self.session.execute(query)
             result = orders.scalars().all()
             orders_ = [{

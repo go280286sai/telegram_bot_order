@@ -6,3 +6,4 @@ class Product(BaseModel):
     description: str
     price: float
     amount: int
+    service: int
