@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import City
+from database.main import City, Post
 import logging
 from typing import Sequence
 from html import escape
@@ -10,14 +10,15 @@ class CityManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_city(self, name: str) -> City | None:
+    async def create_city(self, name: str, post_id) -> City | None:
         """
         Creates a new city.
         :param name:
+        :param post_id:
         :return:
         """
         try:
-            city_ = City(name=name)
+            city_ = City(name=name, post_id=post_id)
             self.session.add(city_)
             await self.session.commit()
             return city_
@@ -26,16 +27,18 @@ class CityManager:
             logging.exception(e)
             return None
 
-    async def get_city(self, idx: int) -> City | None:
+    async def get_city(self, post_id: int) -> list | None:
         """
         Gets a city.
-        :param idx:
+        :param post_id:
         :return:
         """
         try:
-            query = select(City).where(City.id == idx)
+            query = (select(City)
+                     .join(Post, City.post_id == Post.id)
+                     .where(City.post_id == post_id))
             result = await self.session.execute(query)
-            city_ = result.scalar_one_or_none()
+            city_ = result.scalars().all()
             if city_ is None:
                 return None
             return city_
@@ -45,7 +48,8 @@ class CityManager:
 
     async def update_city(self,
                           idx: int,
-                          name: str
+                          name: str,
+                          post_id: int,
                           ) -> bool:
         """
         Updates a city.
@@ -60,6 +64,7 @@ class CityManager:
             if city_ is None:
                 return False
             city_.name = escape(str(name))
+            city_.post_id = int(post_id)
             await self.session.commit()
             return True
         except Exception as e:

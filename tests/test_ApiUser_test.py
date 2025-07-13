@@ -15,7 +15,7 @@ async def test_create_api_city():
         response = await client.post("/user/register",
                                      json={
                                          "username": "User",
-                                         "password": "qweqqwRerw44",
+                                         "password": "qwertyQWERTY0!",
                                          "email": "admin@admin.ua",
                                          "phone": "+55555555555"
                                      })
@@ -31,7 +31,7 @@ async def test_create_api_city():
                                          "email": "admin1@admin.ua",
                                          "phone": "+55555555555"
                                      })
-        assert response.status_code == 400
+        assert response.status_code == 422
         data = response.json()
         assert data['success'] is False
 
@@ -59,7 +59,7 @@ async def test_login():
         response = await client.post("/user/login",
                                      json={
                                          "username": "User",
-                                         "password": "qweqqwRerw44"
+                                         "password": "qwertyQWERTY0!"
                                      })
         assert response.status_code == 200
         data = response.json()
@@ -67,7 +67,7 @@ async def test_login():
         response = await client.post("/user/login",
                                      json={
                                          "username": "User1",
-                                         "password": "qweqqwRerw44"
+                                         "password": "qwertyQWERTY0!"
                                      })
         assert response.status_code == 400
         data = response.json()

@@ -1,40 +1,52 @@
 import pytest
 from database.Address import AddressManager
 from database.main import async_session_maker, Address
-import pytest_asyncio
 
 
-@pytest_asyncio.fixture
+@pytest.mark.asyncio
 async def test_create_address():
     async with async_session_maker() as session:
         address_manager = AddressManager(session)
+        await address_manager.create_address(
+            name="Address1",
+            city_id=1)
         address = await address_manager.create_address(
-            name="Address")
+            name="Address2",
+            city_id=2)
         assert isinstance(address, Address)
-        return address.id
 
 
-@pytest_asyncio.fixture
-async def test_get_address(test_create_address):
+
+@pytest.mark.asyncio
+async def test_get_address():
     async with async_session_maker() as session:
-        idx = test_create_address
         address_manager = AddressManager(session)
-        query = await address_manager.get_address(int(idx))
-        assert query.name == "Address"
-        return idx
+        addresses = await address_manager.get_address(city_id=1)
+        print(addresses)
+        for address in addresses:
+            assert address.name == "Address1"
+        addresses = await address_manager.get_address(city_id=2)
+        for address in addresses:
+            assert address.name == "Address2"
 
 
-@pytest_asyncio.fixture
-async def test_update_address(test_get_address):
+@pytest.mark.asyncio
+async def test_update_address():
     async with async_session_maker() as session:
-        idx = test_get_address
         address_manager = AddressManager(session)
         address = await address_manager.update_address(
-            idx=int(idx),
-            name="Address1",
+            idx=1,
+            name="Address3",
+            city_id=2
         )
         assert address is True
-        return idx
+        address = await address_manager.update_address(
+            idx=2,
+            name="Address4",
+            city_id=1
+        )
+        assert address is True
+
 
 
 @pytest.mark.asyncio
@@ -43,13 +55,15 @@ async def test_get_addresses():
         address_manager = AddressManager(session)
         addresses = await address_manager.get_addresses()
         for address in addresses:
-            assert address.name == "Address1"
+            assert address.name in ["Address3", "Address4"]
+            assert address.city_id in [1, 2]
 
 
 @pytest.mark.asyncio
-async def test_delete_address(test_get_address):
+async def test_delete_address():
     async with async_session_maker() as session:
-        idx = test_get_address
         address_manager = AddressManager(session)
-        query = await address_manager.delete_address(int(idx))
+        query = await address_manager.delete_address(1)
+        assert query is True
+        query = await address_manager.delete_address(2)
         assert query is True

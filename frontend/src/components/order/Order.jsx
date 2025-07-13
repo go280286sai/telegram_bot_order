@@ -68,7 +68,7 @@ export default function Order() {
                     </div>
                 )}
                 <a href="/">
-                    <div className={"btn btn-dark mt-5"}>Exit</div>
+                    <div className={"btn btn-danger mt-5"}>Exit</div>
                 </a>
             </div>
 

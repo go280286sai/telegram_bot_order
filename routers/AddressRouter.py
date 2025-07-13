@@ -20,7 +20,8 @@ async def create_address(address: Address) -> JSONResponse:
         async with async_session_maker() as session:
             address_manager = AddressManager(session)
             query = await address_manager.create_address(
-                name=address.name
+                name=address.name,
+                city_id=address.city_id
             )
             if query is False:
                 raise Exception("Failed to create address")
@@ -58,6 +59,7 @@ async def update_address(idx: int, address: Address) -> JSONResponse:
             query = await address_manager.update_address(
                 idx=idx,
                 name=address.name,
+                city_id=address.city_id
             )
             if query is False:
                 raise Exception("Failed to update address")
@@ -82,7 +84,47 @@ async def update_address(idx: int, address: Address) -> JSONResponse:
 
 
 @router.get("/gets")
-async def get_address() -> JSONResponse:
+async def get_addresses() -> JSONResponse:
+    """
+    Get addresses
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            address_manager = AddressManager(session)
+            query = await address_manager.get_addresses()
+            if query is None:
+                raise Exception("Failed to get address")
+            address_ = [
+                {
+                    "id": p.id,
+                    "name": p.name,
+                    "city_id": p.city_id
+                } for p in query
+            ]
+
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": {"addresses": address_},
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Failed to fetch address: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed to fetch address"
+            }
+        )
+
+
+@router.get("/get/{city_id}")
+async def get_address(city_id: int) -> JSONResponse:
     """
     Get address
     :return:
@@ -90,7 +132,7 @@ async def get_address() -> JSONResponse:
     try:
         async with async_session_maker() as session:
             address_manager = AddressManager(session)
-            query = await address_manager.get_addresses()
+            query = await address_manager.get_address(int(city_id))
             if query is None:
                 raise Exception("Failed to get address")
             address_ = [

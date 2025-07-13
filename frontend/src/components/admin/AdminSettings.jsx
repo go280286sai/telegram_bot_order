@@ -36,10 +36,16 @@ export default function AdminSettings() {
 
     // Инициализация
     useEffect(() => {
-            new DataTable('#myTable');
         fetchSetting();
     }, []);
-
+    useEffect(() => {
+        if (content.length > 0) {
+            const dtInstance = new DataTable('#myTable');
+            return () => {
+                dtInstance.destroy();
+            };
+        }
+    }, [content]);
     // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
@@ -87,7 +93,7 @@ export default function AdminSettings() {
     return (
         <div className={"row block_1 p-1"}>
 
-            <div className="btn btn-success mb-2"
+            <div className="btn btn-success mb-2 btn_with"
                  data-bs-toggle="modal"
                  data-bs-target="#addSetting">Add item
             </div>

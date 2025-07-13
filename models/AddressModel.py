@@ -6,3 +6,4 @@ class Address(BaseModel):
     Address model
     """
     name: str
+    city_id: int

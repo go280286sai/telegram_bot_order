@@ -34,34 +34,38 @@ class DeliveryManager:
             logging.exception(e)
             return False
 
-    async def get_delivery(self, idx: int) -> dict | None:
+    async def get_delivery(self, post_id: int, city_id: int, address_id: int) -> dict | None:
         """
         Gets a delivery and returns it if it was created.
-        :param idx:
+        :param post_id:
+        :param city_id:
+        :param address_id:
         :return:
         """
         try:
-            query = (select(
-                Delivery,
-                Post.name.label("name"),
-                City.name.label("city"),
-                Address.name.label("address"))
-                     .join(Post, Delivery.post_id == Post.id)
-                     .join(City, Delivery.city_id == City.id)
-                     .join(Address, Delivery.address_id == Address.id)
-                     .where(Delivery.id == idx))
+            query = (
+                select(Post.name.label("name"),
+                       City.name.label("city"),
+                       Address.name.label("address"))
+                .join(City, Post.id == City.post_id)
+                .join(Address, City.id == Address.city_id)
+                .where(Post.id == post_id)
+                .where(City.id == city_id)
+                .where(Address.id == address_id)
+            )
+
             result = await self.session.execute(query)
-            rows = result.one_or_none()
+            rows = result.all()
             if not rows:
                 return None
-            delivery, post_name, city_name, address_name = rows
-            return {
-                "delivery_id": delivery.id,
-                "post_name": post_name,
-                "city_name": city_name,
-                "address_name": address_name
-            }
-
+            return [
+                {
+                    "post_name": post_name,
+                    "city_name": city_name,
+                    "address_name": address_name
+                }
+                for post_name, city_name, address_name in rows
+            ][0]
         except Exception as e:
             logging.exception(e)
             return None
@@ -92,26 +96,25 @@ class DeliveryManager:
         :return:
         """
         try:
-            query = (select(
-                Delivery,
-                Post.name.label("name"),
-                City.name.label("city"),
-                Address.name.label("address"))
-                     .join(Post, Delivery.post_id == Post.id)
-                     .join(City, Delivery.city_id == City.id)
-                     .join(Address, Delivery.address_id == Address.id))
+            query = (
+                select(Post.name.label("name"),
+                       City.name.label("city"),
+                       Address.name.label("address"))
+                .join(City, Post.id == City.post_id)
+                .join(Address, City.id == Address.city_id)
+            )
+
             result = await self.session.execute(query)
             rows = result.all()
             if not rows:
                 return None
             return [
                 {
-                    "delivery_id": delivery.id,
                     "post_name": post_name,
                     "city_name": city_name,
                     "address_name": address_name
                 }
-                for delivery, post_name, city_name, address_name in rows
+                for post_name, city_name, address_name in rows
             ]
         except Exception as e:
             logging.exception(e)

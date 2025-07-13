@@ -24,7 +24,8 @@ async def test_update_product():
             name="ProductNew",
             description="This product is a test 2",
             amount=20,
-            price=12.80
+            price=12.80,
+            service=0
         )
         assert query is True
 
@@ -38,6 +39,7 @@ async def test_get_product():
         assert query.description == "This product is a test 2"
         assert query.amount == 20
         assert query.price == 12.80
+        assert query.service == 0
 
 
 @pytest.mark.asyncio

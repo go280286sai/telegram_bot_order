@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
-import AdminAddSettingModal from "./AdminAddSettingModal";
-import AdminCarouselsModal from "./AdminCarouselsModal";
 import AdminReviewsModal from "./AdminReviewsModal";
 
 export default function AdminReviews() {
@@ -38,10 +36,16 @@ export default function AdminReviews() {
 
     // Инициализация
     useEffect(() => {
-            new DataTable('#myTable');
         fetchReviews();
     }, []);
-
+    useEffect(() => {
+        if (content.length > 0) {
+            const dtInstance = new DataTable('#myTable3');
+            return () => {
+                dtInstance.destroy();
+            };
+        }
+    }, [content]);
     // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
@@ -88,7 +92,7 @@ export default function AdminReviews() {
     return (
         <div className={"row block_1 p-1"}>
 
-            <div className="btn btn-success mb-2"
+            <div className="btn btn-success mb-2 btn_with"
                  data-bs-toggle="modal"
                  data-bs-target="#addReviews">Add item
             </div>

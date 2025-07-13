@@ -44,24 +44,28 @@ root.render(
                 <Route path={"/admin/carousels"} element={
                     <>
                         <AdminHeader/>
+                        <Separation/>
                         <AdminCarousels/>
                     </>
                 }/>
                 <Route path={"/admin/reviews"} element={
                     <>
                         <AdminHeader/>
+                        <Separation/>
                         <AdminReviews/>
                     </>
                 }/>
                 <Route path={"/admin/products"} element={
                     <>
                         <AdminHeader/>
+                        <Separation/>
                         <AdminProducts/>
                     </>
                 }/>
                 <Route path={"/admin/delivery"} element={
                     <>
                         <AdminHeader/>
+                        <Separation/>
                         <AdminDelivery/>
                     </>
                 }/>

@@ -43,7 +43,7 @@ export default function AboutUs() {
                                             src={avatar[item.gender] || man}
                                             alt={`${item.name}'s avatar`}
                                         />
-                                        <div>
+                                        <div className={"about_us_text"}>
                                             <p>{item.text}</p>
                                             <h5>{item.name}</h5>
                                         </div>

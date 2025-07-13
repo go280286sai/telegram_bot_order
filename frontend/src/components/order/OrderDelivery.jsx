@@ -1,33 +1,16 @@
 import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
 import OrderPay from "./OrderPay";
+import OrderDeliveryModal from "./OrderDeliveryModal";
 
 export default function OrderDelivery({total}) {
-    const [deliveries, setDeliveries] = useState([]);
     const [delivery, setDelivery] = useState(null);
     const [statusDelivery, setStatusDelivery] = useState(false);
-    const [formDelivery, setFormDelivery] = useState({id: ""});
 
     useEffect(() => {
         fetchCurrentDelivery();
-        fetchAllDeliveries();
     }, []);
 
-    const fetchAllDeliveries = async () => {
-        try {
-            const res = await fetch("http://localhost:8000/delivery/gets", {
-                method: "GET",
-                credentials: "include",
-                headers: {"Content-Type": "application/json"},
-            });
-            const data = await res.json();
-            if (data.success) {
-                setDeliveries(data.data.deliveries);
-            }
-        } catch (error) {
-            await log("error", "fetchAllDeliveries", error);
-        }
-    };
 
     const fetchCurrentDelivery = async () => {
         try {
@@ -37,34 +20,13 @@ export default function OrderDelivery({total}) {
                 headers: {"Content-Type": "application/json"},
             });
             const data = await res.json();
+            console.log(data)
             if (data.success) {
                 setDelivery(data.data);
                 setStatusDelivery(true);
             }
         } catch (error) {
             await log("error", "fetchCurrentDelivery", error);
-        }
-    };
-
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormDelivery(prev => ({...prev, [name]: value}));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            const res = await fetch(`http://localhost:8000/cart/delivery/create/${formDelivery.id}`, {
-                method: "POST",
-                credentials: "include",
-            });
-            const data = await res.json();
-            if (data.success) {
-                window.location.reload();
-            } else {
-                await log("error", "createDelivery", data);
-            }
-        } catch (error) {
-            await log("error", "createDelivery", error);
         }
     };
 
@@ -90,31 +52,12 @@ export default function OrderDelivery({total}) {
             {!statusDelivery ? (
                 <>
                     <div className="modal-body">
-                        <div className="mb-3">
-                            <label htmlFor="nameDelivery" className="form-label">Add delivery</label>
-                            <select
-                                className="form-select"
-                                id="nameDelivery"
-                                name="id"
-                                value={formDelivery.id}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Select delivery method</option>
-                                {deliveries.map((item, index) => (
-                                    <option key={index} value={item.delivery_id}>
-                                        {item.post_name} {item.city_name} {item.address_name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
                         <div className="modal-footer">
-                            <button
-                                onClick={handleSubmit}
-                                className="btn btn-primary"
-                            >
-                                Add Delivery
-                            </button>
+                            <OrderDeliveryModal/>
+                            <div className="btn btn-success mb-2"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#addDelivery">Add item
+                            </div>
                         </div>
                     </div>
                 </>
@@ -138,23 +81,28 @@ export default function OrderDelivery({total}) {
             )}
 
             {statusDelivery && (
+                <>
                 <input
                     type="button"
                     value="Delete"
                     className="btn btn-danger mb-3"
                     onClick={deleteDelivery}
                 />
+
+                    <OrderPay total={total}/>
+                    <br/>
+                    <input
+                        type="button"
+                        className="btn btn-success mt-3"
+                        value="To pay"
+                        data-bs-toggle="modal"
+                        data-bs-target="#to_pay"
+                    />
+
+</>
             )}
 
-            <OrderPay total={total}/>
-            <br/>
-            <input
-                type="button"
-                className="btn btn-success mt-3"
-                value="To pay"
-                data-bs-toggle="modal"
-                data-bs-target="#to_pay"
-            />
+
 
         </div>
     );

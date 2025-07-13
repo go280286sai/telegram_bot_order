@@ -23,11 +23,11 @@ async def test_create_delivery():
         assert isinstance(post, Post)
 
         city_manager = CityManager(session)
-        city = await city_manager.create_city(name="City")
+        city = await city_manager.create_city(name="City", post_id=1)
         assert isinstance(city, City)
 
         address_manager = AddressManager(session)
-        address = await address_manager.create_address(name="Address")
+        address = await address_manager.create_address(name="Address", city_id=city.id)
         assert isinstance(address, Address)
         return delivery.id
 

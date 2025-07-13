@@ -61,6 +61,7 @@ async def test_update_api_delivery():
                                      },
                                      json={
                                          "name": "City",
+                                         "post_id": 1,
                                      })
         assert response.status_code == 200
         response = await client.post("/address/create",
@@ -69,6 +70,7 @@ async def test_update_api_delivery():
                                      },
                                      json={
                                          "name": "Address",
+                                         "city_id": 1,
                                      })
         assert response.status_code == 200
 

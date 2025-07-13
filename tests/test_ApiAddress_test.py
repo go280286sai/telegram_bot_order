@@ -11,7 +11,7 @@ async def test_create_api_address():
             transport=transport,
             base_url='http://localhost:8000'
     ) as client:
-        response = await client.post("/address/create", json={"name": "test"})
+        response = await client.post("/address/create", json={"name": "test", "city_id": 1})
         assert response.status_code == 200
         data = response.json()
         assert data['success'] is True
@@ -27,7 +27,8 @@ async def test_update_api_address():
     ) as client:
         response = await client.post("/address/update/1",
                                      json={
-                                         "name": "Title2"
+                                         "name": "Title2",
+                                         "city_id": 1,
                                      })
         assert response.status_code == 200
         data = response.json()

@@ -23,6 +23,7 @@ class User(Base):
     status: Mapped[int] = Column(Integer, default=0, nullable=False)
     comments: Mapped[str] = Column(String, nullable=True, default=None)
     hashed_active: Mapped[str] = Column(String, nullable=True)
+    is_admin: Mapped[int] = Column(Integer, default=0, nullable=False)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
 
 
@@ -61,7 +62,14 @@ class City(Base):
     __tablename__ = "cities"
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = Column(String, unique=True)
+    post_id: Mapped[int] = Column(Integer,
+                                  ForeignKey(
+                                      "posts.id",
+                                      onupdate="CASCADE",
+                                      ondelete="CASCADE"
+                                  ), nullable=False)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+    post: Mapped[Post] = relationship("Post", lazy="joined")
 
     def __init__(self, name: str, **kwargs):
         super().__init__(**kwargs)
@@ -72,7 +80,14 @@ class Address(Base):
     __tablename__ = "addresses"
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = Column(String, unique=True)
+    city_id: Mapped[int] = Column(Integer,
+                                  ForeignKey(
+                                      "cities.id",
+                                      onupdate="CASCADE",
+                                      ondelete="CASCADE"
+                                  ), nullable=False)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+    city: Mapped[City] = relationship("City", lazy="joined")
 
     def __init__(self, name: str, **kwargs):
         super().__init__(**kwargs)
@@ -89,7 +104,7 @@ class Delivery(Base):
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     post: Mapped[Post] = relationship("Post", backref="deliveries")
     city: Mapped[City] = relationship("City", backref="deliveries")
-    address: Mapped[Address] = relationship("Address", backref="deliveries")
+    address: Mapped[Address] = relationship("Address", lazy="joined")
 
     def __init__(self, post_id: int, city_id: int, address_id: int, **kwargs):
         super().__init__(**kwargs)
@@ -176,7 +191,7 @@ class Subscriber(Base):
         self.hashed_active = hashed_active
 
 
-class Temlate(Base):
+class Template(Base):
     __tablename__ = "templates"
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     header: Mapped[str] = Column(String, nullable=False)

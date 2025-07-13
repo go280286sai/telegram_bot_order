@@ -38,12 +38,17 @@ export default function AdminCarousels() {
 
     // Инициализация
     useEffect(() => {
-            new DataTable('#myTable');
         fetchCarousels();
     }, []);
 
-    // Обновление значения при вводе
-    const handleChange = (id, field, newValue) => {
+    useEffect(() => {
+        if (content.length > 0) {
+            const dtInstance = new DataTable('#myTable');
+            return () => {
+                dtInstance.destroy();
+            };
+        }
+    }, [content]);    const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
             [id]: {
@@ -89,7 +94,7 @@ export default function AdminCarousels() {
     return (
         <div className={"row block_1 p-1"}>
 
-            <div className="btn btn-success mb-2"
+            <div className="btn btn-success mb-2 btn_with"
                  data-bs-toggle="modal"
                  data-bs-target="#addCarousels">Add item
             </div>

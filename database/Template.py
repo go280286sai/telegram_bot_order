@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Temlate
+from database.main import Template
 import logging
 from typing import Sequence
 from html import escape
@@ -23,7 +23,7 @@ class TemplateManager:
         :return:
         """
         try:
-            email = Temlate(
+            email = Template(
                 header=header,
                 title=title,
                 body=body
@@ -36,14 +36,14 @@ class TemplateManager:
             logging.exception(e)
             return False
 
-    async def get_template(self, idx: int) -> Temlate | None:
+    async def get_template(self, idx: int) -> Template | None:
         """
         Gets a template.
         :param idx:
         :return:
         """
         try:
-            query = select(Temlate).where(Temlate.id == idx)
+            query = select(Template).where(Template.id == idx)
             result = await self.session.execute(query)
             email = result.scalar_one_or_none()
             if email is None:
@@ -53,13 +53,13 @@ class TemplateManager:
             logging.exception(e)
             return None
 
-    async def get_templates(self) -> Sequence[Temlate] | None:
+    async def get_templates(self) -> Sequence[Template] | None:
         """
         Gets all templates.
         :return:
         """
         try:
-            query = select(Temlate)
+            query = select(Template)
             result = await self.session.execute(query)
             templates = result.scalars().all()
             if templates is None:
@@ -84,7 +84,7 @@ class TemplateManager:
         :return:
         """
         try:
-            query = select(Temlate).where(Temlate.id == idx)
+            query = select(Template).where(Template.id == idx)
             result = await self.session.execute(query)
             email = result.scalar_one_or_none()
             if email is None:
@@ -105,7 +105,7 @@ class TemplateManager:
         :return:
         """
         try:
-            query = select(Temlate).where(Temlate.id == idx)
+            query = select(Template).where(Template.id == idx)
             result = await self.session.execute(query)
             email = result.scalar_one_or_none()
             if email is None:

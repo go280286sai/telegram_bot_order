@@ -19,7 +19,8 @@ async def test_create_api_product():
                                          "name": "Title",
                                          "description": "Description",
                                          "price": 28.45,
-                                         "amount": 5
+                                         "amount": 5,
+                                         "service": 0
                                      })
         assert response.status_code == 200
         data = response.json()
@@ -59,7 +60,8 @@ async def test_update_api_product():
                                          "name": "Title2",
                                          "description": "Description2",
                                          "price": 35.45,
-                                         "amount": 10
+                                         "amount": 10,
+                                         "service": 0
                                      })
         assert response.status_code == 200
         data = response.json()

@@ -7,18 +7,24 @@ from database.Deliveries import DeliveryManager
 from helps.help import parse_cart
 from database.Products import ProductManager
 from database.main import async_session_maker
+from models.DeliveryModel import Delivery
 from starlette.responses import JSONResponse
 
 router = APIRouter()
 
 
-@router.post("/delivery/create/{idx}")
-async def set_delivery(idx: int) -> JSONResponse:
+@router.post("/delivery/create")
+async def set_delivery(delivery: Delivery) -> JSONResponse:
     """
     Create a new delivery.
     :return:
     """
     try:
+        data = {
+            "post_id": delivery.post_id,
+            "city_id": delivery.city_id,
+            "address": delivery.address_id
+        }
         response = JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -29,7 +35,7 @@ async def set_delivery(idx: int) -> JSONResponse:
         )
         response.set_cookie(
             key="delivery",
-            value=str(idx),
+            value=json.dumps(data),
             httponly=True)
         return response
     except Exception as e:
@@ -53,8 +59,8 @@ async def get_delivery(request: Request) -> JSONResponse:
     """
     try:
         async with async_session_maker() as session:
-            delivery_id = request.cookies.get("delivery")
-            if delivery_id is None:
+            deliveries = request.cookies.get("delivery")
+            if deliveries is None:
                 return JSONResponse(
                     status_code=status.HTTP_200_OK,
                     content={
@@ -65,9 +71,12 @@ async def get_delivery(request: Request) -> JSONResponse:
                 )
 
             delivery_manager = DeliveryManager(session)
-
-            query = await delivery_manager.get_delivery(idx=int(delivery_id))
-
+            data = json.loads(deliveries)
+            query = await delivery_manager.get_delivery(
+                post_id=data["post_id"],
+                city_id=data["city_id"],
+                address_id=data["address"]
+            )
             if query is None:
                 return JSONResponse(
                     status_code=status.HTTP_200_OK,

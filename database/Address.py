@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Address
+from database.main import Address, City
 import logging
 from typing import Sequence
 from html import escape
@@ -10,14 +10,15 @@ class AddressManager:
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_address(self, name: str) -> Address | None:
+    async def create_address(self, name: str, city_id: int) -> Address | None:
         """
         Creates a new address.
         :param name:
+        :param city_id:
         :return:
         """
         try:
-            address_ = Address(name=name)
+            address_ = Address(name=name, city_id=city_id)
             self.session.add(address_)
             await self.session.commit()
             return address_
@@ -26,16 +27,18 @@ class AddressManager:
             logging.exception(e)
             return None
 
-    async def get_address(self, idx: int) -> Address | None:
+    async def get_address(self, city_id: int) -> list | None:
         """
         Gets address.
-        :param idx:
+        :param city_id:
         :return:
         """
         try:
-            query = select(Address).where(Address.id == idx)
+            query = (select(Address)
+                     .join(City, City.id == Address.city_id)
+                     .where(Address.city_id == city_id))
             result = await self.session.execute(query)
-            address_ = result.scalar_one_or_none()
+            address_ = result.scalars().all()
             if address_ is None:
                 return None
             return address_
@@ -45,12 +48,14 @@ class AddressManager:
 
     async def update_address(self,
                              idx: int,
-                             name: str
+                             name: str,
+                             city_id: int
                              ) -> bool:
         """
         Updates address.
         :param idx:
         :param name:
+        :param city_id:
         :return:
         """
         try:
@@ -60,6 +65,7 @@ class AddressManager:
             if address_ is None:
                 return False
             address_.name = escape(str(name))
+            address_.city_id = int(city_id)
             await self.session.commit()
             return True
         except Exception as e:
