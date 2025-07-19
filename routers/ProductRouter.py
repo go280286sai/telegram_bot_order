@@ -25,7 +25,7 @@ async def product_create(item: Product) -> JSONResponse:
                 price=item.price,
                 amount=item.amount
             )
-            if query is False:
+            if query is None:
                 raise Exception("Error creating product")
 
             return JSONResponse(

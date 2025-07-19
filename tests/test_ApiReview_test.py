@@ -47,6 +47,34 @@ async def test_update_api_review():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/review/update/1",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "name": "Author2",
+                                         "text": "Description2",
+                                         "gender": 5
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
+        response = await client.post("/review/update/0",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "name": "Author2",
+                                         "text": "Description2",
+                                         "gender": 0
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -79,3 +107,5 @@ async def test_delete_api_review():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/review/delete/1")
+        assert response.status_code == 400

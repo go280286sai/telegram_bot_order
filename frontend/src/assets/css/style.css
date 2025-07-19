@@ -433,4 +433,8 @@ body {
 .about_us_text h5 {
   color: #d3640a;
 }
+.img_predict {
+  width: 100%;
+  margin: 1%;
+}
 /*# sourceMappingURL=style.css.map */

@@ -21,6 +21,8 @@ class ProductManager:
         :return:
         """
         try:
+            if amount < 0 or price < 0:
+                return None
             name = escape(str(name))
             description = escape(str(description))
             amount = int(amount)
@@ -65,7 +67,9 @@ class ProductManager:
         :return:
         """
         try:
-            query = select(Product).where(Product.id == idx)
+            if amount < 0 or price < 0:
+                raise ValueError
+            query = select(Product).where(Product.id == int(idx))
             result = await self.session.execute(query)
             product = result.scalar_one_or_none()
             if product is None:

@@ -6,7 +6,9 @@ from database.main import async_session_maker
 from helps.emails import register_user_confirm, confirm_email, send_emails
 from helps.help import is_valid_email, generate_transaction, validate_password
 from models.RecoveryModel import Recovery
-from models.UserModel import User, Login, UpdateUser
+from models.TemplateModel import Template
+from models.UserModel import User, Login, UpdateUser, UpdateUsers, AddName
+from helps.Middleware import is_admin
 
 router = APIRouter()
 
@@ -79,18 +81,17 @@ async def is_auth(request: Request) -> JSONResponse:
     :return:
     """
     try:
-        user_id = request.cookies.get("user_id")
-        if user_id is None:
-            return JSONResponse(
-                status_code=status.HTTP_200_OK,
-                content={
-                    "success": True,
-                    "data": None,
-                    "error": None
-                }
-            )
-
         async with async_session_maker() as session:
+            user_id = request.cookies.get("user_id")
+            if user_id is None:
+                return JSONResponse(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    content={
+                        "success": False,
+                        "data": None,
+                        "error": "User is not authenticated"
+                    }
+                )
             user_manager = UserManager(session)
             user = await user_manager.get_user(int(user_id))
             if user:
@@ -99,7 +100,10 @@ async def is_auth(request: Request) -> JSONResponse:
                     "username": user.username,
                     "email": user.email,
                     "phone": user.phone,
-                    "status": user.status
+                    "status": user.status,
+                    "is_admin": user.is_admin,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name
                 }
                 return JSONResponse(
                     status_code=status.HTTP_200_OK,
@@ -111,11 +115,11 @@ async def is_auth(request: Request) -> JSONResponse:
                 )
             else:
                 return JSONResponse(
-                    status_code=status.HTTP_200_OK,
+                    status_code=status.HTTP_403_FORBIDDEN,
                     content={
-                        "success": True,
+                        "success": False,
                         "data": None,
-                        "error": None
+                        "error": "User not found"
                     }
                 )
 
@@ -239,14 +243,58 @@ async def update_profile(user: UpdateUser) -> JSONResponse:
         )
 
 
+@router.post("/add_contact_profile")
+async def add_contact_profile(user: AddName) -> JSONResponse:
+    """
+    Update profile first name and last name.
+    :param user:
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            result = await user_manager.update_user_name(
+                idx=user.idx,
+                first_name=user.first_name,
+                last_name=user.last_name
+            )
+            if not result:
+                raise Exception("User does not exist")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": True,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Profile update failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": False,
+                "error": "Failed to update user"
+            }
+        )
+
+
 @router.post("/delete/{idx}")
-async def user_delete(idx: int) -> JSONResponse:
+async def user_delete(idx: int, request: Request) -> JSONResponse:
     """
     Delete user's data.'
+    :param request:
     :param idx:
     :return:
     """
     try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
         async with async_session_maker() as session:
             user_manager = UserManager(session)
             await user_manager.delete_user(idx)
@@ -342,5 +390,278 @@ async def recovery(recovery_: Recovery) -> JSONResponse:
                 "success": False,
                 "data": None,
                 "error": "Invalid email"
+            }
+        )
+
+
+@router.post("/gets")
+async def gets_users(request: Request) -> JSONResponse:
+    """
+    Get all user's data.'
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            users = await user_manager.get_users()
+            if users is None:
+                raise Exception("Fetching users failed")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": {"users": users},
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Fetching users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Fetching users failed"
+            }
+        )
+
+
+@router.post("/update")
+async def update_users(users_: UpdateUsers, request: Request) -> JSONResponse:
+    """
+    Update users
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            users = await user_manager.update_users(
+                idx=int(user_id),
+                username=users_.username,
+                email=users_.email,
+                phone=users_.phone,
+                comments="" if len(users_.comments) == 0 else users_.comments,
+                first_name=users_.first_name,
+                last_name=users_.last_name,
+            )
+            if users is False:
+                raise Exception("Fetching users failed")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Fetching users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Fetching users failed"
+            }
+        )
+
+
+@router.post("/set_status/{idx}/{stat}")
+async def set_status_user(
+        idx: int,
+        stat: int,
+        request: Request
+) -> JSONResponse:
+    """
+    Set status users
+    :param idx:
+    :param stat:
+    :param request:
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            users = await user_manager.set_status(
+                user_id=int(idx),
+                status=int(stat),
+            )
+            if users is None or users is False:
+                raise Exception("Fetching users failed")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Fetching users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Fetching users failed"
+            }
+        )
+
+
+@router.post("/set_status_admin/{idx}/{stat}")
+async def set_status_admin(
+        idx: int,
+        stat: int,
+        request: Request
+) -> JSONResponse:
+    """
+    Set status users
+    :param idx:
+    :param stat:
+    :param request:
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            users = await user_manager.set_admin(
+                user_id=int(idx),
+                status=int(stat),
+            )
+            if users is None or users is False:
+                raise Exception("Fetching users failed")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Fetching users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Fetching users failed"
+            }
+        )
+
+
+@router.post("/send_email/{idx}/{email}")
+async def send_email_user(
+        tmp: Template,
+        idx: int,
+        email: str,
+        request: Request
+) -> JSONResponse:
+    """
+    Send email
+    :param tmp:
+    :param idx:
+    :param request:
+    :param email:
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        await send_emails(
+            header=tmp.header,
+            title=tmp.title,
+            body=tmp.body,
+            idx=int(idx),
+            email=email,
+            hash_active="",
+            footer=False
+        )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "success": True,
+                "data": None,
+                "error": None
+            }
+        )
+    except Exception as e:
+        logging.exception(f"Fetching users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Fetching users failed"
+            }
+        )
+
+
+@router.post("/delete/{idx}")
+async def user_delete_id(idx: int, request: Request) -> JSONResponse:
+    """
+    Set status users
+    :param idx:
+    :param request:
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            users = await user_manager.delete_user(
+                idx=int(idx)
+            )
+            if users is False:
+                raise Exception("Deleting users failed")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Deleting users failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_403_FORBIDDEN,
+            content={
+                "success": False,
+                "data": None,
+                "error": str(e)
             }
         )

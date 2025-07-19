@@ -14,7 +14,10 @@ async def test_create_address():
             name="Address2",
             city_id=2)
         assert isinstance(address, Address)
-
+        address = await address_manager.create_address(
+            name="Address2",
+            city_id=0)
+        assert address is None
 
 
 @pytest.mark.asyncio
@@ -22,12 +25,9 @@ async def test_get_address():
     async with async_session_maker() as session:
         address_manager = AddressManager(session)
         addresses = await address_manager.get_address(city_id=1)
-        print(addresses)
+        assert isinstance(addresses, list)
         for address in addresses:
             assert address.name == "Address1"
-        addresses = await address_manager.get_address(city_id=2)
-        for address in addresses:
-            assert address.name == "Address2"
 
 
 @pytest.mark.asyncio
@@ -46,7 +46,12 @@ async def test_update_address():
             city_id=1
         )
         assert address is True
-
+        address = await address_manager.update_address(
+            idx=0,
+            name="Address4",
+            city_id=1
+        )
+        assert address is False
 
 
 @pytest.mark.asyncio

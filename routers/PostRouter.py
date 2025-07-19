@@ -39,7 +39,7 @@ async def create_post(post_: Post) -> JSONResponse:
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to create post"
+                "error": str(e)
             }
         )
 

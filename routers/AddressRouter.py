@@ -23,7 +23,7 @@ async def create_address(address: Address) -> JSONResponse:
                 name=address.name,
                 city_id=address.city_id
             )
-            if query is False:
+            if query is None:
                 raise Exception("Failed to create address")
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
@@ -34,13 +34,13 @@ async def create_address(address: Address) -> JSONResponse:
                 }
             )
     except Exception as e:
-        logging.exception(e)
+        logging.exception(str(e))
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to create address"
+                "error": str(e)
             }
         )
 
@@ -72,13 +72,13 @@ async def update_address(idx: int, address: Address) -> JSONResponse:
                 }
             )
     except Exception as e:
-        logging.exception(e)
+        logging.exception(str(e))
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to update address"
+                "error": str(e)
             }
         )
 
@@ -112,13 +112,13 @@ async def get_addresses() -> JSONResponse:
                 }
             )
     except Exception as e:
-        logging.exception(f"Failed to fetch address: {e}")
+        logging.exception(str(e))
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch address"
+                "error": str(e)
             }
         )
 
@@ -134,7 +134,7 @@ async def get_address(city_id: int) -> JSONResponse:
             address_manager = AddressManager(session)
             query = await address_manager.get_address(int(city_id))
             if query is None:
-                raise Exception("Failed to get address")
+                raise Exception("Failed to fetch address")
             address_ = [
                 {
                     "id": p.id,
@@ -151,7 +151,7 @@ async def get_address(city_id: int) -> JSONResponse:
                 }
             )
     except Exception as e:
-        logging.exception(f"Failed to fetch address: {e}")
+        logging.exception(str(e))
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={

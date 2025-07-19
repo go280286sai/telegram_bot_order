@@ -1,13 +1,21 @@
 import React from "react";
 
-export default function OrderUser({ user }){
-    return(
+export default function OrderUser({user}) {
+    return (
         <div className={"col-8"}>
             <table className={"table table-dark"}>
                 <tbody>
                 <tr>
                     <th>Username</th>
                     <td>{user.username}</td>
+                </tr>
+                <tr>
+                    <th>First name</th>
+                    <td>{user.first_name}</td>
+                </tr>
+                <tr>
+                    <th>Last name</th>
+                    <td>{user.last_name}</td>
                 </tr>
                 <tr>
                     <th>Email</th>

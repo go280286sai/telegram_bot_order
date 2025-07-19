@@ -15,6 +15,10 @@ async def test_create_city():
             name="City2",
             post_id=2)
         assert isinstance(query, City)
+        query = await city_manager.create_city(
+            name="City3",
+            post_id=0)
+        assert query is None
 
 
 @pytest.mark.asyncio
@@ -27,6 +31,8 @@ async def test_get_city():
         query = await city_manager.get_city(2)
         for city in query:
             assert city.name == "City2"
+        query = await city_manager.get_city(3)
+        assert isinstance(query, list)
 
 
 @pytest.mark.asyncio
@@ -45,6 +51,18 @@ async def test_update_city():
             post_id=1
         )
         assert city is True
+        city = await city_manager.update_city(
+            idx=0,
+            name="City4",
+            post_id=1
+        )
+        assert city is False
+        city = await city_manager.update_city(
+            idx=2,
+            name="City4",
+            post_id=0
+        )
+        assert city is False
 
 
 @pytest.mark.asyncio

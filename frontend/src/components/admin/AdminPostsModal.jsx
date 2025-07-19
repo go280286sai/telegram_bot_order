@@ -3,7 +3,7 @@ import log from "../../helps/logs.mjs";
 
 export default function AdminPostsModal(){
     const [formData, setFormData] = useState({
-        name: "",
+        name: ""
     });
     const handleChange = (e) => {
         const {name, value} = e.target;

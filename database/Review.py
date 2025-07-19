@@ -23,6 +23,8 @@ class ReviewManager:
             name = escape(str(name))
             text = escape(str(text))
             gender = int(gender)
+            if gender not in (0, 1):
+                raise ValueError
             review_ = Review(name=name, text=text, gender=gender)
             self.session.add(review_)
             await self.session.commit()
@@ -47,7 +49,9 @@ class ReviewManager:
         :return:
         """
         try:
-            query = select(Review).where(Review.id == idx)
+            if gender not in (0, 1):
+                raise ValueError
+            query = select(Review).where(Review.id == int(idx))
             result = await self.session.execute(query)
             review = result.scalar_one_or_none()
             if review is None:

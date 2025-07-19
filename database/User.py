@@ -1,4 +1,3 @@
-from typing import Sequence
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from html import escape
@@ -66,6 +65,73 @@ class UserManager:
             logging.exception(e)
             return False
 
+    async def update_user_name(
+            self,
+            idx: int,
+            first_name: str,
+            last_name: str
+    ) -> bool | User:
+        """
+        Update a user
+        :param last_name:
+        :param first_name:
+        :param idx:
+        :return:
+        """
+        try:
+            query = select(User).where(User.id == idx)
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user is None:
+                return False
+            user.first_name = escape(first_name)
+            user.last_name = escape(last_name)
+            await self.session.commit()
+            return user
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def update_users(
+            self, idx: int,
+            username: str,
+            email: str,
+            phone: str,
+            comments: str,
+            first_name: str,
+            last_name: str
+    ) -> bool:
+        """
+        Update a user
+        :param last_name:
+        :param first_name:
+        :param idx:
+        :param username:
+        :param email:
+        :param phone:
+        :param comments:
+        :return:
+        """
+        try:
+            query = select(User).where(User.id == idx)
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user is None:
+                return False
+            user.username = escape(username)
+            user.email = escape(email)
+            user.phone = escape(phone)
+            user.comments = escape(comments)
+            user.first_name = escape(first_name)
+            user.last_name = escape(last_name)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
     async def set_status(self, user_id: int, status: int) -> bool:
         """
         Change status of a user
@@ -81,6 +147,27 @@ class UserManager:
                 return False
             user.status = status
             user.hashed_active = ""
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def set_admin(self, user_id: int, status: int) -> bool:
+        """
+        Change status of a user
+        :param user_id:
+        :param status:
+        :return:
+        """
+        try:
+            query = select(User).where(User.id == user_id)
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user is None:
+                return False
+            user.is_admin = status
             await self.session.commit()
             return True
         except Exception as e:
@@ -137,7 +224,7 @@ class UserManager:
         :return:
         """
         try:
-            query = select(User).where(User.id == idx)
+            query = select(User).where(User.id == int(idx))
             result = await self.session.execute(query)
             user = result.scalar_one_or_none()
             if user is None:
@@ -147,7 +234,7 @@ class UserManager:
             logging.exception(e)
             return None
 
-    async def get_users(self) -> Sequence[User] | None:
+    async def get_users(self) -> list | None:
         """
         Get all users
         :return:
@@ -155,7 +242,24 @@ class UserManager:
         try:
             query = select(User)
             result = await self.session.execute(query)
-            return result.scalars().all()
+            users = result.scalars().all()
+            if users is None:
+                return None
+            users_ = [
+                {
+                    "id": p.id,
+                    "username": p.username,
+                    "email": p.email,
+                    "phone": p.phone,
+                    "status": p.status,
+                    "comments": p.comments,
+                    "is_admin": p.is_admin,
+                    "first_name": p.first_name,
+                    "last_name": p.last_name,
+                    "created_at": p.created_at.strftime("%d-%m-%Y"),
+                } for p in users
+            ]
+            return users_
         except Exception as e:
             logging.exception(e)
             return None

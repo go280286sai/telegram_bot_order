@@ -25,3 +25,18 @@ class Login(BaseModel):
     """
     username: str
     password: str
+
+
+class UpdateUsers(BaseModel):
+    username: str
+    email: str
+    phone: str
+    comments: str
+    first_name: str
+    last_name: str
+
+
+class AddName(BaseModel):
+    idx: int
+    first_name: str
+    last_name: str

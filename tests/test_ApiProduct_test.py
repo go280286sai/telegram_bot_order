@@ -27,6 +27,38 @@ async def test_create_api_product():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/product/create",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "name": "Title",
+                                         "description": "Description",
+                                         "price": -28.45,
+                                         "amount": 5,
+                                         "service": 0
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
+        response = await client.post("/product/create",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "name": "Title",
+                                         "description": "Description",
+                                         "price": 28.45,
+                                         "amount": -5,
+                                         "service": 0
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -44,6 +76,12 @@ async def test_get_api_product():
         assert data['data']['products'][0]["price"] == 28.45
         assert data['data']['products'][0]["amount"] == 5
         assert data['error'] is None
+        response = await client.post("/product/product/0")
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -68,6 +106,22 @@ async def test_update_api_product():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/product/update/0",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "name": "Title2",
+                                         "description": "Description2",
+                                         "price": 35.45,
+                                         "amount": 10,
+                                         "service": 0
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -102,3 +156,5 @@ async def test_delete_api_product():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/product/delete/1")
+        assert response.status_code == 400

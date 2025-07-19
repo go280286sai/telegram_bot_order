@@ -20,7 +20,7 @@ function App() {
     let address = "";
     let map = "";
     useEffect(() => {
-        const fetchUser = async () => {
+        const fetchSettings = async () => {
             try {
                 const response = await fetch("http://localhost:8000/setting/gets", {
                     method: "GET",
@@ -76,7 +76,7 @@ function App() {
                 await log("error", "is_auth", error);
             }
         };
-        fetchUser();
+        fetchSettings();
     }, []);
     return (
         <>

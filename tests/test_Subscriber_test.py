@@ -36,6 +36,11 @@ async def test_set_active_subscriber():
             hash_active=hash_val
         )
         assert query is True
+        query = await subscribe_manager.set_active_subscriber(
+            idx=0,
+            hash_active=hash_val
+        )
+        assert query is False
 
 
 @pytest.mark.asyncio
@@ -59,6 +64,11 @@ async def test_set_destroy_subscriber():
             hash_destroy=destroy
         )
         assert query is True
+        query = await subscribe_manager.set_destroy_subscriber(
+            idx=0,
+            hash_destroy=destroy
+        )
+        assert query is False
 
 
 @pytest.mark.asyncio

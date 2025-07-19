@@ -20,7 +20,6 @@ export default function OrderDelivery({total}) {
                 headers: {"Content-Type": "application/json"},
             });
             const data = await res.json();
-            console.log(data)
             if (data.success) {
                 setDelivery(data.data);
                 setStatusDelivery(true);
@@ -56,7 +55,7 @@ export default function OrderDelivery({total}) {
                             <OrderDeliveryModal/>
                             <div className="btn btn-success mb-2"
                                  data-bs-toggle="modal"
-                                 data-bs-target="#addDelivery">Add item
+                                 data-bs-target="#addDelivery">Add delivery
                             </div>
                         </div>
                     </div>

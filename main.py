@@ -3,8 +3,8 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from routers import CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter, \
-    DeliveryRouter, PostRouter, CityRouter, AddressRouter, SubscriberRouter, TemplateRouter, SettingRouter
+from routers import (CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter,
+                     PostRouter, CityRouter, AddressRouter, SubscriberRouter, TemplateRouter, SettingRouter)
 from database.main import engine, Base
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
@@ -52,7 +52,6 @@ app.include_router(ReviewRouter.router, prefix="/review", tags=["Reviews"])
 app.include_router(PostRouter.router, prefix="/post", tags=["Posts"])
 app.include_router(CityRouter.router, prefix="/city", tags=["Cities"])
 app.include_router(AddressRouter.router, prefix="/address", tags=["Addresses"])
-app.include_router(DeliveryRouter.router, prefix="/delivery", tags=["Deliveries"])
 app.include_router(SubscriberRouter.router, prefix="/subscriber", tags=["Subscribers"])
 app.include_router(TemplateRouter.router, prefix="/template", tags=["Templates"])
 app.include_router(SettingRouter.router, prefix="/setting", tags=["Settings"])

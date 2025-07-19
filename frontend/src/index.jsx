@@ -19,6 +19,10 @@ import AdminCarousels from "./components/admin/AdminCarousels";
 import AdminReviews from "./components/admin/AdminReviews";
 import AdminProducts from "./components/admin/AdminProducts";
 import AdminDelivery from "./components/admin/AdminDelivery";
+import AdminUsers from "./components/admin/AdminUsers";
+import AdminOrders from "./components/admin/AdminOrders";
+import AdminMail from "./components/admin/AdminMail";
+import AdminPredict from "./components/admin/AdminPredict";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -67,6 +71,34 @@ root.render(
                         <AdminHeader/>
                         <Separation/>
                         <AdminDelivery/>
+                    </>
+                }/>
+                <Route path={"/admin/users"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminUsers/>
+                    </>
+                }/>
+                <Route path={"/admin/orders"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminOrders/>
+                    </>
+                }/>
+                <Route path={"/admin/mailing"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminMail/>
+                    </>
+                }/>
+                <Route path={"/admin/predict"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminPredict/>
                     </>
                 }/>
             </Routes>

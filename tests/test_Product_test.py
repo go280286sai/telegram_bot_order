@@ -13,6 +13,18 @@ async def test_create_product():
             amount=10,
             price=10.50)
         assert isinstance(product, Product)
+        product = await product_manager.create_product(
+            name="Product",
+            description="This product is a test",
+            amount=-5,
+            price=10.50)
+        assert product is None
+        product = await product_manager.create_product(
+            name="Product",
+            description="This product is a test",
+            amount=5,
+            price=-10.50)
+        assert product is None
 
 
 @pytest.mark.asyncio
@@ -28,6 +40,33 @@ async def test_update_product():
             service=0
         )
         assert query is True
+        query = await product_manager.update_product(
+            idx=0,
+            name="ProductNew",
+            description="This product is a test 2",
+            amount=20,
+            price=12.80,
+            service=0
+        )
+        assert query is False
+        query = await product_manager.update_product(
+            idx=1,
+            name="ProductNew",
+            description="This product is a test 2",
+            amount=-20,
+            price=12.80,
+            service=0
+        )
+        assert query is False
+        query = await product_manager.update_product(
+            idx=1,
+            name="ProductNew",
+            description="This product is a test 2",
+            amount=20,
+            price=-12.80,
+            service=0
+        )
+        assert query is False
 
 
 @pytest.mark.asyncio
@@ -40,6 +79,8 @@ async def test_get_product():
         assert query.amount == 20
         assert query.price == 12.80
         assert query.service == 0
+        query = await product_manager.get_product(0)
+        assert query is None
 
 
 @pytest.mark.asyncio
@@ -60,3 +101,5 @@ async def test_delete_product():
         product_manager = ProductManager(session)
         query = await product_manager.delete_product(1)
         assert query is True
+        query = await product_manager.delete_product(1)
+        assert query is False

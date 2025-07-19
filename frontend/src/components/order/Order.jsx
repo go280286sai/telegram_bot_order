@@ -29,7 +29,11 @@ export default function Order() {
                     }
                 });
                 const data = await response.json();
-                if (data.data) {
+                if (data['success']) {
+                    if (data.data.first_name === null || data.data.last_name === null){
+                        alert("The name or surname cannot be empty. Edit profile");
+                        window.location.replace("/");
+                    }
                     setUser(data.data);
                     if(data.data.status){
                         setStatusUser(true);

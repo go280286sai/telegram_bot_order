@@ -41,6 +41,12 @@ async def test_get_api_template():
         assert data['data']['templates'][0]["title"] == "Title"
         assert data['data']['templates'][0]["body"] == "Body"
         assert data['error'] is None
+        response = await client.post("/template/get/0")
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -63,6 +69,20 @@ async def test_update_api_template():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/template/update/0",
+                                     headers={
+                                         "Content-Type": "application/json"
+                                     },
+                                     json={
+                                         "header": "Header2",
+                                         "title": "Title2",
+                                         "body": "Body2"
+                                     })
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -93,9 +113,11 @@ async def test_delete_api_template():
         data = response.json()
         assert data['success'] is True
         for item in data['data']['templates']:
-            response = await client.post(f"/template/delete/{item['id']}",)
+            response = await client.post(f"/template/delete/{item['id']}")
             assert response.status_code == 200
             data = response.json()
             assert data['success'] is True
             assert data['data'] is None
             assert data['error'] is None
+            response = await client.post(f"/template/delete/{item['id']}")
+            assert response.status_code == 400

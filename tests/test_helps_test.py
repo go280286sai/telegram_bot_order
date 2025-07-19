@@ -112,3 +112,14 @@ async def test_send_email(monkeypatch):
 async def test_confirm_email(monkeypatch):
     result = await confirm_email()
     assert isinstance(result, HTMLResponse)
+
+
+@pytest.mark.asyncio
+async def test_get_predict(monkeypatch):
+    def mock_build(self, data):
+        return []
+
+    from helps.predict import Predict
+    monkeypatch.setattr(Predict, "build", mock_build)
+    obj = Predict(7)
+    assert obj.build([1, 2, 3]) == []

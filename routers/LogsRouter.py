@@ -14,7 +14,11 @@ async def logs(log: Logs):
     """
     try:
         logging.info(f"{log.level} - {log.name} - {log.message}")
-        return {"success": True, "data": None, "error": None}
+        return {
+            "success": True,
+            "data": None,
+            "error": None
+        }
     except Exception as e:
         logging.exception("Exception occurred")
         return {

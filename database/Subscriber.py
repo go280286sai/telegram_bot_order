@@ -39,6 +39,8 @@ class SubscriberManager:
         :return:
         """
         try:
+            if idx <= 0:
+                return False
             idx = int(idx)
             hash_active = escape(hash_active)
             query = select(Subscriber).where(Subscriber.id == idx)
@@ -68,6 +70,8 @@ class SubscriberManager:
         :return:
         """
         try:
+            if idx <= 0:
+                return False
             idx = int(idx)
             query = select(Subscriber).where(Subscriber.id == idx)
             result = await self.session.execute(query)

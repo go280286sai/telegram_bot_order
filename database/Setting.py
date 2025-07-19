@@ -18,6 +18,8 @@ class SettingManager:
         :return:
         """
         try:
+            name = escape(name)
+            value = escape(value)
             setting_ = Setting(name=name, value=value)
             self.session.add(setting_)
             await self.session.commit()
@@ -34,7 +36,7 @@ class SettingManager:
         :return:
         """
         try:
-            query = select(Setting).where(Setting.id == idx)
+            query = select(Setting).where(Setting.id == int(idx))
             result = await self.session.execute(query)
             setting_ = result.scalar_one_or_none()
             if setting_ is None:
@@ -57,7 +59,9 @@ class SettingManager:
         :return:
         """
         try:
-            query = select(Setting).where(Setting.id == idx)
+            name = escape(name)
+            value = escape(value)
+            query = select(Setting).where(Setting.id == int(idx))
             result = await self.session.execute(query)
             setting_ = result.scalar_one_or_none()
             if setting_ is None:

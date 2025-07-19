@@ -4,6 +4,7 @@ from helps.help import hash_password, generate_transaction
 import pytest
 from database.User import UserManager
 from database.main import async_session_maker, User
+from helps.Middleware import is_admin
 
 
 @pytest.mark.asyncio
@@ -21,10 +22,18 @@ async def test_create_user():
 
 
 @pytest.mark.asyncio
+async def test_is_admin():
+    user = await is_admin(1)
+    assert isinstance(user, bool)
+    assert user is False
+
+
+@pytest.mark.asyncio
 async def test_update_user():
     async with async_session_maker() as session:
         user_manager = UserManager(session)
         user = await user_manager.update_user(idx=1, password="0000")
+        await user_manager.set_admin(user_id=1, status=1)
         assert user is not False
         assert user.password == hash_password('0000')
 
@@ -54,13 +63,14 @@ async def test_resset_password():
         return user
 
 
-@pytest_asyncio.fixture()
+@pytest_asyncio.fixture
 async def test_get_user(test_resset_password):
     async with async_session_maker() as session:
         password = str(test_resset_password)
         user_manager = UserManager(session)
         query = await user_manager.get_user(1)
-        assert query.username == "Alex"
+        assert isinstance(query, User)
+        assert query.username is not None
         assert query.email is not None
         assert query.phone == "8000000000"
         assert query.status == 0
@@ -75,7 +85,7 @@ async def test_get_users():
         user_manager = UserManager(session)
         users = await user_manager.get_users()
         for user in users:
-            assert user.username == "Alex"
+            assert user['username'] == "Alex"
 
 
 @pytest.mark.asyncio
@@ -121,5 +131,5 @@ async def test_delete_user(test_get_user):
             password=password
         )
         assert query.username == "Alex"
-        user_ = await user_manager.delete_user(1)
+        user_ = await user_manager.delete_user(query.id)
         assert user_ is True

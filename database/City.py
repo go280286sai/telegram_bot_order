@@ -1,8 +1,9 @@
+from sqlalchemy import Row, RowMapping
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import City, Post
 import logging
-from typing import Sequence
+from typing import Sequence, Any
 from html import escape
 
 
@@ -18,6 +19,8 @@ class CityManager:
         :return:
         """
         try:
+            if post_id <= 0:
+                return None
             city_ = City(name=name, post_id=post_id)
             self.session.add(city_)
             await self.session.commit()
@@ -27,16 +30,21 @@ class CityManager:
             logging.exception(e)
             return None
 
-    async def get_city(self, post_id: int) -> list | None:
+    async def get_city(
+            self,
+            post_id: int
+    ) -> Sequence[Row[Any] | RowMapping | Any] | None:
         """
         Gets a city.
         :param post_id:
         :return:
         """
         try:
+            if post_id <= 0:
+                return None
             query = (select(City)
                      .join(Post, City.post_id == Post.id)
-                     .where(City.post_id == post_id))
+                     .where(City.post_id == int(post_id)))
             result = await self.session.execute(query)
             city_ = result.scalars().all()
             if city_ is None:
@@ -53,11 +61,14 @@ class CityManager:
                           ) -> bool:
         """
         Updates a city.
+        :param post_id:
         :param idx:
         :param name:
         :return:
         """
         try:
+            if post_id <= 0 or idx <= 0:
+                return False
             query = select(City).where(City.id == idx)
             result = await self.session.execute(query)
             city_ = result.scalar_one_or_none()

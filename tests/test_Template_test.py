@@ -26,6 +26,13 @@ async def test_update_template():
             body="Here is some body2"
         )
         assert query is True
+        query = await tmp_manager.update_template(
+            idx=0,
+            header="Very cool template2",
+            title="Very impotent template2",
+            body="Here is some body2"
+        )
+        assert query is False
 
 
 @pytest.mark.asyncio
@@ -36,6 +43,8 @@ async def test_get_template():
         assert query.header == "Very cool template2"
         assert query.title == "Very impotent template2"
         assert query.body == "Here is some body2"
+        query = await tmp_manager.get_template(0)
+        assert query is None
 
 
 @pytest.mark.asyncio

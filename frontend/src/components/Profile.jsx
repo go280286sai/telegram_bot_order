@@ -1,16 +1,25 @@
 import React, {useState, useEffect} from "react";
 import log from "../helps/logs.mjs";
+
 export default function Profile(props) {
     const [orders, setOrders] = useState([]);
     const [formData, setFormData] = useState({
         password: "",
         confirmPassword: ""
     });
+
+    const [formDataUser, setFormDataUser] = useState({
+        first_name: "",
+        last_name: ""
+    });
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-
+    const handleChangeUser = (e) => {
+        const {name, value} = e.target;
+        setFormDataUser(prev => ({...prev, [name]: value}));
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -48,6 +57,39 @@ export default function Profile(props) {
             });
     };
 
+    const handleSubmitUser = (e) => {
+        e.preventDefault();
+
+        if (formDataUser.first_name.length===0 || formDataUser.last_name.length===0) {
+            alert("First name or last name not is empty");
+            return;
+        }
+        fetch("http://localhost:8000/user/add_contact_profile", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                idx: props.user.id,
+                first_name: formDataUser.first_name,
+                last_name: formDataUser.last_name
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.data) {
+                    alert("Profile is update")
+                    window.location.reload();
+                } else {
+                    alert("Error update profile");
+                    log("error", "Error update profile", data)
+                }
+            })
+            .catch(err => {
+                log("error", "Error update profile", err)
+            });
+    };
 
     const fetchUser = async () => {
         try {
@@ -92,6 +134,14 @@ export default function Profile(props) {
                                         <td>{props.user.username}</td>
                                     </tr>
                                     <tr>
+                                        <th>First name</th>
+                                        <td>{props.user.first_name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last name</th>
+                                        <td>{props.user.last_name}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Email</th>
                                         <td>{props.user.email}</td>
                                     </tr>
@@ -123,6 +173,23 @@ export default function Profile(props) {
 
                                 </table>
                                 <button onClick={fetchUser} className={"btn btn-danger"}>Update</button>
+
+
+                                <div className={"form-style"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="first_name" className="form-label">First name</label>
+                                        <input type="text" className="form-control" id="first_name" name="first_name"
+                                               value={formDataUser.first_name} onChange={handleChangeUser}/>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="last_name" className="form-label">Last name</label>
+                                        <input type="text" className="form-control" id="last_name"
+                                               name="last_name"
+                                               value={formDataUser.last_name} onChange={handleChangeUser}/>
+                                    </div>
+                                </div>
+                                <button type="submit" className="btn btn-success" onClick={handleSubmitUser}>Save</button>
+
                                 <div className={"form-style"}>
                                     <div className="mb-3">
                                         <label htmlFor="password" className="form-label">New password</label>
@@ -136,7 +203,6 @@ export default function Profile(props) {
                                                value={formData.confirmPassword} onChange={handleChange}/>
                                     </div>
                                 </div>
-
                                 <button type="submit" className="btn btn-success" onClick={handleSubmit}>Save</button>
                             </>
                         ) : (<p className={"lock"}>Your account has been suspended. For more information, please

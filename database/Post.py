@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Post
 import logging
 from typing import Sequence
+from html import escape
 
 
 class PostManager:
@@ -16,6 +17,7 @@ class PostManager:
         :return:
         """
         try:
+            name = escape(name)
             post_ = Post(name=name)
             self.session.add(post_)
             await self.session.commit()

@@ -23,8 +23,8 @@ async def create_city(city: City) -> JSONResponse:
                 name=city.name,
                 post_id=city.post_id
             )
-            if query is False:
-                raise Exception("Failed to create city")
+            if query is None:
+                raise Exception()
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -81,6 +81,8 @@ async def update_city(idx: int, city: City) -> JSONResponse:
                 "error": "Failed to update city"
             }
         )
+
+
 @router.get("/get/{post_id}")
 async def get_address(post_id: int) -> JSONResponse:
     """
@@ -92,7 +94,7 @@ async def get_address(post_id: int) -> JSONResponse:
             address_manager = CityManager(session)
             query = await address_manager.get_city(int(post_id))
             if query is None:
-                raise Exception("Failed to get address")
+                raise Exception()
             cities_ = [
                 {
                     "id": p.id,

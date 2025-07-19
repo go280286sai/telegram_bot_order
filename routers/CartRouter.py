@@ -3,7 +3,7 @@ import logging
 
 from fastapi import APIRouter, Response, Request, Cookie, status
 
-from database.Deliveries import DeliveryManager
+from database.Orders import OrderManager
 from helps.help import parse_cart
 from database.Products import ProductManager
 from database.main import async_session_maker
@@ -70,9 +70,9 @@ async def get_delivery(request: Request) -> JSONResponse:
                     }
                 )
 
-            delivery_manager = DeliveryManager(session)
+            order_manager = OrderManager(session)
             data = json.loads(deliveries)
-            query = await delivery_manager.get_delivery(
+            query = await order_manager.get_delivery(
                 post_id=data["post_id"],
                 city_id=data["city_id"],
                 address_id=data["address"]

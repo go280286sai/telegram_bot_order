@@ -17,6 +17,8 @@ class User(Base):
     id: Mapped[int] = Column(Integer, primary_key=True,
                              index=True, autoincrement=True)
     username: Mapped[str] = Column(String, unique=True, index=True)
+    first_name: Mapped[str] = Column(String, nullable=True)
+    last_name: Mapped[str] = Column(String, nullable=True)
     password: Mapped[str] = Column(String)
     email: Mapped[str] = Column(String, unique=True, nullable=False)
     phone: Mapped[str] = Column(String, unique=True, nullable=True)
@@ -25,6 +27,22 @@ class User(Base):
     hashed_active: Mapped[str] = Column(String, nullable=True)
     is_admin: Mapped[int] = Column(Integer, default=0, nullable=False)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
+
+    def __init__(
+            self,
+            username: str,
+            password: str,
+            email: str,
+            phone: str,
+            hashed_active: str,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.username = username
+        self.password = password
+        self.email = email
+        self.phone = phone
+        self.hashed_active = hashed_active
 
 
 class Product(Base):
@@ -94,52 +112,32 @@ class Address(Base):
         self.name = name
 
 
-class Delivery(Base):
-    __tablename__ = "deliveries"
-    id: Mapped[int] = Column(Integer, primary_key=True,
-                             index=True, autoincrement=True)
-    post_id: Mapped[int] = Column(Integer, ForeignKey("posts.id"))
-    city_id: Mapped[int] = Column(Integer, ForeignKey("cities.id"))
-    address_id: Mapped[int] = Column(Integer, ForeignKey("addresses.id"))
-    created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
-    post: Mapped[Post] = relationship("Post", backref="deliveries")
-    city: Mapped[City] = relationship("City", backref="deliveries")
-    address: Mapped[Address] = relationship("Address", lazy="joined")
-
-    def __init__(self, post_id: int, city_id: int, address_id: int, **kwargs):
-        super().__init__(**kwargs)
-        self.post_id = post_id
-        self.city_id = city_id
-        self.address_id = address_id
-
-
 class Order(Base):
     __tablename__ = "orders"
     id: Mapped[int] = Column(Integer, primary_key=True,
                              index=True, autoincrement=True)
     products: Mapped[str] = Column(Text, nullable=False)
     user_id: Mapped[int] = Column(Integer, ForeignKey(User.id), nullable=False)
-    delivery_id: Mapped[int] = Column(Integer,
-                                      ForeignKey("deliveries.id"),
-                                      nullable=False)
+    delivery: Mapped[str] = Column(String, nullable=False)
     total: Mapped[float] = mapped_column(Float, nullable=False)
     transaction_id: Mapped[str] = Column(String, nullable=False)
     status: Mapped[int] = Column(Integer, default=0)
+    invoice: Mapped[str] = Column(String, nullable=True)
+    comment: Mapped[str] = Column(Text, nullable=True)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     user: Mapped[User] = relationship("User", lazy="joined")
-    delivery: Mapped[Delivery] = relationship("Delivery", lazy="joined")
 
     def __init__(self,
                  products: str,
                  user_id: int,
-                 delivery_id:
-                 int, total: float,
+                 delivery: str,
+                 total: float,
                  transaction_id: str,
                  **kwargs):
         super().__init__(**kwargs)
         self.products = products
         self.user_id = user_id
-        self.delivery_id = delivery_id
+        self.delivery = delivery
         self.total = total
         self.transaction_id = transaction_id
 

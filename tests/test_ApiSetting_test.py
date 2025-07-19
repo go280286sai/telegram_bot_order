@@ -33,6 +33,12 @@ async def test_update_api_setting():
         assert data['success'] is True
         assert data['data'] is None
         assert data['error'] is None
+        response = await client.post("/setting/update/0", json=payload)
+        assert response.status_code == 400
+        data = response.json()
+        assert data['success'] is False
+        assert data['data'] is None
+        assert data['error'] is not None
 
 
 @pytest.mark.asyncio
@@ -70,3 +76,5 @@ async def test_delete_api_setting():
             assert data['success'] is True
             assert data['data'] is None
             assert data['error'] is None
+        result = await client.post("/setting/delete/1")
+        assert result.status_code == 400

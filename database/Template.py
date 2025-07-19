@@ -45,10 +45,10 @@ class TemplateManager:
         try:
             query = select(Template).where(Template.id == idx)
             result = await self.session.execute(query)
-            email = result.scalar_one_or_none()
-            if email is None:
+            tmp = result.scalar_one_or_none()
+            if tmp is None:
                 return None
-            return email
+            return tmp
         except Exception as e:
             logging.exception(e)
             return None
@@ -84,6 +84,8 @@ class TemplateManager:
         :return:
         """
         try:
+            if idx <= 0:
+                return False
             query = select(Template).where(Template.id == idx)
             result = await self.session.execute(query)
             email = result.scalar_one_or_none()

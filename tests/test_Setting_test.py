@@ -22,6 +22,8 @@ async def test_get_setting(test_create_setting):
         setting_manager = SettingManager(session)
         query = await setting_manager.get_setting(int(idx))
         assert query.name == "Title"
+        query = await setting_manager.get_setting(0)
+        assert query is None
         return idx
 
 
@@ -31,11 +33,17 @@ async def test_update_setting(test_get_setting):
         idx = test_get_setting
         setting_manager = SettingManager(session)
         setting = await setting_manager.update_setting(
-            idx=int(idx),
+            idx=idx,
             name="Title1",
             value="Value1",
         )
         assert setting is True
+        setting = await setting_manager.update_setting(
+            idx=0,
+            name="Title1",
+            value="Value1",
+        )
+        assert setting is False
         return idx
 
 
@@ -55,3 +63,5 @@ async def test_delete_setting(test_update_setting):
         setting_manager = SettingManager(session)
         query = await setting_manager.delete_setting(int(idx))
         assert query is True
+        query = await setting_manager.delete_setting(int(idx))
+        assert query is False

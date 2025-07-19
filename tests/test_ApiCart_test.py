@@ -25,6 +25,31 @@ async def test_create_product():
 
 
 @pytest.mark.asyncio
+async def test_create_delivery():
+    async with AsyncClient(
+            transport=transport,
+            base_url="http://localhost:8000"
+    ) as client:
+        response = await client.post("/post/create",
+                                     json={
+                                         "name": "Post"
+                                     })
+        assert response.status_code == 200
+        response = await client.post("/city/create",
+                                     json={
+                                         "name": "Title",
+                                         "post_id": 1
+                                     })
+        assert response.status_code == 200
+        response = await client.post("/address/create",
+                                     json={
+                                         "name": "test",
+                                         "city_id": 1
+                                     })
+        assert response.status_code == 200
+
+
+@pytest.mark.asyncio
 async def test_increase_amount():
     async with AsyncClient(
             transport=transport,
@@ -98,7 +123,11 @@ async def test_add_delivery():
             transport=transport,
             base_url="http://localhost:8000"
     ) as client:
-        response = await client.post("/cart/delivery/create/1")
+        response = await client.post("/cart/delivery/create", json={
+            "post_id": 1,
+            "city_id": 1,
+            "address_id": 1
+        })
         assert response.status_code == 200
         data = response.json()
         assert data["success"] is True
@@ -132,5 +161,10 @@ async def test_delete_delivery_cookie():
         assert response_data["success"] is True
         assert response_data["data"] is None
         assert response_data["error"] is None
-
         assert "delivery" not in response.cookies
+        response = await client.post("/post/delete/1")
+        assert response.status_code == 200
+        response = await client.post("/city/delete/1")
+        assert response.status_code == 200
+        response = await client.post("/address/delete/1")
+        assert response.status_code == 200

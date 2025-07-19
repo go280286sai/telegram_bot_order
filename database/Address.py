@@ -1,8 +1,9 @@
+from sqlalchemy import Row, RowMapping
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Address, City
 import logging
-from typing import Sequence
+from typing import Sequence, Any
 from html import escape
 
 
@@ -18,6 +19,8 @@ class AddressManager:
         :return:
         """
         try:
+            if city_id <= 0:
+                return None
             address_ = Address(name=name, city_id=city_id)
             self.session.add(address_)
             await self.session.commit()
@@ -27,20 +30,23 @@ class AddressManager:
             logging.exception(e)
             return None
 
-    async def get_address(self, city_id: int) -> list | None:
+    async def get_address(
+            self,
+            city_id: int
+    ) -> Sequence[Row[Any] | RowMapping | Any] | None:
         """
         Gets address.
         :param city_id:
         :return:
         """
         try:
+            if city_id <= 0:
+                return None
             query = (select(Address)
                      .join(City, City.id == Address.city_id)
                      .where(Address.city_id == city_id))
             result = await self.session.execute(query)
             address_ = result.scalars().all()
-            if address_ is None:
-                return None
             return address_
         except Exception as e:
             logging.exception(e)
@@ -59,6 +65,8 @@ class AddressManager:
         :return:
         """
         try:
+            if city_id <= 0:
+                return False
             query = select(Address).where(Address.id == idx)
             result = await self.session.execute(query)
             address_ = result.scalar_one_or_none()

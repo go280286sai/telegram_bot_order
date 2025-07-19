@@ -6,7 +6,7 @@ from database.Subscriber import SubscriberManager
 from database.Template import TemplateManager
 from models.SubscriberModel import Subscriber
 from helps.help import is_valid_email, generate_transaction
-from helps.emails import create_subscriber_email, confirm_email
+from helps.emails import create_subscriber_email, confirm_email, send_emails
 
 router = APIRouter()
 
@@ -121,3 +121,50 @@ async def send_email_route(idx: int):
         idx = int(idx)
         tmp_manager = TemplateManager(session)
         await tmp_manager.get_template(idx=idx)
+
+
+@router.post("/send_subscribers/{idx}")
+async def send_users(idx: int) -> JSONResponse:
+    """
+    Send users message
+    :param idx:
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            tmp_manager = TemplateManager(session)
+            tmp = await tmp_manager.get_template(idx=idx)
+            subscriber_manager = SubscriberManager(session)
+            subscribers = await subscriber_manager.get_subscribers()
+            if tmp is False or tmp is None:
+                raise Exception("Failed to get template")
+            if subscribers is None:
+                raise Exception("Failed to get subscribers")
+            for subscriber in subscribers:
+                await send_emails(
+                    header=tmp.header,
+                    title=tmp.title,
+                    body=tmp.body,
+                    idx=subscriber['id'],
+                    email=subscriber['email'],
+                    hash_active="",
+                    footer=True
+                )
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Failed send subscriber: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed send subscriber"
+            }
+        )

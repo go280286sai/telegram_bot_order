@@ -21,6 +21,8 @@ async def test_get_post(test_create_post):
         post_manager = PostManager(session)
         query = await post_manager.get_post(int(idx))
         assert query.name == "NewPost"
+        query = await post_manager.get_post(0)
+        assert query is None
         return idx
 
 
@@ -30,10 +32,15 @@ async def test_update_post(test_get_post):
         idx = test_get_post
         post_manager = PostManager(session)
         post = await post_manager.update_post(
-            idx=int(idx),
+            idx=idx,
             name="NewPost1",
         )
         assert post is True
+        post = await post_manager.update_post(
+            idx=0,
+            name="NewPost1",
+        )
+        assert post is False
         return idx
 
 
@@ -53,3 +60,5 @@ async def test_delete_post(test_update_post):
         post_manager = PostManager(session)
         query = await post_manager.delete_post(int(idx))
         assert query is True
+        query = await post_manager.delete_post(int(idx))
+        assert query is False

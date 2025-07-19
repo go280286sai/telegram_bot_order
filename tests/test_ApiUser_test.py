@@ -40,13 +40,14 @@ async def test_create_api_city():
 async def test_is_auth():
     async with AsyncClient(
             transport=transport,
-            base_url='http://localhost:8000'
+            base_url='http://localhost:8000',
+            cookies={"user_id": "1"}
     ) as client:
         response = await client.post("/user/is_auth")
         assert response.status_code == 200
         data = response.json()
         assert data['success'] is True
-        assert data['data'] is None
+        assert data['data'] is not None
         assert data['error'] is None
 
 
@@ -164,12 +165,19 @@ async def test_user_recover(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_delete_user():
+async def test_delete_user(monkeypatch):
     async with AsyncClient(
             transport=transport,
-            base_url='http://localhost:8000'
+            base_url='http://localhost:8000',
+            cookies={"user_id": "1"}
     ) as client:
+        async def mock_is_admin(self, *args, **kwargs):
+            return True
+
+        monkeypatch.setattr("routers.UserRouter.is_admin", mock_is_admin)
         response = await client.post("/user/delete/1")
         assert response.status_code == 200
         data = response.json()
         assert data['success'] is True
+        assert data['data'] is None
+        assert data['error'] is None

@@ -26,6 +26,13 @@ async def test_update_carousel():
             image="https://example.org",
         )
         assert query is True
+        query = await carousel_manager.update_item(
+            idx=0,
+            title="ImageNew",
+            description="Description 2",
+            image="https://example.org",
+        )
+        assert query is False
 
 
 @pytest.mark.asyncio

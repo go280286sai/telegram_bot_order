@@ -2,8 +2,11 @@ import logging
 
 from fastapi import APIRouter, status
 from starlette.responses import JSONResponse
+
+from database.User import UserManager
 from database.main import async_session_maker
 from database.Template import TemplateManager
+from helps.emails import send_emails
 from models.TemplateModel import Template
 
 router = APIRouter()
@@ -143,7 +146,7 @@ async def get_template(idx: int) -> JSONResponse:
         async with async_session_maker() as session:
             tmp_manager = TemplateManager(session)
             query = await tmp_manager.get_template(idx=idx)
-            if not query:
+            if query is None:
                 raise Exception("No templates")
             tmp_ = [
                 {
@@ -203,5 +206,52 @@ async def delete_template(idx: int) -> JSONResponse:
                 "success": False,
                 "data": None,
                 "error": "Failed to delete template"
+            }
+        )
+
+
+@router.post("/send_users/{idx}")
+async def send_users(idx: int) -> JSONResponse:
+    """
+    Send users message
+    :param idx:
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            tmp_manager = TemplateManager(session)
+            tmp = await tmp_manager.get_template(idx=idx)
+            user_manager = UserManager(session)
+            users = await user_manager.get_users()
+            if tmp is False or tmp is None:
+                raise Exception("Failed to get template")
+            if users is None:
+                raise Exception("Failed to get users")
+            for user in users:
+                await send_emails(
+                    header=tmp.header,
+                    title=tmp.title,
+                    body=tmp.body,
+                    idx=user['id'],
+                    email=user['email'],
+                    hash_active="",
+                    footer=False
+                )
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Failed send users: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed send users"
             }
         )
