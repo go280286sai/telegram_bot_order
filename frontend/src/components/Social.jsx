@@ -7,9 +7,9 @@ export default function Social({ settings }){
     return(
         <div className={"social"}>
             <ul className="d-flex justify-content-around align-items-center list-unstyled">
-                <li><a href="{settings.telegram}" className={"a_hover"}><img src={telegram} alt="Telegram" title={"Telegram"}/></a></li>
-                <li><a href="{settings.viber}" className={"a_hover"}><img src={viber} alt="Viber" title={"Viber"}/></a></li>
-                <li><a href="{settings.whatsapp}" className={"a_hover"}><img src={whatsapp} alt="WhatsApp" title={"WhatsApp"}/></a></li>
+                <li><a href={settings.telegram} className={"a_hover"}><img src={telegram} alt="Telegram" title={"Telegram"}/></a></li>
+                <li><a href={settings.viber} className={"a_hover"}><img src={viber} alt="Viber" title={"Viber"}/></a></li>
+                <li><a href={settings.whatsapp} className={"a_hover"}><img src={whatsapp} alt="WhatsApp" title={"WhatsApp"}/></a></li>
             </ul>
         </div>
     )

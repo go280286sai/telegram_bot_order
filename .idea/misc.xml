@@ -3,6 +3,9 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.12 (djangoBybit)" />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="FLOW" />
+  </component>
   <component name="MojoSettings">
     <option name="profiles">
       <map>

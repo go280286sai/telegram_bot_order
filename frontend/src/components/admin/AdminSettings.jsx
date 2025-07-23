@@ -7,7 +7,6 @@ export default function AdminSettings() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({});
 
-    // Загружаем данные
     const fetchSetting = async () => {
         try {
             const response = await fetch("http://localhost:8000/setting/gets", {
@@ -127,12 +126,12 @@ export default function AdminSettings() {
                             />
                         </td>
                         <td>
-                            <button className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
+                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
                                 Update
                             </button>
                         </td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={()=>fetchDelete(item.id)}>
+                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={()=>fetchDelete(item.id)}>
                                 Delete
                             </button>
                         </td>

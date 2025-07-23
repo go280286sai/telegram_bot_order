@@ -149,7 +149,7 @@ export default function AdminOrders() {
                                 data-orders-id={item.id}/>
                         </td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
+                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
                                 Delete
                             </button>
                         </td>

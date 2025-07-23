@@ -44,6 +44,7 @@ export default function AdminCityModal(){
                        <div className="mb-3">
                            <label htmlFor="Name_item" className="form-label">Name</label>
                            <input
+                               data-testid={"item_name"}
                                type="text"
                                className="form-control"
                                id="Name_item"
@@ -59,6 +60,7 @@ export default function AdminCityModal(){
                        <div className="mb-3">
                            <label htmlFor="post_id_item" className="form-label">Post Id</label>
                            <input
+                               data-testid={"item_post_id"}
                                type="number"
                                className="form-control"
                                id="post_id_item"

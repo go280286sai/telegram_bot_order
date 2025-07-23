@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import log from "../../helps/logs.mjs";
 
-export default function AdminAddSettingModal(){
+export default function AdminAddSettingModal() {
     const [formData, setFormData] = useState({
         name: "",
         value: "",
@@ -33,7 +33,7 @@ export default function AdminAddSettingModal(){
     };
     return (
         <div className="modal fade" id="addSetting" tabIndex="-1" aria-labelledby="addSetting" aria-hidden="true">
-           <div className="modal-dialog">
+            <div className="modal-dialog">
                 <form className="modal-content" onSubmit={handleSubmit}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="RecoverLabel">Add new item setting</h1>
@@ -44,6 +44,7 @@ export default function AdminAddSettingModal(){
                         <div className="mb-3">
                             <label htmlFor="name_item" className="form-label">Name</label>
                             <input
+                                data-testid={"item_name"}
                                 type="text"
                                 className="form-control"
                                 id="name_item"
@@ -57,6 +58,7 @@ export default function AdminAddSettingModal(){
                         <div className="mb-3">
                             <label htmlFor="value_item" className="form-label">Value</label>
                             <input
+                                data-testid={"item_value"}
                                 type="text"
                                 className="form-control"
                                 id="value_item"

@@ -28,6 +28,7 @@ export default function Profile(props) {
             return;
         }
         if (formData.password === "") {
+            alert("Passwords not be empty");
             return;
         }
 
@@ -44,7 +45,7 @@ export default function Profile(props) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.data) {
+                if (data.data.success) {
                     alert("Password is update")
                     window.location.reload();
                 } else {
@@ -52,9 +53,6 @@ export default function Profile(props) {
                     log("error", "Error update password", data)
                 }
             })
-            .catch(err => {
-                console.error("Ошибка при отправке запроса:", err);
-            });
     };
 
     const handleSubmitUser = (e) => {
@@ -78,7 +76,7 @@ export default function Profile(props) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.data) {
+                if (data.data.success) {
                     alert("Profile is update")
                     window.location.reload();
                 } else {
@@ -104,13 +102,12 @@ export default function Profile(props) {
             if (Array.isArray(result.data.orders)) {
                 setOrders(result.data.orders);
             } else {
-                console.warn("Error format data:", result.data.orders);
+                log("error","Error format data:", result.data.orders);
             }
         } catch (error) {
             log("error", "Error get orders users", error)
         }
     };
-
     useEffect(() => {
         fetchUser();
     }, []);
@@ -170,11 +167,8 @@ export default function Profile(props) {
                                         </tr>
                                     ))}
                                     </tbody>
-
                                 </table>
-                                <button onClick={fetchUser} className={"btn btn-danger"}>Update</button>
-
-
+                                <button onClick={fetchUser} className={"btn btn-danger"} title={"update"}>Update</button>
                                 <div className={"form-style"}>
                                     <div className="mb-3">
                                         <label htmlFor="first_name" className="form-label">First name</label>
@@ -188,7 +182,7 @@ export default function Profile(props) {
                                                value={formDataUser.last_name} onChange={handleChangeUser}/>
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-success" onClick={handleSubmitUser}>Save</button>
+                                <button type="submit" title={"first_last_name"} className="btn btn-success" onClick={handleSubmitUser}>Save</button>
 
                                 <div className={"form-style"}>
                                     <div className="mb-3">
@@ -203,7 +197,7 @@ export default function Profile(props) {
                                                value={formData.confirmPassword} onChange={handleChange}/>
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-success" onClick={handleSubmit}>Save</button>
+                                <button type="submit" className="btn btn-success" title={"btn_password"} onClick={handleSubmit}>Save</button>
                             </>
                         ) : (<p className={"lock"}>Your account has been suspended. For more information, please
                             contact support.</p>)}

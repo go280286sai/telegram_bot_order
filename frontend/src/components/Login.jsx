@@ -26,6 +26,10 @@ export default function Login() {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(formData.username.trim() === "" || formData.password.trim() === ""){
+            alert("Login or password error");
+            return;
+        }
         fetch("http://localhost:8000/user/login", {
             method: "POST",
             headers: {
@@ -38,8 +42,8 @@ export default function Login() {
             credentials: "include"
         }).then(res => res.json())
             .then((data) => {
-                if (data.success) {
-                    window.location.reload()
+                if (data.data.success) {
+                    window.location.reload();
                 } else {
                     log("error", "login error", data);
                     setError("Incorrect username or password")
@@ -70,6 +74,7 @@ export default function Login() {
                     setRecovery(true)
                 } else {
                     log("error", "recover error", data);
+                    window.location.reload();
                 }
             }).catch(data => log("error", "recover error", data));
     };
@@ -114,11 +119,11 @@ export default function Login() {
                     </div>
                     <p className={"error"}>{error}</p>
                     <div className="modal-footer">
-                        <button className="btn btn-primary" type="button" onClick={toggleRecover}>
+                        <button className="btn btn-primary" type="button" onClick={toggleRecover} title={"recover_password"}>
                             Recover password
                         </button>
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Login</button>
+                        <button type="submit" className="btn btn-primary" title={"Login"}>Login</button>
                     </div>
                 </form>
             </div> : <div className="modal-dialog">
@@ -160,7 +165,7 @@ export default function Login() {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" onClick={exit}>Exit</button>
-                        <button type="submit" className="btn btn-primary">Send</button>
+                        <button type="submit" className="btn btn-primary" title={"btn_recover"}>Send</button>
                     </div>
                 </form>
             </div>}

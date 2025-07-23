@@ -130,7 +130,7 @@ export default function BlockTwo() {
                             </td>
                             <td>
 
-                                <button type="button" className="btn btn-success"
+                                <button type="button" className="btn btn-success" data-testid={"add_to_cart"}
                                         onClick={() => addToCart(product.id)}>Add to Cart
                                 </button>
 
@@ -170,7 +170,7 @@ export default function BlockTwo() {
                                             {cartItems.map((item, index) => (
                                                 <tr key={item.id}>
                                                     <td>{index + 1}</td>
-                                                    <td>{item.name}</td>
+                                                    <td data-testid={"modal_name"}>{item.name}</td>
                                                     <td>
                                                         <div className="input-group input-group-sm"
                                                              style={{width: "120px"}}>
@@ -213,7 +213,7 @@ export default function BlockTwo() {
                                             <tfoot>
                                             <tr>
                                                 <td colSpan="4" className="text-end"><strong>Total:</strong></td>
-                                                <td colSpan="2"><strong>{calculateTotal()} $</strong></td>
+                                                <td colSpan="2"><strong data-testid={"calculateTotal"}>{calculateTotal()} $</strong></td>
                                             </tr>
                                             </tfoot>
                                         </table>

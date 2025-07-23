@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
-import html2pdf from 'html2pdf.js';
 
 export default function AdminOrderViewModal(){
-    const [formData, setFormData] = useState({
-        toId: "",
-    });
     const [content, setContent] = useState({
         products: [],
         user: {},
@@ -36,10 +32,6 @@ export default function AdminOrderViewModal(){
         const handleShow = (event) => {
             const button = event.relatedTarget;
             const id = button.getAttribute('data-orders-id');
-            setFormData(prev => ({
-                ...prev,
-                toId: id
-            }));
             fetchOrder(id);
         };
         modalEl.addEventListener('show.bs.modal', handleShow);
@@ -56,17 +48,6 @@ export default function AdminOrderViewModal(){
         window.location.reload(); // reload page after print
     };
 
-    const saveAsPdf = () => {
-        const element = document.getElementById('invoiceContent');
-        const opt = {
-            margin:       0.5,
-            filename:     `invoice_${content.id || 'order'}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    };
     return (
         <div className="modal fade" id="AdminViewOrder" tabIndex="-1" aria-labelledby="AdminViewOrder"
              aria-hidden="true">
@@ -142,7 +123,6 @@ export default function AdminOrderViewModal(){
                     <div className="modal-footer no-print">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
                         <button type="button" className="btn btn-primary" onClick={printInvoice}>Печать</button>
-                        <button type="button" className="btn btn-success" onClick={saveAsPdf}>Сохранить как PDF</button>
                     </div>
                 </div>
             </div>

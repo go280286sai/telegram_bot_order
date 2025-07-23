@@ -30,13 +30,14 @@ export default function Register() {
                 password: formData.password,
                 email: formData.email,
                 phone: formData.phone}),
-            credentials: "include" // если используешь cookie или сессию
+            credentials: "include"
         }).then(res => res.json())
             .then((data) => {
                 if (data.success) {
-                    window.location.reload()
+                    window.location.reload();
                 } else {
                     log("error", "register error", data);
+                    alert("Register is error");
                 }
             }).catch(data => log("error", "login error", data));
     };
@@ -81,7 +82,7 @@ export default function Register() {
                     </div>
                     <div className="modal-footer"><strong className={"error"}>After registration, confirm your email.</strong>
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Register</button>
+                        <button type="submit" className="btn btn-primary" title={"register"}>Register</button>
                     </div>
                 </form>
             </div>

@@ -86,8 +86,7 @@ export default function OrderPay({total}){
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <p className={"error"}>{error}</p>
-                        <form>
+                        <p className={"error"} data-testid={"error_id"}>{error}</p>
                             <div className="mb-3">
                                 <label htmlFor="cardNumber" className="form-label">Card Number</label>
                                 <input
@@ -136,7 +135,7 @@ export default function OrderPay({total}){
                             </div>
 
                             <div className="mb-3">
-                                <label htmlFor="cvv" className="form-label">CVV</label>
+                                <label htmlFor="cardKey" className="form-label">Card cvv</label>
                                 <input
                                     type="password"
                                     className="form-control"
@@ -149,10 +148,9 @@ export default function OrderPay({total}){
                                     required
                                 />
                             </div>
-                        </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="submit" className="btn btn-primary">Pay</button>
+                        <button type="submit" className="btn btn-primary" data-testid={"pay_btn"}>Pay</button>
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
                     </div>
                 </form>

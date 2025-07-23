@@ -42,8 +42,9 @@ export default function AdminAddressModal(){
 
                    <div className="modal-body">
                        <div className="mb-3">
-                           <label htmlFor="Name_item" className="form-label">Name</label>
+                           <label htmlFor="Name_item" className="form-label" >Name</label>
                            <input
+                               data-testid={"item_name"}
                                type="text"
                                className="form-control"
                                id="Name_item"
@@ -59,6 +60,7 @@ export default function AdminAddressModal(){
                        <div className="mb-3">
                            <label htmlFor="city_id_item" className="form-label">City Id</label>
                            <input
+                               data-testid={"item_city"}
                                type="number"
                                className="form-control"
                                id="city_id_item"

@@ -9,8 +9,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AdminMain from "./components/admin/AdminMain";
-import BlockOne from "./components/BlockOne";
-import Footer from "./components/Footer";
 import Order from "./components/order/Order";
 import Separation from "./components/Separation";
 import AdminSettings from "./components/admin/AdminSettings";

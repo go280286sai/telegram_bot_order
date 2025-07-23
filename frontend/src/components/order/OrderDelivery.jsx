@@ -86,6 +86,7 @@ export default function OrderDelivery({total}) {
                     value="Delete"
                     className="btn btn-danger mb-3"
                     onClick={deleteDelivery}
+                    data-testid={"deleteDelivery"}
                 />
 
                     <OrderPay total={total}/>

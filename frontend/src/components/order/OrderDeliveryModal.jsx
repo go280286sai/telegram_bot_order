@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
 
 export default function OrderDeliveryModal() {
@@ -12,8 +12,8 @@ export default function OrderDeliveryModal() {
     const [selectAddress, setSelectAddress] = useState([]);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value}));
     };
 
     const handleSubmit = (e) => {
@@ -46,7 +46,7 @@ export default function OrderDeliveryModal() {
             const response = await fetch("http://localhost:8000/post/gets", {
                 method: "GET",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
             if (data.success) {
@@ -62,7 +62,7 @@ export default function OrderDeliveryModal() {
             const response = await fetch(`http://localhost:8000/city/get/${postId}`, {
                 method: "GET",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
             if (data.success) {
@@ -78,7 +78,7 @@ export default function OrderDeliveryModal() {
             const response = await fetch(`http://localhost:8000/address/get/${cityId}`, {
                 method: "GET",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
             if (data.success) {
@@ -101,7 +101,7 @@ export default function OrderDeliveryModal() {
                 city: "",
                 address: ""
             }));
-            setSelectAddress([]); // очищаем адреса при смене поста
+            setSelectAddress([]);
         }
     }, [formData.post]);
 
@@ -130,6 +130,7 @@ export default function OrderDeliveryModal() {
                         <div className="mb-3">
                             <label htmlFor="Post_item" className="form-label">Post</label>
                             <select
+                                data-testid={"post_input"}
                                 className="form-select"
                                 name="post"
                                 value={formData.post}
@@ -166,8 +167,7 @@ export default function OrderDeliveryModal() {
                                 value={formData.address}
                                 onChange={handleChange}
                                 required
-                                disabled={!selectAddress.length}
-                            >
+                                disabled={!selectAddress.length}>
                                 <option value="">Select address</option>
                                 {selectAddress.map((value) => (
                                     <option value={value.id} key={value.id}>{value.name}</option>
@@ -175,7 +175,6 @@ export default function OrderDeliveryModal() {
                             </select>
                         </div>
                     </div>
-
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
                         <button type="submit" className="btn btn-primary">Send</button>

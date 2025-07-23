@@ -130,6 +130,7 @@ export default function AdminDeliveryModal() {
                         <div className="mb-3">
                             <label htmlFor="Post_item" className="form-label">Post</label>
                             <select
+                                data-testid={"item_post"}
                                 className="form-select"
                                 name="post"
                                 value={formData.post}
@@ -145,6 +146,7 @@ export default function AdminDeliveryModal() {
                         <div className="mb-3">
                             <label htmlFor="City_item" className="form-label">City</label>
                             <select
+                                data-testid={"item_city"}
                                 className="form-select"
                                 name="city"
                                 value={formData.city}
@@ -161,6 +163,7 @@ export default function AdminDeliveryModal() {
                         <div className="mb-3">
                             <label htmlFor="Address_item" className="form-label">Address</label>
                             <select
+                                data-testid={"item_address"}
                                 className="form-select"
                                 name="address"
                                 value={formData.address}

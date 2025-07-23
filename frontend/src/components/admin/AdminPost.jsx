@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
-import AdminAddSettingModal from "./AdminAddSettingModal";
-import AdminCarouselsModal from "./AdminCarouselsModal";
-import AdminReviewsModal from "./AdminReviewsModal";
-import AdminProductsModal from "./AdminProductsModal";
 import AdminPostsModal from "./AdminPostsModal";
 
 export default function AdminPost() {
@@ -120,12 +116,12 @@ export default function AdminPost() {
                             />
                         </td>
                         <td>
-                            <button className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
+                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
                                 Update
                             </button>
                         </td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
+                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
                                 Delete
                             </button>
                         </td>

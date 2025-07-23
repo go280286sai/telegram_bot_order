@@ -17,7 +17,6 @@ export default function AboutUs() {
                 const result = await response.json();
                 setReviews(result?.data?.reviews || []);
             } catch (error) {
-                console.log(error);
                 await log("error", "get reviews", error);
             }
         };
@@ -32,12 +31,11 @@ export default function AboutUs() {
                         reviews.map((item, index) => (
                             <div
                                 className={`carousel-item ${index === 0 ? "active" : ""}`}
-                                key={index}
-                            >
+                                key={index}>
                                 <div
-                                    className="about_us d-flex flex-column align-items-center justify-content-center text-center"
-                                    style={{ minHeight: "300px" }}
-                                >
+                                    className="about_us d-flex flex-column align-items-center
+                                    justify-content-center text-center"
+                                    style={{ minHeight: "300px" }}>
                                     <div className="d-flex align-items-center gap-4">
                                         <img
                                             src={avatar[item.gender] || man}
@@ -54,20 +52,25 @@ export default function AboutUs() {
                     ) : (
                         <div className="carousel-item active">
                             <div
-                                className="about_us d-flex flex-column align-items-center justify-content-center text-center"
+                                className="about_us d-flex flex-column align-items-center
+                                justify-content-center text-center"
                                 style={{ minHeight: "300px" }}>
                                 <p className="reviews">There are no reviews yet</p>
                             </div>
                         </div>
                     )}
                 </div>
-
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <button className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselExampleAutoplaying"
+                        data-bs-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Previous</span>
                 </button>
-
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <button className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselExampleAutoplaying"
+                        data-bs-slide="next">
                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Next</span>
                 </button>

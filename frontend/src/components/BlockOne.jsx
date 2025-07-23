@@ -3,7 +3,7 @@ import Social from "./Social";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
-import log from "../helps/logs.mjs"
+import log from "../helps/logs.mjs";
 
 export default function BlockOne({ settings }) {
     const [user, setUser] = useState({
@@ -71,17 +71,18 @@ export default function BlockOne({ settings }) {
                     <div className="text-end register auth">
                         <strong data-bs-toggle="offcanvas"
                                 data-bs-target="#profile"
-                                aria-controls="staticBackdrop">Profile</strong>
+                                aria-controls="staticBackdrop"
+                        data-testid={"profile_title_mock"}>Profile</strong>
                         <strong className={"auth"}>|</strong>
-                        <strong className={"auth"} onClick={logout}>Logout</strong>
+                        <strong className={"auth"} onClick={logout} data-testid={"logout_title_mock"}>Logout</strong>
                     </div>
                 ) : (
                     <div className="text-end register auth">
                         <strong data-bs-toggle="modal"
-                           data-bs-target="#login">Login</strong>
+                           data-bs-target="#login" title={"login_modal"} data-testid={"login_title_mock"}>Login</strong>
                         <strong className={"auth"}>|</strong>
                         <strong data-bs-toggle="modal"
-                            data-bs-target="#register" className={"auth"}>Register</strong>
+                            data-bs-target="#register" className={"auth"} data-testid={"register_title_mock"}>Register</strong>
                     </div>
                 )}
                 <h1 className={"title_h1"}>{settings.title}</h1>

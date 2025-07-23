@@ -18,7 +18,6 @@ export default function AdminAddress() {
             if (data.success) {
                 setContent(data.data.addresses);
 
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.addresses.forEach(item => {
                     initForm[item.id] = {
@@ -125,12 +124,12 @@ export default function AdminAddress() {
                             />
                         </td>
                         <td>
-                            <button className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
+                            <button data-testid={"btn_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
                                 Update
                             </button>
                         </td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
+                            <button data-testid={"btn_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
                                 Delete
                             </button>
                         </td>

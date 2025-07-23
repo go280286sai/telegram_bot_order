@@ -16,7 +16,10 @@ export default function OrderCart(){
                 credentials: "include",
             });
             const result = await response.json();
-            setCartItems(result.data.cart);
+            if(result['success']){
+                 setCartItems(result.data.cart);
+            }
+
         } catch (error) {
             await log("error", "get all from carts", error);
         }

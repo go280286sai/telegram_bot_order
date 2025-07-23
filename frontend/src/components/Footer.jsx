@@ -28,10 +28,10 @@ export default function Footer({ settings }) {
                 if (data.success) {
                     setInfo("Ok")
                 } else {
-                    log("error", "login error", data);
+                    log("error", "login error", data.toString());
                     setInfo("Incorrect email")
                 }
-            });
+            })
     };
     return (
         <div className={"row block_1"}>
