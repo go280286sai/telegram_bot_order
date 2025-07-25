@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, BackgroundTasks
 from starlette.responses import JSONResponse
 from database.main import async_session_maker
 from database.Subscriber import SubscriberManager
@@ -124,9 +124,13 @@ async def send_email_route(idx: int):
 
 
 @router.post("/send_subscribers/{idx}")
-async def send_users(idx: int) -> JSONResponse:
+async def send_users(
+        idx: int,
+        background_tasks: BackgroundTasks
+) -> JSONResponse:
     """
     Send users message
+    :param background_tasks:
     :param idx:
     :return:
     """
@@ -136,20 +140,22 @@ async def send_users(idx: int) -> JSONResponse:
             tmp = await tmp_manager.get_template(idx=idx)
             subscriber_manager = SubscriberManager(session)
             subscribers = await subscriber_manager.get_subscribers()
-            if tmp is False or tmp is None:
-                raise Exception("Failed to get template")
-            if subscribers is None:
-                raise Exception("Failed to get subscribers")
+            if not tmp:
+                raise ValueError("Template not found")
+            if not subscribers:
+                raise ValueError("No subscribers available")
+
             for subscriber in subscribers:
-                await send_emails(
+                background_tasks.add_task(
+                    send_emails,
                     header=tmp.header,
                     title=tmp.title,
                     body=tmp.body,
                     idx=subscriber['id'],
                     email=subscriber['email'],
                     hash_active="",
-                    footer=True
-                )
+                    footer=True)
+
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={

@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
-import AdminProductsModal from "./AdminProductsModal";
 import AdminOrderInvoiceModal from "./AdminOrderInvoiceModal";
 import AdminOrderCommentModal from "./AdminOrderCommentlModal";
 import AdminOrderViewModal from "./AdminOrderViewModal";
+import {IoSearch, IoTime, IoTrophySharp} from "react-icons/io5";
+import {AiOutlineDelete, AiTwotoneFileAdd} from "react-icons/ai";
 
 export default function AdminOrders() {
     const [content, setContent] = useState([]);
 
-    const fetchProducts = async () => {
+    const fetchOrders = async () => {
         try {
             const response = await fetch("http://localhost:8000/order/gets", {
                 method: "POST",
@@ -25,9 +26,8 @@ export default function AdminOrders() {
         }
     };
 
-    // Инициализация
     useEffect(() => {
-        fetchProducts();
+        fetchOrders();
     }, []);
     useEffect(() => {
         if (content.length > 0) {
@@ -46,7 +46,7 @@ export default function AdminOrders() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchProducts();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "products", error);
@@ -54,12 +54,6 @@ export default function AdminOrders() {
     };
     return (
         <div className={"row block_1 p-1"}>
-
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addProducts">Add item
-            </div>
-            <AdminProductsModal/>
             <table id="myTable" className="display table table-dark">
                 <thead>
                 <tr>
@@ -73,8 +67,8 @@ export default function AdminOrders() {
                     <th>Created</th>
                     <th>Invoice</th>
                     <th>Comment</th>
-                    <th>View</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -97,20 +91,24 @@ export default function AdminOrders() {
                             {item.transaction_id}
                         </td>
                         <td>
-                            {item.status?(
-                                <div>
-                                    <input type="button" value={"Done"} className={"btn btn-success btn-sm"} disabled={true}/>
+                            {item.status ? (
+                                <div className={"center-vertical"}>
+                                    <button value={"Done"} className={"btn btn-link btn_gen"}
+                                            disabled={true}>
+                                        <IoTrophySharp className={"IoTrophySharp"} title={"Done"}/>
+                                    </button>
                                 </div>
-                            ):(
-                                <div>
-                                    <input type="button"
-                                           value={"Wait"}
-                                           className={"btn btn-danger btn-sm"}
-                                           data-bs-toggle="modal"
-                                           data-bs-target="#SendInvoice"
-                                           data-order-id={item.id}
-                                           data-user-id={item.user}
-                                    />
+                            ) : (
+                                <div className={"center-vertical"}>
+                                    <button
+                                        value={"Wait"}
+                                        className={"btn btn-link btn_gen"}
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#SendInvoice"
+                                        data-order-id={item.id}
+                                        data-user-id={item.user}>
+                                        <IoTime className={"IoTime"} title={"Wait"}/>
+                                    </button>
                                 </div>
                             )}
                         </td>
@@ -121,37 +119,45 @@ export default function AdminOrders() {
                             {item.invoice}
                         </td>
                         <td>
-                            {item.comment?(
+                            {item.comment ? (
                                 <div>
                                     <small data-bs-toggle="modal"
                                            data-bs-target="#AddOrderComment"
                                            data-orders-id={item.id}>{item.comment}</small>
                                 </div>
-                            ):(
-                                <div>
-                                    <input
-                                        type="button"
-                                        className={"btn btn-success btn-sm"}
+                            ) : (
+                                <div className={"center-vertical"}>
+                                    <button
+                                        className={"btn btn-link btn_gen"}
                                         value={"Add"}
+                                        title={"Add comment"}
                                         data-bs-toggle="modal"
                                         data-bs-target="#AddOrderComment"
-                                        data-orders-id={item.id}/>
+                                        data-orders-id={item.id}>
+                                        <AiTwotoneFileAdd className={"AiTwotoneFileAdd"}/>
+                                    </button>
                                 </div>
                             )}
                         </td>
                         <td>
-                            <input
-                                type="button"
-                                className={"btn btn-success btn-sm"}
-                                value={"V"}
-                                data-bs-toggle="modal"
-                                data-bs-target="#AdminViewOrder"
-                                data-orders-id={item.id}/>
+                            <div className={"center-vertical"}>
+                                <button
+                                    className={"btn btn-link btn_gen"}
+                                    value={"V"}
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#AdminViewOrder"
+                                    data-orders-id={item.id}>
+                                    <IoSearch className={"IoSearch"} title={"View"}/>
+                                </button>
+                            </div>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button data-testid={"item_delete"} className="btn btn-link btn_gen"
+                                        onClick={() => fetchDelete(item.id)}>
+                                    <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 ))}

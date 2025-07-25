@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
+import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
-export default function AdminOrderInvoiceModal(){
+export default function AdminOrderInvoiceModal() {
     const [formData, setFormData] = useState({
         body: "",
-        userId:"",
+        userId: "",
         orderId: ""
     });
 
@@ -39,15 +40,15 @@ export default function AdminOrderInvoiceModal(){
         try {
             const response = await fetch(`http://localhost:8000/order/send_invoice/${formData.userId}/${formData.orderId}`,
                 {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    body: formData.body
-                }),
-                credentials: "include"
-            });
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        body: formData.body
+                    }),
+                    credentials: "include"
+                });
             const data = await response.json();
             if (data.success) {
                 window.location.reload();
@@ -55,7 +56,6 @@ export default function AdminOrderInvoiceModal(){
                 log("error", "send invoice user error", data);
             }
         } catch (error) {
-            console.log(formData.orderId, formData.userId)
             log("error", "send email invoice error", error);
         }
     };
@@ -85,8 +85,12 @@ export default function AdminOrderInvoiceModal(){
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Send</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare color="black" size="30px" title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen">
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
             </div>

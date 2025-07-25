@@ -3,6 +3,7 @@ import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import img_1 from "../../assets/img/predict_components.png";
 import img_2 from "../../assets/img/predict_forecast.png";
+import {IoArrowRedoCircleSharp } from "react-icons/io5";
 export default function AdminPredict() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({
@@ -25,15 +26,14 @@ export default function AdminPredict() {
             credentials: "include"
         }).then(res => res.json())
             .then((data) => {
-                console.log(data["data"]["predict"])
-                if (data.success) {
+                if (data.success && data["data"]["predict"]!==null) {
                     setContent(data["data"]["predict"])
                 } else {
                     log("error", "add new item post error", data);
+                    alert("There is insufficient data for analysis.")
                 }
             }).catch(data => log("error", "add new item post error", data));
     };
-    // Инициализация
     useEffect(() => {
         if (content.length > 0) {
             const dtInstance = new DataTable('#myTable');
@@ -64,13 +64,13 @@ export default function AdminPredict() {
                                 required
                             /></td>
                             <td>
-                                <button type="submit" className="btn btn-primary">Ok</button>
+                                <button type="submit" className="btn btn-link btn_gen">
+                                    <IoArrowRedoCircleSharp  className={"IoArrowRedoCircleSharp "} title={"Ok"} />
+                                </button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
-
-
                 </form>
             </div>
             <table id="myTable" className="display table table-dark">

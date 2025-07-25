@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
-import trash from "../assets/img/trash.png";
 import log from "../helps/logs.mjs";
+import {IoBagAdd, IoCardOutline, IoCart} from "react-icons/io5";
+import {AiOutlineDelete} from "react-icons/ai";
 export default function BlockTwo() {
     const [showAlert, setShowAlert] = useState(false);
     const [products, setProducts] = useState([]);
@@ -88,11 +89,11 @@ export default function BlockTwo() {
                 <table className="table table-borderless service">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
+                        <th scope="col">№</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Action</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -130,8 +131,9 @@ export default function BlockTwo() {
                             </td>
                             <td>
 
-                                <button type="button" className="btn btn-success" data-testid={"add_to_cart"}
-                                        onClick={() => addToCart(product.id)}>Add to Cart
+                                <button type="button" className="btn btn-link btn_gen" data-testid={"add_to_cart"}
+                                        onClick={() => addToCart(product.id)}>
+                                    <IoBagAdd className={"IoBagAdd"} title={"Add to cart"} />
                                 </button>
 
                             </td>
@@ -202,9 +204,9 @@ export default function BlockTwo() {
                                                     <td>{(item.amount * item.price).toFixed(2)} $</td>
                                                     <td>
                                                         <button
-                                                            className="btn btn-warning"
+                                                            className="btn btn-link btn_gen"
                                                             onClick={() => removeFromCart(item.id)}>
-                                                            Remove
+                                                            <AiOutlineDelete className={"AiOutlineDelete" } title={"Remove"}/>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -220,18 +222,15 @@ export default function BlockTwo() {
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                                        Continue
-                                    </button>
-                                    <a href="/order"><div className="btn btn-success">Place an order</div></a>
+                                    <a href="/order"><div className="btn btn-link btn_gen"><IoCardOutline className={"IoCardOutline"} title={"To pay"}/></div></a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="btn trash" data-bs-toggle="modal" data-bs-target="#cartModal">
-                        <span className="badge text-bg-danger">{cartItems.length}</span><img src={trash} alt="Trash"
-                                                                                           title="Trash"/>
+                        <span className="badge text-bg-danger">{cartItems.length}</span>
+                        <IoCart className={"IoCart"} title="Trash"/>
                     </div>
                 </div>
             </div>

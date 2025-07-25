@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminReviewsModal from "./AdminReviewsModal";
+import {AiOutlineDelete, AiOutlineInteraction, AiTwotoneFileAdd} from "react-icons/ai";
 
 export default function AdminReviews() {
     const [content, setContent] = useState([]);
@@ -12,13 +13,11 @@ export default function AdminReviews() {
             const response = await fetch("http://localhost:8000/review/reviews", {
                 method: "GET",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
             if (data.success) {
                 setContent(data.data.reviews);
-
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.reviews.forEach(item => {
                     initForm[item.id] = {
@@ -34,7 +33,6 @@ export default function AdminReviews() {
         }
     };
 
-    // Инициализация
     useEffect(() => {
         fetchReviews();
     }, []);
@@ -46,7 +44,6 @@ export default function AdminReviews() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -58,17 +55,17 @@ export default function AdminReviews() {
     };
 
     const fetchUpdate = async (id) => {
-        const { name, text, gender } = formData[id];
+        const {name, text, gender} = formData[id];
         try {
             const response = await fetch(`http://localhost:8000/review/update/${id}`, {
                 method: "POST",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, text, gender })
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({name, text, gender})
             });
             const data = await response.json();
             if (data.success) {
-                fetchReviews();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "reviews", error);
@@ -79,11 +76,11 @@ export default function AdminReviews() {
             const response = await fetch(`http://localhost:8000/review/delete/${id}`, {
                 method: "POST",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
             });
             const data = await response.json();
             if (data.success) {
-                fetchReviews();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "reviews", error);
@@ -91,21 +88,23 @@ export default function AdminReviews() {
     };
     return (
         <div className={"row block_1 p-1"}>
-
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addReviews">Add item
+            <div className={"center-vertical"}>
+                <button className="btn btn-link mb-2 btn_with btn_gen"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addReviews">
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add review"}/>
+                </button>
             </div>
             <AdminReviewsModal/>
             <table id="myTable" className="display table table-dark">
-            <thead>
+                <thead>
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Text</th>
                     <th>Gender</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -135,13 +134,15 @@ export default function AdminReviews() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
+                            <button data-testid={"item_update"} className="btn btn-link btn_gen"
+                                    onClick={() => fetchUpdate(item.id)}>
+                                <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
+                            <button data-testid={"item_delete"} className="btn btn-link btn_gen"
+                                    onClick={() => fetchDelete(item.id)}>
+                                <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
                             </button>
                         </td>
                     </tr>

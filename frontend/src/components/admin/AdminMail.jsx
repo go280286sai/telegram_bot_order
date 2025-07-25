@@ -2,6 +2,12 @@ import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminMailModal from "./AdminMailModal";
+import {
+    AiFillCheckSquare,
+    AiOutlineDelete,
+    AiOutlineInteraction, AiOutlineMail,
+    AiTwotoneFileAdd
+} from "react-icons/ai";
 
 export default function AdminMail() {
     const [content, setContent] = useState([]);
@@ -15,11 +21,8 @@ export default function AdminMail() {
                 headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
-            console.log(data)
             if (data.success) {
                 setContent(data.data.templates);
-
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.templates.forEach(item => {
                     initForm[item.id] = {
@@ -35,7 +38,6 @@ export default function AdminMail() {
         }
     };
 
-    // Инициализация
     useEffect(() => {
         fetchTemplates();
     }, []);
@@ -47,7 +49,6 @@ export default function AdminMail() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -69,7 +70,7 @@ export default function AdminMail() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchTemplates();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "products", error);
@@ -122,10 +123,10 @@ export default function AdminMail() {
     };
     return (
         <div className={"row block_1 p-1"}>
-
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addTemplate">Add item
+            <div className="mb-2 btn_with">
+                <button className={"btn btn-link btn_gen"} data-bs-toggle="modal" data-bs-target="#addTemplate">
+                    <AiTwotoneFileAdd  className={"AiTwotoneFileAdd"} title={"Add template"}/>
+                </button>
             </div>
             <AdminMailModal/>
             <table id="myTable" className="display table table-dark">
@@ -137,8 +138,8 @@ export default function AdminMail() {
                     <th>Body</th>
                     <th>Send users</th>
                     <th>Subscribers</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -170,23 +171,26 @@ export default function AdminMail() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_send_user"} className="btn btn-success btn-sm" onClick={() => fetchSendUsers(item.id)}>
-                                Send
+                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchSendUsers(item.id)}
+                                    data-testid="item_send_user">
+                                <AiOutlineMail className={"AiOutlineMail"} title={"Send email users"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_send_subscriber"} className="btn btn-success btn-sm" onClick={() => fetchSendSubscribers(item.id)}>
-                                Send
+                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchSendSubscribers(item.id)}
+                                    data-testid="item_send_subscriber">
+                                <AiOutlineMail className={"AiOutlineMail"} title={"Send subscribers"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
+                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchUpdate(item.id)} data-testid="item_update">
+                                <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
+                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchDelete(item.id)}
+                                    data-testid="item_delete">
+                                <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
                             </button>
                         </td>
                     </tr>

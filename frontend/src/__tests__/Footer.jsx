@@ -28,7 +28,7 @@ describe("Footer component", () => {
 
         render(<Footer settings={mockSettings}/>);
         const input = screen.getByPlaceholderText("example@example.com");
-        const button = screen.getByDisplayValue("Submit");
+        const button = screen.getByTestId("submit");
 
         fireEvent.change(input, {target: {value: "user@example.com"}});
         fireEvent.click(button);

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
+import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
-export default function AdminSendEmailModal(){
+export default function AdminSendEmailModal() {
     const [formData, setFormData] = useState({
         header: "",
         title: "",
@@ -18,14 +19,12 @@ export default function AdminSendEmailModal(){
             const button = event.relatedTarget;
             const id = button.getAttribute('data-user-id');
             const email = button.getAttribute('data-user-email');
-
             setFormData(prev => ({
                 ...prev,
                 toId: id,
                 toEmail: email
             }));
         };
-
         modalEl.addEventListener('show.bs.modal', handleShow);
         return () => {
             modalEl.removeEventListener('show.bs.modal', handleShow);
@@ -115,8 +114,12 @@ export default function AdminSendEmailModal(){
                     </div>
 
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Send</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen">
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
             </div>

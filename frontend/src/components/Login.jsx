@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import log from "../helps/logs.mjs";
+import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
 export default function Login() {
     const [recovery, setRecovery] = useState(true)
@@ -12,8 +13,8 @@ export default function Login() {
         user: "",
         email: "",
     });
-    const toggleRecover = () =>{
-        if(recovery !== !recovery){
+    const toggleRecover = () => {
+        if (recovery !== !recovery) {
             setRecovery(!recovery)
         }
     }
@@ -21,12 +22,12 @@ export default function Login() {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const exit= () => {
+    const exit = () => {
         setRecovery(true)
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(formData.username.trim() === "" || formData.password.trim() === ""){
+        if (formData.username.trim() === "" || formData.password.trim() === "") {
             alert("Login or password error");
             return;
         }
@@ -42,13 +43,16 @@ export default function Login() {
             credentials: "include"
         }).then(res => res.json())
             .then((data) => {
-                if (data.data.success) {
+                if (data.success) {
                     window.location.reload();
                 } else {
                     log("error", "login error", data);
                     setError("Incorrect username or password")
                 }
-            }).catch(data => log("error", "login error", data));
+            }).catch(data => {
+                setError("Incorrect username or password");
+            log("error", "login error", data);
+        });
     };
 
     const handleRecovery = (e) => {
@@ -119,15 +123,20 @@ export default function Login() {
                     </div>
                     <p className={"error"}>{error}</p>
                     <div className="modal-footer">
-                        <button className="btn btn-primary" type="button" onClick={toggleRecover} title={"recover_password"}>
+                        <button className="btn btn-link" type="button" onClick={toggleRecover}
+                                title={"Recover password"} data-testid={"recovery_link"}>
                             Recover password
                         </button>
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary" title={"Login"}>Login</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen" data-testid={"login_send"}>
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
             </div> : <div className="modal-dialog">
-            <form className="modal-content" onSubmit={handleSubmitRecovery}>
+                <form className="modal-content" onSubmit={handleSubmitRecovery}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="RecoverLabel">Recover password</h1>
 
@@ -164,8 +173,13 @@ export default function Login() {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={exit}>Exit</button>
-                        <button type="submit" className="btn btn-primary" title={"btn_recover"}>Send</button>
+                        <button type="button" className="btn btn-link btn_gen" onClick={exit}>
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen" title={"Recover password"}
+                        data-testid={"recovery_password"}>
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
             </div>}

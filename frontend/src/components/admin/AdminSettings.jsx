@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminAddSettingModal from "./AdminAddSettingModal";
-
+import {
+    AiOutlineInteraction,
+    AiOutlineRest,
+    AiOutlineRightSquare,
+    AiTwotoneFileAdd,
+    AiTwotoneCloseSquare, AiFillCheckSquare, AiOutlineDelete
+} from "react-icons/ai";
 export default function AdminSettings() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({});
@@ -32,8 +38,6 @@ export default function AdminSettings() {
             await log("error", "is_auth", error);
         }
     };
-
-    // Инициализация
     useEffect(() => {
         fetchSetting();
     }, []);
@@ -56,7 +60,6 @@ export default function AdminSettings() {
         }));
     };
 
-    // Отправка обновлений
     const fetchUpdate = async (id) => {
         const { name, value } = formData[id];
         try {
@@ -68,7 +71,7 @@ export default function AdminSettings() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchSetting();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "is_auth", error);
@@ -83,7 +86,7 @@ export default function AdminSettings() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchSetting();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "is_auth", error);
@@ -91,20 +94,20 @@ export default function AdminSettings() {
     };
     return (
         <div className={"row block_1 p-1"}>
-
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addSetting">Add item
+            <div className="mb-2 btn_with">
+                <button className={"btn btn-link btn_gen"} data-bs-toggle="modal" data-bs-target="#addSetting">
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"}  title={"Add"}/>
+                </button>
             </div>
             <AdminAddSettingModal/>
             <table id="myTable" className="display table table-dark">
-            <thead>
+                <thead>
                 <tr>
-                    <th>Id</th>
+                <th>Id</th>
                     <th>Name</th>
                     <th>Value</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -126,13 +129,13 @@ export default function AdminSettings() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
+                            <button data-testid={"item_update"} className="btn btn-link btn_gen" onClick={() => fetchUpdate(item.id)}>
+                                <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={()=>fetchDelete(item.id)}>
-                                Delete
+                            <button data-testid={"item_delete"} className="btn btn-link btn_gen" onClick={()=>fetchDelete(item.id)}>
+                                <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
                             </button>
                         </td>
                     </tr>

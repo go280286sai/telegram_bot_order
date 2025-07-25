@@ -6,8 +6,6 @@ jest.mock("../helps/logs.mjs", () => jest.fn());
 
 global.fetch = jest.fn();
 
-// Замена модальных компонентов на заглушки
-jest.mock("../components/admin/AdminProductsModal", () => () => <div data-testid="modal-products" />);
 jest.mock("../components/admin/AdminOrderInvoiceModal", () => () => <div data-testid="modal-invoice" />);
 jest.mock("../components/admin/AdminOrderCommentlModal", () => () => <div data-testid="modal-comment" />);
 jest.mock("../components/admin/AdminOrderViewModal", () => () => <div data-testid="modal-view" />);
@@ -81,7 +79,6 @@ describe("AdminOrders component", () => {
   });
 
   it("renders modal components", () => {
-    expect(screen.getByTestId("modal-products")).toBeInTheDocument();
     expect(screen.getByTestId("modal-invoice")).toBeInTheDocument();
     expect(screen.getByTestId("modal-comment")).toBeInTheDocument();
     expect(screen.getByTestId("modal-view")).toBeInTheDocument();

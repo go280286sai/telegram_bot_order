@@ -3,6 +3,11 @@ import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import {fetchAuth} from "./fetchAuth";
 import AdminSendEmailModal from "./AdminSendEmailModal";
+import {
+    AiOutlineInteraction,
+    AiOutlineMail, AiOutlineDelete
+} from "react-icons/ai";
+import {IoLockClosedSharp, IoLockOpen, IoReloadCircleSharp} from "react-icons/io5";
 
 export default function AdminUsers() {
     const [content, setContent] = useState([]);
@@ -11,7 +16,7 @@ export default function AdminUsers() {
 
     const fetchUsers = async () => {
         try {
-            fetchAuth();
+            await fetchAuth();
             const response = await fetch("http://localhost:8000/user/gets", {
                 method: "POST",
                 credentials: "include",
@@ -41,7 +46,6 @@ export default function AdminUsers() {
         }
     };
 
-    // Инициализация
     useEffect(() => {
         fetchUsers();
     }, []);
@@ -53,7 +57,6 @@ export default function AdminUsers() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -75,7 +78,7 @@ export default function AdminUsers() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchUsers();
+                await fetchUsers();
             }
         } catch (error) {
             await log("error", "users", error);
@@ -90,7 +93,7 @@ export default function AdminUsers() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchUsers();
+                await fetchUsers();
             }
         } catch (error) {
             await log("error", "users", error);
@@ -124,7 +127,7 @@ export default function AdminUsers() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchUsers();
+                await fetchUsers();
             }
         } catch (error) {
             await log("error", "users", error);
@@ -152,17 +155,17 @@ export default function AdminUsers() {
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>First name</th>
-                    <th>Last name</th>
+                    <th>First</th>
+                    <th>Last</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Comments</th>
-                    <th>Update</th>
-                    <th>Send email</th>
+                    <th></th>
+                    <th></th>
                     <th>Status</th>
-                    <th>Is admin</th>
-                    <th>Reset password</th>
-                    <th>Delete</th>
+                    <th>Admin</th>
+                    <th>Reset</th>
+                    <th></th>
                     <th>Created</th>
                 </tr>
                 </thead>
@@ -218,66 +221,79 @@ export default function AdminUsers() {
                                 id="floatingTextarea"></textarea>
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
-                            </button>
+                            <div>
+                                <button data-testid={"item_update"} className="btn btn-link btn_gen"
+                                        onClick={() => fetchUpdate(item.id)}>
+                                    <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
+                                </button>
+                            </div>
                         </td>
                         <td>
-                            <div className="btn btn-success btn-sm"
-                                 data-bs-toggle="modal"
-                                 data-bs-target="#SendEmail"
-                                 data-user-id={item.id}
-                                 data-user-email={formData[item.id]?.email || ""}
-                            >Send
+                            <div>
+                                <button
+                                    className="btn btn-link btn_gen" data-bs-toggle="modal"
+                                    data-bs-target="#SendEmail"
+                                    data-user-id={item.id}
+                                    data-user-email={formData[item.id]?.email || ""}>
+                                    <AiOutlineMail className={"AiOutlineMail"} title={"Send email"}/></button>
                             </div>
-
                         </td>
                         <td>
                             {item.status ? (
-                                <div>
-                                    <input type="button" className={"btn btn-danger btn-sm"} value={"Deactive"}
-                                           onClick={() => {
-                                               fetchSetStatus(item.id, 0)
-                                           }}/>
+                                <div className={"center-vertical"}>
+                                    <button className={"btn btn-link btn_gen"} value={"Deactivate"}
+                                            onClick={() => {
+                                                fetchSetStatus(item.id, 0)
+                                            }}>
+                                        <IoLockOpen className={"IoLockOpen"} title={"Deactivate"}/></button>
                                 </div>
                             ) : (
-                                <div>
-                                    <input type="button" className={"btn btn-success btn-sm"} value={"Active"}
-                                           onClick={() => {
-                                               fetchSetStatus(item.id, 1)
-                                           }}/>
+                                <div className={"center-vertical"}>
+                                    <button className={"btn btn-link btn_gen"}
+                                            value={"Active"}
+                                            onClick={() => {
+                                                fetchSetStatus(item.id, 1)
+                                            }}>
+                                        <IoLockClosedSharp className={"IoLockClosedSharp"} title={"Active"}/></button>
                                 </div>
                             )}
                         </td>
                         <td>
                             {item.is_admin ? (
-                                <div>
-                                    <input type="button" className={"btn btn-danger btn-sm"} value={"Deactive"}
-                                           onClick={() => {
-                                               fetchSetAdminStatus(item.id, 0)
-                                           }}/>
+                                <div className={"center-vertical"}>
+                                    <button className={"btn btn-link btn_gen"} value={"Deactivate"}
+                                            onClick={() => {
+                                                fetchSetAdminStatus(item.id, 0)
+                                            }}>
+                                        <IoLockOpen className={"IoLockOpen"} title={"Deactivate"}/></button>
                                 </div>
                             ) : (
-                                <div>
-                                    <input type="button" className={"btn btn-success btn-sm"} value={"Active"}
-                                           onClick={() => {
-                                               fetchSetAdminStatus(item.id, 1)
-                                           }}/>
+                                <div className={"center-vertical"}>
+                                    <button className={"btn btn-link btn_gen"} value={"Active"}
+                                            onClick={() => {
+                                                fetchSetAdminStatus(item.id, 1)
+                                            }}>
+                                        <IoLockClosedSharp className={"IoLockClosedSharp"} title={"Active"}/></button>
                                 </div>
                             )}
                         </td>
                         <td>
-                            <div>
-                                <input type="button" className={"btn btn-success btn-sm"} value={"Reset"}
-                                       onClick={() => {
-                                           fetchResetPassword(item.username, item.email)
-                                       }}/>
+                            <div className={"center-vertical"}>
+                                <button className={"btn btn-link btn_gen"} value={"Reset"}
+                                        onClick={() => {
+                                            fetchResetPassword(item.username, item.email)
+                                        }}>
+                                    <IoReloadCircleSharp className={"IoReloadCircleSharp"} title={"Reset password"}/>
+                                </button>
                             </div>
                         </td>
                         <td>
-                            <button className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button className="btn btn-link btn_gen"
+                                        onClick={() => fetchDelete(item.id)}>
+                                    <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
+                                </button>
+                            </div>
                         </td>
                         <td>
                             {item.created_at}

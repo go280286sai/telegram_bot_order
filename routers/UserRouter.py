@@ -1,9 +1,11 @@
 import logging
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, Request, status, BackgroundTasks
 from starlette.responses import JSONResponse, HTMLResponse
 from database.User import UserManager
 from database.main import async_session_maker
-from helps.emails import register_user_confirm, confirm_email, send_emails
+from helps.emails import (register_user_confirm, confirm_email,
+                          send_emails, delete_user_confirm,
+                          confirm_delete_user)
 from helps.help import is_valid_email, generate_transaction, validate_password
 from models.RecoveryModel import Recovery
 from models.TemplateModel import Template
@@ -579,10 +581,12 @@ async def send_email_user(
         tmp: Template,
         idx: int,
         email: str,
-        request: Request
+        request: Request,
+        background_task: BackgroundTasks
 ) -> JSONResponse:
     """
     Send email
+    :param background_task:
     :param tmp:
     :param idx:
     :param request:
@@ -596,7 +600,8 @@ async def send_email_user(
         admin = await is_admin(int(user_id))
         if admin is None or admin is False:
             raise Exception("Cookies missing user_id")
-        await send_emails(
+        background_task.add_task(
+            send_emails,
             header=tmp.header,
             title=tmp.title,
             body=tmp.body,
@@ -605,6 +610,7 @@ async def send_email_user(
             hash_active="",
             footer=False
         )
+
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -663,5 +669,89 @@ async def user_delete_id(idx: int, request: Request) -> JSONResponse:
                 "success": False,
                 "data": None,
                 "error": str(e)
+            }
+        )
+
+
+@router.post("/delete_user")
+async def delete_user(
+        request: Request,
+        background_task: BackgroundTasks
+) -> JSONResponse:
+    """
+    Send email for delete user
+    :return:
+    """
+    try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("Cookies missing user_id")
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            user_hashed_active = generate_transaction()
+            delete_users = await user_manager.set_hashed_active_for_delete(
+                idx=user_id,
+                hashed_active=user_hashed_active
+            )
+            if delete_users is None:
+                raise Exception("User not found")
+            background_task.add_task(
+                delete_user_confirm,
+                email=delete_users,
+                idx=int(user_id),
+                hash_active=user_hashed_active
+            )
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Email failed {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Delete users failed"
+            }
+        )
+
+
+@router.get("/delete_confirm/{idx}/{token}", response_model=None)
+async def user_delete_confirm(
+        idx: int,
+        token: str
+) -> HTMLResponse | JSONResponse:
+    """
+    Send email for delete user
+    :param idx:
+    :param token:
+    :return:
+    """
+    try:
+        hash_active = str(token)
+        idx = int(idx)
+        async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            result = await user_manager.get_user(idx=idx)
+            if result is None:
+                raise Exception("Failed to confirm delete")
+            if hash_active != result.hashed_active:
+                raise Exception("Failed to confirm delete")
+            await user_manager.delete_user(idx=idx)
+            return await confirm_delete_user()
+
+    except Exception as e:
+        logging.exception(e)
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed to confirm delete"
             }
         )

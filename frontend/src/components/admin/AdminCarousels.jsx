@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminCarouselsModal from "./AdminCarouselsModal";
+import {AiOutlineDelete, AiOutlineInteraction, AiTwotoneFileAdd} from "react-icons/ai";
 
 export default function AdminCarousels() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({});
-
-    // Загружаем данные
     const fetchCarousels = async () => {
         try {
             const response = await fetch("http://localhost:8000/front/carousel/gets", {
                 method: "GET",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             });
             const data = await response.json();
             if (data.success) {
                 setContent(data.data.carousels);
-
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.carousels.forEach(item => {
                     initForm[item.id] = {
@@ -34,8 +31,6 @@ export default function AdminCarousels() {
             await log("error", "carousels", error);
         }
     };
-
-    // Инициализация
     useEffect(() => {
         fetchCarousels();
     }, []);
@@ -47,7 +42,8 @@ export default function AdminCarousels() {
                 dtInstance.destroy();
             };
         }
-    }, [content]);    const handleChange = (id, field, newValue) => {
+    }, [content]);
+    const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
             [id]: {
@@ -57,19 +53,18 @@ export default function AdminCarousels() {
         }));
     };
 
-    // Отправка обновлений
     const fetchUpdate = async (id) => {
-        const { title, description, image } = formData[id];
+        const {title, description, image} = formData[id];
         try {
             const response = await fetch(`http://localhost:8000/front/carousel/update/${id}`, {
                 method: "POST",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title, description, image })
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({title, description, image})
             });
             const data = await response.json();
             if (data.success) {
-                fetchCarousels();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "carousels", error);
@@ -80,11 +75,11 @@ export default function AdminCarousels() {
             const response = await fetch(`http://localhost:8000/front/carousel/delete/${id}`, {
                 method: "POST",
                 credentials: "include",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
             });
             const data = await response.json();
             if (data.success) {
-                fetchCarousels();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "carousels", error);
@@ -92,21 +87,23 @@ export default function AdminCarousels() {
     };
     return (
         <div className={"row block_1 p-1"}>
-
-            <div className="btn btn-success mb-2 btn_with"
+<div className={"center-vertical"}>
+    <button className="btn btn-link mb-2 btn_with btn_gen"
                  data-bs-toggle="modal"
-                 data-bs-target="#addCarousels">Add item
-            </div>
+                 data-bs-target="#addCarousels">
+        <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add item"}/>
+    </button>
+</div>
             <AdminCarouselsModal/>
             <table id="myTable" className="display table table-dark">
-            <thead>
+                <thead>
                 <tr>
                     <th>Id</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Image</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -135,13 +132,15 @@ export default function AdminCarousels() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
+                            <button data-testid={"item_update"} className="btn btn-link btn_gen"
+                                    onClick={() => fetchUpdate(item.id)}>
+                                <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
                             </button>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
+                            <button data-testid={"item_delete"} className="btn btn-link btn_gen"
+                                    onClick={() => fetchDelete(item.id)}>
+                                <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
                             </button>
                         </td>
                     </tr>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminCityModal from "./AdminCityModal";
+import {AiOutlineDelete, AiOutlineInteraction, AiTwotoneFileAdd} from "react-icons/ai";
 
 export default function AdminCity() {
     const [content, setContent] = useState([]);
@@ -17,13 +18,11 @@ export default function AdminCity() {
             const data = await response.json();
             if (data.success) {
                 setContent(data.data.cities);
-
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.cities.forEach(item => {
                     initForm[item.id] = {
                         name: item.name,
-                        post_id:item.post_id
+                        post_id: item.post_id
                     };
                 });
                 setFormData(initForm);
@@ -32,8 +31,6 @@ export default function AdminCity() {
             await log("error", "cities", error);
         }
     };
-
-    // Инициализация
     useEffect(() => {
         fetchCities();
     }, []);
@@ -45,7 +42,6 @@ export default function AdminCity() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -67,7 +63,7 @@ export default function AdminCity() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchCities();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "products", error);
@@ -82,7 +78,7 @@ export default function AdminCity() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchCities();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "cities", error);
@@ -91,9 +87,13 @@ export default function AdminCity() {
     return (
         <div>
             <h3>Cities</h3>
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addCity">Add item
+            <div className={"center-vertical"}>
+                <button className="btn btn-link mb-2 btn_with"
+                        style={{border: "none", background: "none"}}
+                        data-bs-toggle="modal"
+                        data-bs-target="#addCity">
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add city"}/>
+                </button>
             </div>
             <AdminCityModal/>
             <table id="myTable2" className="display table table-dark">
@@ -102,8 +102,8 @@ export default function AdminCity() {
                     <th>Id</th>
                     <th>Name</th>
                     <th>Post Id</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -126,14 +126,23 @@ export default function AdminCity() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button data-testid={"item_update"} className="btn btn-link"
+                                        style={{border: "none", background: "none"}}
+                                        onClick={() => fetchUpdate(item.id)}>
+                                    <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
+                                </button>
+                            </div>
+
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button data-testid={"item_delete"} className="btn btn-danger btn-sm"
+                                        onClick={() => fetchDelete(item.id)}
+                                        style={{border: "none", background: "none"}}>
+                                    <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 ))}

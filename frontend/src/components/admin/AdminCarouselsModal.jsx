@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import log from "../../helps/logs.mjs";
+import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
 export default function AdminCarouselsModal(){
     const [formData, setFormData] = useState({
@@ -84,8 +85,12 @@ export default function AdminCarouselsModal(){
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Send</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen">
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
            </div>

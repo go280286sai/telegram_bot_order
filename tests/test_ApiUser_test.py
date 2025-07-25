@@ -1,5 +1,7 @@
 import pytest
+from dataclasses import dataclass
 
+import routers.UserRouter
 from main import app
 from httpx import AsyncClient, ASGITransport
 
@@ -135,6 +137,58 @@ async def test_user_confirm(monkeypatch):
         monkeypatch.setattr(UserManager, "get_user", mock_get_user)
 
         response = await client.get(f"/user/confirm/1/{TOKEN}")
+        assert response.status_code == 200
+
+
+@pytest.mark.asyncio
+async def test_delete_user_profile(monkeypatch):
+    async with AsyncClient(
+            transport=transport,
+            base_url='http://localhost:8000',
+            cookies={"user_id": "1"}
+    ) as client:
+        async def mock_set_hashed_active_for_delete(self, *args, **kwargs):
+            return "admin@admin.com"
+
+        def mock_add_task(self, *args, **kwargs):
+            return
+
+        from routers.UserRouter import UserManager
+        monkeypatch.setattr(UserManager, "set_hashed_active_for_delete", mock_set_hashed_active_for_delete)
+        from routers.UserRouter import BackgroundTasks
+        monkeypatch.setattr(BackgroundTasks, "add_task", mock_add_task)
+        response = await client.post("/user/delete_user")
+        assert response.status_code == 200
+        data = response.json()
+        assert data['success'] is True
+        assert data['data'] is None
+        assert data['error'] is None
+
+
+@pytest.mark.asyncio
+async def test_delete_confirm_user_profile(monkeypatch):
+    async with AsyncClient(
+            transport=transport,
+            base_url='http://localhost:8000'
+    ) as client:
+        @dataclass
+        class User:
+            hashed_active: str
+
+        async def mock_get_user(self, *args, **kwargs):
+            return User(hashed_active="qwerty")
+
+        async def mock_delete_user(self, *args, **kwargs):
+            return True
+
+        async def mock_confirm_delete_user(*args, **kwargs):
+            return True
+
+        from routers.UserRouter import UserManager, confirm_delete_user
+        monkeypatch.setattr(UserManager, 'get_user', mock_get_user)
+        monkeypatch.setattr(UserManager, "delete_user", mock_delete_user)
+        monkeypatch.setattr("routers.UserRouter.confirm_delete_user", mock_confirm_delete_user)
+        response = await client.get("/user/delete_confirm/1/qwerty")
         assert response.status_code == 200
 
 

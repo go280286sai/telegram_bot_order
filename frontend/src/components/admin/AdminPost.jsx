@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminPostsModal from "./AdminPostsModal";
+import {AiOutlineDelete, AiOutlineInteraction, AiTwotoneFileAdd} from "react-icons/ai";
 
 export default function AdminPost() {
     const [content, setContent] = useState([]);
@@ -18,7 +19,6 @@ export default function AdminPost() {
             if (data.success) {
                 setContent(data.data.posts);
 
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.posts.forEach(item => {
                     initForm[item.id] = {
@@ -31,8 +31,6 @@ export default function AdminPost() {
             await log("error", "products", error);
         }
     };
-
-    // Инициализация
     useEffect(() => {
         fetchPosts();
     }, []);
@@ -44,7 +42,6 @@ export default function AdminPost() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -66,7 +63,7 @@ export default function AdminPost() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchPosts();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "products", error);
@@ -81,7 +78,7 @@ export default function AdminPost() {
             });
             const data = await response.json();
             if (data.success) {
-                fetchPosts();
+                window.location.reload();
             }
         } catch (error) {
             await log("error", "products", error);
@@ -90,9 +87,12 @@ export default function AdminPost() {
     return (
         <div>
             <h3>Post service</h3>
-            <div className="btn btn-success mb-2 btn_with"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addPosts">Add item
+            <div className={"center-vertical"}>
+                <button className="btn btn-link mb-2 btn_with btn_gen"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addPosts">
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add item"}/>
+                </button>
             </div>
             <AdminPostsModal/>
             <table id="myTable3" className="display table table-dark">
@@ -100,8 +100,8 @@ export default function AdminPost() {
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>Update</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -116,14 +116,20 @@ export default function AdminPost() {
                             />
                         </td>
                         <td>
-                            <button data-testid={"item_update"} className="btn btn-primary btn-sm" onClick={() => fetchUpdate(item.id)}>
-                                Update
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button data-testid={"item_update"} className="btn btn-link btn_gen"
+                                        onClick={() => fetchUpdate(item.id)}>
+                                    <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
+                                </button>
+                            </div>
                         </td>
                         <td>
-                            <button data-testid={"item_delete"} className="btn btn-danger btn-sm" onClick={() => fetchDelete(item.id)}>
-                                Delete
-                            </button>
+                            <div className={"center-vertical"}>
+                                <button data-testid={"item_delete"} className="btn btn-link btn_gen"
+                                        onClick={() => fetchDelete(item.id)}>
+                                    <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 ))}

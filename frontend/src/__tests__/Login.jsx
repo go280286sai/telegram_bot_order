@@ -9,11 +9,13 @@ window.location = {reload: jest.fn()};
 const alertMock = jest.spyOn(window, "alert").mockImplementation(() => {
 });
 global.fetch = jest.fn();
+
 describe("Login component", () => {
     afterEach(() => {
         jest.clearAllMocks();
         cleanup();
     })
+
     it("Send login and password fail 1", async () => {
         render(<Login/>);
         const Username = screen.getByLabelText(/Username/i);
@@ -22,7 +24,7 @@ describe("Login component", () => {
         fireEvent.change(Username, {target: {value: "   "}});
         fireEvent.change(Password, {target: {value: "   "}});
 
-        const btn = screen.getByTitle("Login");
+        const btn = screen.getByTestId("login_send");
         fireEvent.click(btn);
         await waitFor(() => {
             expect(alertMock).toHaveBeenCalledWith("Login or password error");
@@ -32,9 +34,7 @@ describe("Login component", () => {
         render(<Login/>);
         fetch.mockResolvedValue({
             json: () => Promise.resolve({
-                data: {
                     success: false
-                }
             })
         })
         const Username = screen.getByLabelText(/Username/i);
@@ -43,7 +43,7 @@ describe("Login component", () => {
         fireEvent.change(Username, {target: {value: "User"}});
         fireEvent.change(Password, {target: {value: "1234"}});
 
-        const btn = screen.getByTitle("Login");
+        const btn = screen.getByTestId("login_send");
         fireEvent.click(btn);
         const res = await screen.findByText("Incorrect username or password");
         expect(res).toBeInTheDocument();
@@ -52,9 +52,7 @@ describe("Login component", () => {
         render(<Login/>);
         fetch.mockResolvedValue({
             json: () => Promise.resolve({
-                data: {
                     success: true
-                }
             })
         })
         const Username = screen.getByLabelText(/Username/i);
@@ -63,7 +61,7 @@ describe("Login component", () => {
         fireEvent.change(Username, {target: {value: "User"}});
         fireEvent.change(Password, {target: {value: "1234"}});
 
-        const btn = screen.getByTitle("Login");
+        const btn = screen.getByTestId("login_send");
         fireEvent.click(btn);
         await waitFor(() => {
             expect(window.location.reload).toHaveBeenCalled()
@@ -77,7 +75,7 @@ describe("Login component", () => {
                     success: true
             })
         })
-        const btn = screen.getByTitle("recover_password");
+        const btn = screen.getByTestId("recovery_link");
         fireEvent.click(btn);
         const title = await screen.findByText("Recover password");
         expect(title).toBeInTheDocument();
@@ -87,7 +85,7 @@ describe("Login component", () => {
         fireEvent.change(username, {target: {value: "User"}});
         fireEvent.change(email, {target: {value: "admin@admin.com"}});
 
-        const btn_rec = screen.getByTitle("btn_recover");
+        const btn_rec = screen.getByTestId("recovery_password");
         fireEvent.click(btn_rec);
         const login = await screen.findByText("Username")
         expect(login).toBeInTheDocument();
@@ -99,8 +97,9 @@ describe("Login component", () => {
                     success: false
             })
         })
-        const btn = screen.getByTitle("recover_password");
-        fireEvent.click(btn);
+        const btn_recover = screen.getByTestId("recovery_link")
+        console.log(btn_recover)
+        fireEvent.click(btn_recover);
         const title = await screen.findByText("Recover password");
         expect(title).toBeInTheDocument();
         const username = screen.getByLabelText(/Input you username/i);
@@ -109,7 +108,7 @@ describe("Login component", () => {
         fireEvent.change(username, {target: {value: "User"}});
         fireEvent.change(email, {target: {value: "admin@admin.com"}});
 
-        const btn_rec = screen.getByTitle("btn_recover");
+        const btn_rec = screen.getByTestId("recovery_password");
         fireEvent.click(btn_rec);
         await waitFor(()=>{
             expect(window.location.reload).toHaveBeenCalled();

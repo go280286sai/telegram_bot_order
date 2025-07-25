@@ -78,7 +78,32 @@ async def register_user_confirm(
     )
 
 
+async def delete_user_confirm(
+        idx: int,
+        email: str,
+        hash_active: str
+) -> bool:
+    delete_link = f"{URL_SERVER}/user/delete_confirm/{int(idx)}/{hash_active}"
+    template = env.get_template("delete_user.html")
+    html_content = template.render(
+        delete_link=delete_link,
+        host=os.getenv("SMTP_SERVER")
+    )
+
+    return send_html_email(
+        subject="Registration confirmation",
+        recipient=email,
+        html_content=html_content
+    )
+
+
 async def confirm_email() -> HTMLResponse:
     template = env.get_template("confirm_email_success.html")
+    html_content = template.render()
+    return HTMLResponse(content=html_content)
+
+
+async def confirm_delete_user() -> HTMLResponse:
+    template = env.get_template("confirm_delete_user_success.html")
     html_content = template.render()
     return HTMLResponse(content=html_content)

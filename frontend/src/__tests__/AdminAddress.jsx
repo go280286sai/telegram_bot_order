@@ -86,9 +86,6 @@ describe("AdminAddress component", () => {
             });
 
         render(<AdminAddress />);
-        await waitFor(() => {
-            expect(screen.getByText("Delete")).toBeInTheDocument();
-        });
 
         const deleteButtons = await screen.findAllByTestId("btn_delete");
         fireEvent.click(deleteButtons[0]);

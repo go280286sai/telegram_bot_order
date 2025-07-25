@@ -4,9 +4,11 @@ import BlockTwo from "./components/BlockTwo";
 import Separation from "./components/Separation";
 import Carousel from "./components/Carousel";
 import Footer from "./components/Footer";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import log from "./helps/logs.mjs";
 import AboutUs from "./components/AboutUs";
+
+<script src="https://kit.fontawesome.com/cf24694bb0.js" crossOrigin="anonymous"></script>
 
 function App() {
     const [settings, setSettings] = useState({});
@@ -41,15 +43,15 @@ function App() {
 
     return (
         <>
-            <BlockOne settings={settings} />
-            <Separation />
-            <Carousel />
-            <Separation />
-            <BlockTwo />
-            <Separation />
-            <AboutUs />
-            <Separation />
-            <Footer settings={settings} />
+            <BlockOne settings={settings}/>
+            <Separation/>
+            <Carousel/>
+            <Separation/>
+            <BlockTwo/>
+            <Separation/>
+            <AboutUs/>
+            <Separation/>
+            <Footer settings={settings}/>
         </>
     );
 }

@@ -330,3 +330,27 @@ class UserManager:
         except Exception as e:
             logging.exception(e)
             return None
+
+    async def set_hashed_active_for_delete(self,
+                                           idx: str,
+                                           hashed_active: str
+                                           ) -> None | str:
+        """
+        Set a hashed active for delete
+        :param hashed_active:
+        :param idx:
+        :return:
+        """
+        try:
+            query = (select(User)
+                     .where(User.id == int(idx)))
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user is None:
+                return None
+            user.hashed_active = hashed_active
+            await self.session.commit()
+            return user.email
+        except Exception as e:
+            logging.exception(e)
+            return None

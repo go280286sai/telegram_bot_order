@@ -4,6 +4,7 @@ import Register from "../Register";
 import Login from "../Login";
 import OrderCart from "./OrderCart";
 import OrderUser from "./OrderUser";
+import {AiTwotoneCloseSquare} from "react-icons/ai";
 
 export default function Order() {
     const [user, setUser] = useState({
@@ -72,7 +73,7 @@ export default function Order() {
                     </div>
                 )}
                 <a href="/">
-                    <div className={"btn btn-danger mt-5"}>Exit</div>
+                    <div className={"btn btn-link mt-5 btn_gen"}><AiTwotoneCloseSquare className={"AiTwotoneCloseSquareMain"} title={"Exit"}/> </div>
                 </a>
             </div>
 

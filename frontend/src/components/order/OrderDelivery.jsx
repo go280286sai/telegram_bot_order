@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
 import OrderPay from "./OrderPay";
 import OrderDeliveryModal from "./OrderDeliveryModal";
+import {IoCar, IoWallet} from "react-icons/io5";
+import {AiOutlineDelete} from "react-icons/ai";
 
 export default function OrderDelivery({total}) {
     const [delivery, setDelivery] = useState(null);
@@ -53,9 +55,10 @@ export default function OrderDelivery({total}) {
                     <div className="modal-body">
                         <div className="modal-footer">
                             <OrderDeliveryModal/>
-                            <div className="btn btn-success mb-2"
+                            <div className="btn btn-link mb-2 btn_gen"
                                  data-bs-toggle="modal"
-                                 data-bs-target="#addDelivery">Add delivery
+                                 data-bs-target="#addDelivery">
+                                <IoCar className={"IoCar"} title={"Add delivery"}/>
                             </div>
                         </div>
                     </div>
@@ -81,23 +84,23 @@ export default function OrderDelivery({total}) {
 
             {statusDelivery && (
                 <>
-                <input
-                    type="button"
+                <button
                     value="Delete"
-                    className="btn btn-danger mb-3"
+                    className="btn btn-link mb-3 btn_gen"
                     onClick={deleteDelivery}
-                    data-testid={"deleteDelivery"}
-                />
+                    data-testid={"deleteDelivery"}>
+                    <AiOutlineDelete className={"AiOutlineDelete"} title={"Delete"}/>
+                </button>
 
                     <OrderPay total={total}/>
                     <br/>
-                    <input
-                        type="button"
-                        className="btn btn-success mt-3"
+                    <button
+                        className="btn btn-link mt-3 btn_gen"
                         value="To pay"
                         data-bs-toggle="modal"
-                        data-bs-target="#to_pay"
-                    />
+                        data-bs-target="#to_pay">
+                        <IoWallet className={"IoWallet"} title={"To pay"}/>
+                    </button>
 
 </>
             )}

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import log from "../helps/logs.mjs";
+import {AiFillCheckSquare, AiOutlineInteraction} from "react-icons/ai";
 
 export default function Profile(props) {
     const [orders, setOrders] = useState([]);
@@ -45,7 +46,7 @@ export default function Profile(props) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.data.success) {
+                if (data['success']) {
                     alert("Password is update")
                     window.location.reload();
                 } else {
@@ -103,6 +104,25 @@ export default function Profile(props) {
                 setOrders(result.data.orders);
             } else {
                 log("error","Error format data:", result.data.orders);
+            }
+        } catch (error) {
+            log("error", "Error get orders users", error)
+        }
+    };
+    const fetchDeleteAccount = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/user/delete_user", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert("To confirm account deletion, please check your email");
+            } else {
+                log("error","Error format data:", result.error);
             }
         } catch (error) {
             log("error", "Error get orders users", error)
@@ -168,7 +188,9 @@ export default function Profile(props) {
                                     ))}
                                     </tbody>
                                 </table>
-                                <button onClick={fetchUser} className={"btn btn-danger"} title={"update"}>Update</button>
+                                <button onClick={fetchUser} className={"btn btn-link btn_gen"}>
+                                    <AiOutlineInteraction className={"AiOutlineInteractionDark"} title={"update"}/>
+                                </button>
                                 <div className={"form-style"}>
                                     <div className="mb-3">
                                         <label htmlFor="first_name" className="form-label">First name</label>
@@ -182,8 +204,10 @@ export default function Profile(props) {
                                                value={formDataUser.last_name} onChange={handleChangeUser}/>
                                     </div>
                                 </div>
-                                <button type="submit" title={"first_last_name"} className="btn btn-success" onClick={handleSubmitUser}>Save</button>
-
+                                <button type="submit" title={"first_last_name"} className="btn btn-link"
+                                        onClick={handleSubmitUser}>
+                                    <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Save"}/>
+                                </button>
                                 <div className={"form-style"}>
                                     <div className="mb-3">
                                         <label htmlFor="password" className="form-label">New password</label>
@@ -197,12 +221,20 @@ export default function Profile(props) {
                                                value={formData.confirmPassword} onChange={handleChange}/>
                                     </div>
                                 </div>
-                                <button type="submit" className="btn btn-success" title={"btn_password"} onClick={handleSubmit}>Save</button>
+                                <button type="submit" className="btn btn-link btn_gen" data-testid={"password_save"}
+                                        onClick={handleSubmit}>
+                                    <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Save"}/>
+                                </button>
                             </>
                         ) : (<p className={"lock"}>Your account has been suspended. For more information, please
                             contact support.</p>)}
                     </div>
+                    <div>
+                        <button className={"btn btn-dark mt-2"} data-testid={"delete_account"}
+                        onClick={fetchDeleteAccount}>Delete account</button>
+                    </div>
                 </div>
+
             </div>
         </div>
     )

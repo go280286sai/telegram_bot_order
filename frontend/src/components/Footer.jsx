@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import log from "../helps/logs.mjs";
 import Contacts from "./Contacts";
 import GoogleMaps from "./GoogleMaps";
+import {IoArrowRedoCircleSharp} from "react-icons/io5";
 
 export default function Footer({ settings }) {
     const [info, setInfo] = useState("")
@@ -55,7 +56,10 @@ export default function Footer({ settings }) {
                             />
                         </div>
                         <div>
-                            <input type="submit" className={"btn btn-dark"} value="Submit" onClick={handleSubmit}/>
+                            <button type="submit" className={"btn btn-link btn_gen"} value="Submit" onClick={handleSubmit}
+                            data-testid="submit">
+                            <IoArrowRedoCircleSharp className={"IoArrowRedoCircleSharp"} title={"Ok"}/>
+                            </button>
                         </div>
                         <strong className={"success"}>{info}</strong>
                     </form>

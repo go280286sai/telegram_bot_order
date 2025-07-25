@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
+import {AiTwotoneCloseSquare} from "react-icons/ai";
+import {IoPrint} from "react-icons/io5";
 
-export default function AdminOrderViewModal(){
+export default function AdminOrderViewModal() {
     const [content, setContent] = useState({
         products: [],
         user: {},
@@ -74,55 +76,59 @@ export default function AdminOrderViewModal(){
             </style>
 
 
-
             <div className="modal-dialog modal-lg">
                 <div className="modal-content" id="invoiceContent">
                     <div id={"printableArea"}>
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="invoiceModalLabel">Purchase invoice</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal"
-                                aria-label="Закрыть"></button>
-                    </div>
-                    <div className="modal-body">
-                        <p><strong>Order Id:</strong> {content.id}</p>
-                        <p><strong>Created:</strong> {content.created}</p>
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="invoiceModalLabel">Purchase invoice</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Закрыть"></button>
+                        </div>
+                        <div className="modal-body">
+                            <p><strong>Order Id:</strong> {content.id}</p>
+                            <p><strong>Created:</strong> {content.created}</p>
 
-                        <table className="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Product/Service</th>
-                                <th>Amount</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {content.products.map((value, index) => (
-                                <tr key={index}>
-                                    <td>{value.name}</td>
-                                    <td>{value.amount}</td>
-                                    <td>{value.price}</td>
-                                    <td>{value.amount * value.price}</td>
+                            <table className="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Product/Service</th>
+                                    <th>Amount</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
                                 </tr>
-                            ))}
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <th colSpan="3">Total</th>
-                                <th>{content.total}</th>
-                            </tr>
-                            </tfoot>
-                        </table>
-                        <p><strong>Recipient:</strong> {content.user.first_name} {content.user.last_name}</p>
-                        <p>
-                            <strong>Address:</strong> {content.delivery.post_name}, {content.delivery.city_name}, {content.delivery.address_name}
-                        </p>
-                        <p><strong>Invoice:</strong> {content.invoice}</p>
-                    </div>
+                                </thead>
+                                <tbody>
+                                {content.products.map((value, index) => (
+                                    <tr key={index}>
+                                        <td>{value.name}</td>
+                                        <td>{value.amount}</td>
+                                        <td>{value.price}</td>
+                                        <td>{value.amount * value.price}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <th colSpan="3">Total</th>
+                                    <th>{content.total}</th>
+                                </tr>
+                                </tfoot>
+                            </table>
+                            <p><strong>Recipient:</strong> {content.user.first_name} {content.user.last_name}</p>
+                            <p>
+                                <strong>Address:</strong> {content.delivery.post_name}, {content.delivery.city_name}, {content.delivery.address_name}
+                            </p>
+                            <p><strong>Invoice:</strong> {content.invoice}</p>
+                        </div>
                     </div>
                     <div className="modal-footer no-print">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="button" className="btn btn-primary" onClick={printInvoice}>Печать</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button className="btn btn-link btn_gen"
+                                onClick={printInvoice}>
+                            <IoPrint className={"IoPrint"} title={"Print"}/>
+                        </button>
                     </div>
                 </div>
             </div>

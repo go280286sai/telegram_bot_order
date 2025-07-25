@@ -101,6 +101,22 @@ async def test_get_user_by_username(test_get_user):
 
 
 @pytest.mark.asyncio
+async def test_set_hashed_active_for_delete():
+    async with async_session_maker() as session:
+        user_manager = UserManager(session)
+        query = await user_manager.set_hashed_active_for_delete(
+            idx="1",
+            hashed_active="qwerty123"
+        )
+        assert query is not None
+        query = await user_manager.set_hashed_active_for_delete(
+            idx="0",
+            hashed_active="qwerty123"
+        )
+        assert query is None
+
+
+@pytest.mark.asyncio
 async def test_get_user_by_username_email():
     async with async_session_maker() as session:
         user_manager = UserManager(session)

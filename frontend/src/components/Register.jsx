@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import log from "../helps/logs.mjs";
+import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
 export default function Register() {
     const [formData, setFormData] = useState({
@@ -80,10 +81,16 @@ export default function Register() {
                                    value={formData.confirmPassword} onChange={handleChange} required/>
                         </div>
                     </div>
-                    <div className="modal-footer"><strong className={"error"}>After registration, confirm your email.</strong>
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary" title={"register"}>Register</button>
+                    <strong className={"error"}>After registration, confirm your email.</strong>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen" title={"register"}>
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
+
                 </form>
             </div>
 

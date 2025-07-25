@@ -1,8 +1,15 @@
 import React, {useState} from "react";
 import log from "../../helps/logs.mjs";
 import 'draft-js/dist/Draft.css';
+import {
+    AiOutlineInteraction,
+    AiOutlineRest,
+    AiOutlineRightSquare,
+    AiTwotoneFileAdd,
+    AiTwotoneCloseSquare, AiFillCheckSquare
+} from "react-icons/ai";
 
-export default function AdminMailModal(){
+export default function AdminMailModal() {
     const [formData, setFormData] = useState({
         header: "",
         title: "",
@@ -36,7 +43,7 @@ export default function AdminMailModal(){
     };
     return (
         <div className="modal fade" id="addTemplate" tabIndex="-1" aria-labelledby="addTemplate" aria-hidden="true">
-           <div className="modal-dialog">
+            <div className="modal-dialog">
                 <form className="modal-content" onSubmit={handleSubmit}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="ReviewLabel">Add new template</h1>
@@ -85,11 +92,15 @@ export default function AdminMailModal(){
 
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Exit</button>
-                        <button type="submit" className="btn btn-primary">Send</button>
+                        <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                        </button>
+                        <button type="submit" className="btn btn-link btn_gen">
+                            <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
+                        </button>
                     </div>
                 </form>
-           </div>
+            </div>
         </div>
     )
 }

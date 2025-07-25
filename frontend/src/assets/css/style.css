@@ -301,6 +301,7 @@ body {
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 .a_hover :hover {
   opacity: 80%;
@@ -436,5 +437,120 @@ body {
 .img_predict {
   width: 100%;
   margin: 1%;
+}
+.center-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+}
+.btn_gen {
+  border: none;
+  background: none;
+}
+.AiTwotoneFileAdd {
+  color: green;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiOutlineInteraction {
+  color: yellow;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiOutlineInteractionDark {
+  color: black;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiOutlineDelete {
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiFillCheckSquare {
+  color: blue;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiTwotoneCloseSquare {
+  color: black;
+  font-size: 30px;
+  cursor: pointer;
+}
+.AiTwotoneCloseSquareMain {
+  color: red;
+  font-size: 40px;
+  cursor: pointer;
+}
+.AiOutlineMail {
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoTrophySharp {
+  color: green;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoTime {
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoSearch {
+  color: green;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoPrint {
+  color: black;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoLockOpen {
+  color: green;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoLockClosedSharp {
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoReloadCircleSharp {
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoArrowRedoCircleSharp {
+  color: green;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoBagAdd {
+  color: red;
+  font-size: 30px;
+  cursor: pointer;
+}
+.IoCart {
+  color: white;
+  font-size: 100px;
+  cursor: pointer;
+}
+.IoCardOutline {
+  color: green;
+  font-size: 70px;
+  cursor: pointer;
+}
+.IoCar {
+  color: blue;
+  font-size: 70px;
+  cursor: pointer;
+}
+.IoWallet {
+  color: blue;
+  font-size: 50px;
+  cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

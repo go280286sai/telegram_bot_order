@@ -86,7 +86,7 @@ describe("Profile component", () => {
         fireEvent.change(PasswordInput, {target: {value: "1234"}})
         fireEvent.change(ConfirmPasswordInput, {target: {value: "12345"}})
 
-        const btn = screen.getByTitle("btn_password")
+        const btn = screen.getByTestId("password_save")
         fireEvent.click(btn)
 
         await waitFor(() => {
@@ -104,9 +104,7 @@ describe("Profile component", () => {
         }}/>)
         fetch.mockResolvedValue({
             json: () => Promise.resolve({
-                data: {
                     success: false
-                }
             })
         })
         const PasswordInput = screen.getByLabelText(/New password/i);
@@ -115,7 +113,7 @@ describe("Profile component", () => {
         fireEvent.change(PasswordInput, {target: {value: ""}})
         fireEvent.change(ConfirmPasswordInput, {target: {value: ""}})
 
-        const btn = screen.getByTitle("btn_password")
+        const btn = screen.getByTestId("password_save");
         fireEvent.click(btn)
 
         await waitFor(() => {
@@ -131,20 +129,19 @@ describe("Profile component", () => {
             email: "admin@admin.com",
             phone: "+3800000000"
         }}/>)
-        fetch.mockResolvedValue({
+        fetch.mockResolvedValueOnce({
             json: () => Promise.resolve({
-                data: {
                     success: true
-                }
             })
         })
+
         const PasswordInput = screen.getByLabelText(/New password/i);
         const ConfirmPasswordInput = screen.getByLabelText(/Confirm Password/i);
 
         fireEvent.change(PasswordInput, {target: {value: "1234"}})
         fireEvent.change(ConfirmPasswordInput, {target: {value: "1234"}})
 
-        const btn = screen.getByTitle("btn_password")
+        const btn = screen.getByTestId("password_save");
         fireEvent.click(btn)
 
         await waitFor(() => {
@@ -176,7 +173,7 @@ describe("Profile component", () => {
         fireEvent.change(PasswordInput, {target: {value: "1234"}})
         fireEvent.change(ConfirmPasswordInput, {target: {value: "1234"}})
 
-        const btn = screen.getByTitle("btn_password")
+        const btn = screen.getByTestId("password_save");
         fireEvent.click(btn)
 
         await waitFor(() => {
@@ -226,6 +223,26 @@ describe("Profile component", () => {
         expect(status).toBeInTheDocument();
         const total = await screen.findByText("1000");
         expect(total).toBeInTheDocument();
-
     })
+    it('delete account', async () => {
+        render(<Profile user={{
+            status: true,
+            username: "user",
+            first_name: "Admin",
+            last_name: "Root",
+            email: "admin@admin.com",
+            phone: "+3800000000"
+        }}/>)
+        fetch.mockResolvedValueOnce({
+            json: () => Promise.resolve({
+                success: true
+            })
+        })
+
+        const btn_delete_account = await screen.findByTestId("delete_account");
+        fireEvent.click(btn_delete_account);
+        await waitFor(() => {
+            expect(alertMock).toHaveBeenCalled()
+        })
+    });
 })
