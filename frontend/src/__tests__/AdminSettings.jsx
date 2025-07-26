@@ -4,7 +4,8 @@ import AdminSettings from "../components/admin/AdminSettings";
 
 jest.mock("../helps/logs.mjs", () => jest.fn());
 global.fetch = jest.fn();
-
+delete window.location
+window.location = {reload: jest.fn()}
 jest.mock("../components/admin/AdminAddSettingModal", () => () => <div data-testid="modal-setting" />);
 
 describe("AdminSettings component", () => {
@@ -74,5 +75,15 @@ describe("AdminSettings component", () => {
 
   it("renders modal component", () => {
     expect(screen.getByTestId("modal-setting")).toBeInTheDocument();
+  });
+  it('autoload settings', async () => {
+    fetch.mockResolvedValueOnce({
+      json: () => Promise.resolve({ success: true })
+    })
+    const btn = screen.getByTestId("autoload");
+    fireEvent.click(btn);
+    await waitFor(()=>{
+      expect(window.location.reload).toHaveBeenCalled();
+    })
   });
 });

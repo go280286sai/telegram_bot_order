@@ -23,7 +23,56 @@ async def create_setting(setting_: Setting) -> JSONResponse:
                 name=setting_.name,
                 value=setting_.value,
             )
-            if query is False:
+            if query is None:
+                raise Exception("Failed to create setting")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(e)
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed to create setting"
+            }
+        )
+
+
+@router.post("/auto_create")
+async def auto_create_setting() -> JSONResponse:
+    """
+    Create auto settings
+    :return:
+    """
+    auto_fill = {
+        "title": "",
+        "description": "",
+        "telegram": "",
+        "viber": "",
+        "whatsapp": "",
+        "phone": "",
+        "email": "",
+        "address": "",
+        "map": "",
+        "promotional": "",
+        "discount": ""
+    }
+    try:
+        async with async_session_maker() as session:
+            setting_manager = SettingManager(session)
+            for key, value in auto_fill.items():
+                query = await setting_manager.create_setting(
+                    name=key,
+                    value=value,
+                )
+            if query is None:
                 raise Exception("Failed to create setting")
             return JSONResponse(
                 status_code=status.HTTP_200_OK,

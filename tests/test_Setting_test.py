@@ -55,7 +55,6 @@ async def test_get_settings():
         for setting in settings:
             assert setting.name == "Title1"
 
-
 @pytest.mark.asyncio
 async def test_delete_setting(test_update_setting):
     async with async_session_maker() as session:

@@ -4,10 +4,8 @@ import log from "../../helps/logs.mjs";
 import AdminAddSettingModal from "./AdminAddSettingModal";
 import {
     AiOutlineInteraction,
-    AiOutlineRest,
-    AiOutlineRightSquare,
     AiTwotoneFileAdd,
-    AiTwotoneCloseSquare, AiFillCheckSquare, AiOutlineDelete
+    AiOutlineDelete, AiFillCopy
 } from "react-icons/ai";
 export default function AdminSettings() {
     const [content, setContent] = useState([]);
@@ -92,18 +90,47 @@ export default function AdminSettings() {
             await log("error", "is_auth", error);
         }
     };
+    const fetchAutoLoad = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/setting/auto_create", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            await log("error", "autoload error", error);
+        }
+    };
     return (
         <div className={"row block_1 p-1"}>
             <div className="mb-2 btn_with">
-                <button className={"btn btn-link btn_gen"} data-bs-toggle="modal" data-bs-target="#addSetting">
-                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"}  title={"Add"}/>
-                </button>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <button className={"btn btn-link btn_gen"} data-bs-toggle="modal"
+                                    data-bs-target="#addSetting">
+                                <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add"}/>
+                            </button>
+                        </td>
+                        <td>
+                            <button className={"btn btn-link btn_gen"} data-testid={"autoload"} onClick={()=> fetchAutoLoad()}>
+                               <AiFillCopy className={"AiTwotoneFileAdd"} title={"Default"}/>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <AdminAddSettingModal/>
             <table id="myTable" className="display table table-dark">
                 <thead>
                 <tr>
-                <th>Id</th>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Value</th>
                     <th></th>
