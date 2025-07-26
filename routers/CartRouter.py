@@ -50,6 +50,41 @@ async def set_delivery(delivery: Delivery) -> JSONResponse:
         )
 
 
+@router.post("/discount/add/{discount}")
+async def add_discount(discount: int) -> JSONResponse:
+    """
+    Add discount to cart.
+    :return:
+    """
+    try:
+        data = {
+            "discount": discount
+        }
+        response = JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "success": True,
+                "data": None,
+                "error": None
+            }
+        )
+        response.set_cookie(
+            key="discount",
+            value=json.dumps(data),
+            httponly=True)
+        return response
+    except Exception as e:
+        logging.exception(f"Discount add error {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Discount add error "
+            }
+        )
+
+
 @router.post("/delivery/get")
 async def get_delivery(request: Request) -> JSONResponse:
     """
@@ -229,7 +264,14 @@ async def get_cart(request: Request) -> JSONResponse:
     try:
         raw_cart_cookie = request.cookies.get("cart", "{}")
         cart_items = parse_cart(raw_cart_cookie)
-
+        discount_raw = request.cookies.get('discount')
+        if discount_raw:
+            if isinstance(discount_raw, str):
+                discount = json.loads(discount_raw).get("discount", 0)
+            else:
+                discount = 0
+        else:
+            discount = 0
         async with async_session_maker() as session:
             product_manager = ProductManager(session)
             products_ = []
@@ -246,6 +288,7 @@ async def get_cart(request: Request) -> JSONResponse:
                         "amounts": product.amount,
                     }
                     product_data["amount"] = amount
+                    product_data["discount"] = discount
                     products_.append(product_data)
 
         return JSONResponse(

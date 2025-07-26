@@ -20,7 +20,7 @@ async def test_create_api_setting():
 
 
 @pytest.mark.asyncio
-async def test_create_api_setting():
+async def test_auto_create():
     transport = ASGITransport(app=app)
     async with AsyncClient(
             transport=transport,
@@ -70,13 +70,26 @@ async def test_gets_api_settings():
         for item in data['data']['settings']:
             assert item['id'] > 0
             assert item['name'] in [
-                "Title", "Title2",
+                "Title", "Title2", "title",
                 "description", "email",
                 "telegram", "phone",
                 "viber", "whatsapp",
                 "map", "promotional",
                 "address", "discount"]
         assert data['error'] is None
+
+
+@pytest.mark.asyncio
+async def test_get_discount():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(
+            transport=transport,
+            base_url='http://localhost:8000'
+    ) as client:
+        response = await client.get("/setting/get/discount")
+        assert response.status_code == 200
+        data = response.json()
+        assert data['success'] is True
 
 
 @pytest.mark.asyncio

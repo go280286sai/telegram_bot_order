@@ -93,6 +93,7 @@ export default function AdminOrderViewModal() {
                                 <tr>
                                     <th>Product/Service</th>
                                     <th>Amount</th>
+                                    <th>Discount</th>
                                     <th>Price</th>
                                     <th>Total</th>
                                 </tr>
@@ -102,8 +103,9 @@ export default function AdminOrderViewModal() {
                                     <tr key={index}>
                                         <td>{value.name}</td>
                                         <td>{value.amount}</td>
+                                        <td>{value.discount}%</td>
                                         <td>{value.price}</td>
-                                        <td>{value.amount * value.price}</td>
+                                        <td>{value.amount * value.price - (value.amount * value.price)*value.discount/100}</td>
                                     </tr>
                                 ))}
                                 </tbody>

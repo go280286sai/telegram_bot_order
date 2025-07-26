@@ -43,9 +43,7 @@ describe("Profile component", () => {
         }}/>)
         fetch.mockResolvedValue({
             json: () => Promise.resolve({
-                data: {
                     success: true
-                }
             })
         })
         const firstNameInput = screen.getByLabelText(/First name/i);

@@ -59,6 +59,6 @@ describe("BlockTwo component", () => {
         const modal_name = await screen.findByTestId("modal_name");
         expect(modal_name.textContent).toEqual("Name1");
         const calculateTotal = await screen.findByTestId("calculateTotal")
-        expect(calculateTotal.textContent).toEqual("20.00 $")
+        expect(calculateTotal.textContent).toEqual("20 $")
     });
 })

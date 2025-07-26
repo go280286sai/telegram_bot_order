@@ -313,7 +313,14 @@ async def get_order_view(idx: int, request: Request):
         admin = await is_admin(int(user_id))
         if admin is None or admin is False:
             raise Exception("Cookies missing user_id")
-
+        discount_raw = request.cookies.get('discount')
+        if discount_raw:
+            if isinstance(discount_raw, str):
+                discount = json.loads(discount_raw).get("discount", 0)
+            else:
+                discount = 0
+        else:
+            discount = 0
         async with async_session_maker() as session:
             order_manager = OrderManager(session)
             orders = await order_manager.get_order(idx=int(idx))
@@ -337,13 +344,13 @@ async def get_order_view(idx: int, request: Request):
                         "amounts": product.amount,
                     }
                     product_data["amount"] = amount
+                    product_data["discount"] = discount
                     products_.append(product_data)
 
             delivery = request.cookies.get('delivery')
             if not delivery:
                 raise Exception("No delivery")
 
-            # delivery_raw = json.loads(orders.delivery)
             delivery = json.loads(delivery)
             delivery_manager = OrderManager(session)
 

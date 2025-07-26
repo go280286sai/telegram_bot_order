@@ -1,7 +1,6 @@
 import pytest
 from dataclasses import dataclass
 
-import routers.UserRouter
 from main import app
 from httpx import AsyncClient, ASGITransport
 
@@ -154,7 +153,11 @@ async def test_delete_user_profile(monkeypatch):
             return
 
         from routers.UserRouter import UserManager
-        monkeypatch.setattr(UserManager, "set_hashed_active_for_delete", mock_set_hashed_active_for_delete)
+        monkeypatch.setattr(
+            UserManager,
+            "set_hashed_active_for_delete",
+            mock_set_hashed_active_for_delete
+        )
         from routers.UserRouter import BackgroundTasks
         monkeypatch.setattr(BackgroundTasks, "add_task", mock_add_task)
         response = await client.post("/user/delete_user")
@@ -184,10 +187,13 @@ async def test_delete_confirm_user_profile(monkeypatch):
         async def mock_confirm_delete_user(*args, **kwargs):
             return True
 
-        from routers.UserRouter import UserManager, confirm_delete_user
+        from routers.UserRouter import UserManager
         monkeypatch.setattr(UserManager, 'get_user', mock_get_user)
         monkeypatch.setattr(UserManager, "delete_user", mock_delete_user)
-        monkeypatch.setattr("routers.UserRouter.confirm_delete_user", mock_confirm_delete_user)
+        monkeypatch.setattr(
+            "routers.UserRouter.confirm_delete_user",
+            mock_confirm_delete_user
+        )
         response = await client.get("/user/delete_confirm/1/qwerty")
         assert response.status_code == 200
 

@@ -5,8 +5,9 @@ import log from "../../helps/logs.mjs";
 export default function OrderCart(){
     const [cartItems, setCartItems] = useState([]);
     const calculateTotal = () => {
+
         return cartItems
-            .reduce((sum, item) => sum + item.amount * item.price, 0)
+            .reduce((sum, item) => sum + item.amount * item.price-(item.amount * item.price)*item.discount/100, 0)
             .toFixed(2);
     };
     const fetchCart = async () => {

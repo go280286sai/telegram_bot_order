@@ -1,10 +1,15 @@
 import React, {useEffect, useState} from "react";
 import log from "../helps/logs.mjs";
 import {IoBagAdd, IoCardOutline, IoCart} from "react-icons/io5";
-import {AiOutlineDelete} from "react-icons/ai";
+import {AiFillCheckSquare, AiOutlineDelete} from "react-icons/ai";
+
 export default function BlockTwo() {
     const [showAlert, setShowAlert] = useState(false);
     const [products, setProducts] = useState([]);
+    const [discount, setDiscount] = useState(0);
+    const [formData, setFormData] = useState({
+        promotion: ""
+    });
     const addToCart = async (id) => {
         try {
             await fetch(`http://localhost:8000/cart/increase/${id}`, {
@@ -61,11 +66,15 @@ export default function BlockTwo() {
     };
 
     const calculateTotal = () => {
-        return cartItems
+        const total = cartItems
             .reduce((sum, item) => sum + item.amount * item.price, 0)
             .toFixed(2);
+        return total - (total * discount) / 100;
     };
-
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
+    };
     const removeFromCart = async (id) => {
         try {
             await fetch(`http://localhost:8000/cart/remove/${id}`, {
@@ -77,6 +86,38 @@ export default function BlockTwo() {
             await log("error", "remove from cart", error);
         }
     };
+    const addDiscount = async () => {
+        try {
+            await fetch(`http://localhost:8000/cart/discount/add/${discount}`, {
+                method: "POST",
+                credentials: "include",
+            });
+        } catch (error) {
+            await log("error", "remove from cart", error);
+        }
+    };
+
+    const handleDiscount = async (e) => {
+        e.preventDefault();
+        fetch("http://localhost:8000/setting/get/discount", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        }).then(res => res.json())
+            .then((data) => {
+                if (data['success']) {
+                        if(data["data"]["settings"]["promotional"] === formData.promotion){
+                            setDiscount(parseInt(data["data"]["settings"]["discount"]))
+                            addDiscount();
+                        }
+                } else {
+                    log("error", "Discount not found", data);
+                    alert("Discount not found")
+                }
+            }).catch(data => log("error", "recover error", data));
+    }
     return (
         <div className="row block_1">
             <div className="col-12">
@@ -130,10 +171,9 @@ export default function BlockTwo() {
                                 <strong className="price">${product.price}</strong>
                             </td>
                             <td>
-
                                 <button type="button" className="btn btn-link btn_gen" data-testid={"add_to_cart"}
                                         onClick={() => addToCart(product.id)}>
-                                    <IoBagAdd className={"IoBagAdd"} title={"Add to cart"} />
+                                    <IoBagAdd className={"IoBagAdd"} title={"Add to cart"}/>
                                 </button>
 
                             </td>
@@ -142,7 +182,6 @@ export default function BlockTwo() {
                     </tbody>
                 </table>
             </div>
-
             <div className="trash_mi">
                 <div>
                     <div className="modal fade" id="cartModal" tabIndex="-1" aria-labelledby="cartModalLabel"
@@ -206,7 +245,8 @@ export default function BlockTwo() {
                                                         <button
                                                             className="btn btn-link btn_gen"
                                                             onClick={() => removeFromCart(item.id)}>
-                                                            <AiOutlineDelete className={"AiOutlineDelete" } title={"Remove"}/>
+                                                            <AiOutlineDelete className={"AiOutlineDelete"}
+                                                                             title={"Remove"}/>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -214,15 +254,60 @@ export default function BlockTwo() {
                                             </tbody>
                                             <tfoot>
                                             <tr>
+                                                <td colSpan="4" className="text-end">
+                                                    <strong>Input cod:</strong></td>
+                                                <td colSpan="2">
+                                                    <form onSubmit={handleDiscount}>
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td><input
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    id="promotion"
+                                                                    name="promotion"
+                                                                    autoComplete="login"
+                                                                    data-testid="promotion"
+                                                                    value={formData.promotion}
+                                                                    onChange={handleChange}
+                                                                    required
+                                                                /></td>
+                                                                <td>
+                                                                    <button type="submit"
+                                                                            className="btn btn-link btn_gen"
+                                                                            data-testid={"promo_send"}>
+                                                                        <AiFillCheckSquare
+                                                                            className={"AiFillCheckSquare"}
+                                                                            title={"Send"}/>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="4" className="text-end">
+                                                    <strong>Discount:</strong></td>
+                                                <td colSpan="2"><strong
+                                                    data-testid={"discountLabel"}>{discount} %</strong></td>
+                                            </tr>
+                                            <tr>
+
                                                 <td colSpan="4" className="text-end"><strong>Total:</strong></td>
-                                                <td colSpan="2"><strong data-testid={"calculateTotal"}>{calculateTotal()} $</strong></td>
+                                                <td colSpan="2"><strong
+                                                    data-testid={"calculateTotal"}>{calculateTotal()} $</strong></td>
                                             </tr>
                                             </tfoot>
                                         </table>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <a href="/order"><div className="btn btn-link btn_gen"><IoCardOutline className={"IoCardOutline"} title={"To pay"}/></div></a>
+                                    <a href="/order">
+                                        <div className="btn btn-link btn_gen"><IoCardOutline className={"IoCardOutline"}
+                                                                                             title={"To pay"}/></div>
+                                    </a>
                                 </div>
                             </div>
                         </div>

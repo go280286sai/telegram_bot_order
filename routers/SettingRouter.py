@@ -172,6 +172,46 @@ async def get_setting() -> JSONResponse:
         )
 
 
+@router.get("/get/discount")
+async def get_discount() -> JSONResponse:
+    """
+    Get discount
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            setting_manager = SettingManager(session)
+            query = await setting_manager.get_settings()
+            if query is None:
+                raise Exception("Failed to get setting")
+            dic = {}
+            settings_ = [
+                dic.update({setting.name: setting.value})
+                for setting in query
+                if setting.name in {"discount", "promotional"}
+            ]
+            if not settings_:
+                raise Exception("No matching settings found")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": {"settings": dic},
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(f"Failed to fetch settings: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": "Failed to fetch settings"
+            }
+        )
+
+
 @router.post("/delete/{idx}")
 async def delete_setting(idx: int) -> JSONResponse:
     """

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import log from "../helps/logs.mjs";
-import {AiFillCheckSquare, AiOutlineInteraction} from "react-icons/ai";
+import {AiOutlineInteraction, AiOutlineSave} from "react-icons/ai";
 
 export default function Profile(props) {
     const [orders, setOrders] = useState([]);
@@ -77,7 +77,7 @@ export default function Profile(props) {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.data.success) {
+                if (data.success) {
                     alert("Profile is update")
                     window.location.reload();
                 } else {
@@ -206,7 +206,7 @@ export default function Profile(props) {
                                 </div>
                                 <button type="submit" title={"first_last_name"} className="btn btn-link"
                                         onClick={handleSubmitUser}>
-                                    <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Save"}/>
+                                    <AiOutlineSave className={"AiFillCheckSquare"} title={"Save"}/>
                                 </button>
                                 <div className={"form-style"}>
                                     <div className="mb-3">
@@ -223,7 +223,7 @@ export default function Profile(props) {
                                 </div>
                                 <button type="submit" className="btn btn-link btn_gen" data-testid={"password_save"}
                                         onClick={handleSubmit}>
-                                    <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Save"}/>
+                                    <AiOutlineSave className={"AiFillCheckSquare"} title={"Save"}/>
                                 </button>
                             </>
                         ) : (<p className={"lock"}>Your account has been suspended. For more information, please
