@@ -30,13 +30,17 @@ class UserManager:
         :return:
         """
         try:
+            users = select(User)
+            users_result = await self.session.execute(users)
+            results = users_result.scalars().all()
+            is_admin = 1 if len(results) == 0 else 0
             username = escape(username)
             password = hash_password(escape(password))
             phone = escape(phone)
             email = escape(email)
             hash_active = hash_active
             user = User(username=username, password=password,
-                        phone=phone, email=email, hashed_active=hash_active)
+                        phone=phone, email=email, hashed_active=hash_active, is_admin=is_admin)
             self.session.add(user)
             await self.session.commit()
             return user

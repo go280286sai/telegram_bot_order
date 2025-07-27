@@ -35,6 +35,7 @@ class User(Base):
             email: str,
             phone: str,
             hashed_active: str,
+            is_admin: int,
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -43,6 +44,7 @@ class User(Base):
         self.email = email
         self.phone = phone
         self.hashed_active = hashed_active
+        self.is_admin = is_admin
 
 
 class Product(Base):
