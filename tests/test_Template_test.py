@@ -11,7 +11,7 @@ async def test_create_template():
             header="Very cool template",
             title="Very impotent template",
             body="Here is some body"
-            )
+        )
         assert email is True
 
 
@@ -63,4 +63,12 @@ async def test_delete_template():
     async with async_session_maker() as session:
         tmp_manager = TemplateManager(session)
         query = await tmp_manager.delete_template(1)
+        assert query is True
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = TemplateManager(session)
+        query = await user_manager.truncate_templates_table()
         assert query is True

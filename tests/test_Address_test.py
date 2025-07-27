@@ -72,3 +72,11 @@ async def test_delete_address():
         assert query is True
         query = await address_manager.delete_address(2)
         assert query is True
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = AddressManager(session)
+        query = await user_manager.truncate_posts_addresses()
+        assert query is True

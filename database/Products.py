@@ -4,6 +4,7 @@ from html import escape
 from database.main import Product
 import logging
 from typing import Sequence
+from sqlalchemy import text
 
 
 class ProductManager:
@@ -116,6 +117,19 @@ class ProductManager:
             if product is None:
                 return False
             await self.session.delete(product)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_products_table(self) -> bool:
+        """
+        Truncate the products table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM products"))
             await self.session.commit()
             return True
         except Exception as e:

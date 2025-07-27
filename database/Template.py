@@ -4,6 +4,7 @@ from database.main import Template
 import logging
 from typing import Sequence
 from html import escape
+from sqlalchemy import text
 
 
 class TemplateManager:
@@ -113,6 +114,19 @@ class TemplateManager:
             if email is None:
                 return False
             await self.session.delete(email)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_templates_table(self) -> bool:
+        """
+        Truncate the template table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM templates"))
             await self.session.commit()
             return True
         except Exception as e:

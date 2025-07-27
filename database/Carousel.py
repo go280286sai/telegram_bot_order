@@ -4,6 +4,7 @@ from html import escape
 from database.main import Carousel
 import logging
 from typing import Sequence
+from sqlalchemy import text
 
 
 class CarouselManager:
@@ -84,6 +85,19 @@ class CarouselManager:
             if carousel is None:
                 return False
             await self.session.delete(carousel)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_carousels_table(self) -> bool:
+        """
+        Truncate the carousels table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM carousels"))
             await self.session.commit()
             return True
         except Exception as e:

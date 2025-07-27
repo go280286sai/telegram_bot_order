@@ -5,6 +5,7 @@ from database.main import City, Post
 import logging
 from typing import Sequence, Any
 from html import escape
+from sqlalchemy import text
 
 
 class CityManager:
@@ -108,6 +109,19 @@ class CityManager:
             if city_ is None:
                 return False
             await self.session.delete(city_)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_cities_table(self) -> bool:
+        """
+        Truncate the cities table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM cities"))
             await self.session.commit()
             return True
         except Exception as e:

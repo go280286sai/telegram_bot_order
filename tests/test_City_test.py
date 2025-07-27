@@ -83,3 +83,11 @@ async def test_delete_city():
         assert query is True
         query = await city_manager.delete_city(2)
         assert query is True
+
+
+@pytest.mark.asyncio
+async def test_truncate_cities():
+    async with async_session_maker() as session:
+        user_manager = CityManager(session)
+        query = await user_manager.truncate_cities_table()
+        assert query is True

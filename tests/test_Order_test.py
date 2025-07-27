@@ -177,3 +177,11 @@ async def test_delete_order():
 
         user_manager = UserManager(session)
         await user_manager.delete_user(1)
+
+
+@pytest.mark.asyncio
+async def test_truncate_orders():
+    async with async_session_maker() as session:
+        user_manager = OrderManager(session)
+        query = await user_manager.truncate_orders_table()
+        assert query is True

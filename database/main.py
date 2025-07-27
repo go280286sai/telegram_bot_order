@@ -117,7 +117,7 @@ class Order(Base):
     id: Mapped[int] = Column(Integer, primary_key=True,
                              index=True, autoincrement=True)
     products: Mapped[str] = Column(Text, nullable=False)
-    user_id: Mapped[int] = Column(Integer, ForeignKey(User.id), nullable=False)
+    user_id: Mapped[int] = Column(Integer, ForeignKey(User.id, ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     delivery: Mapped[str] = Column(String, nullable=False)
     total: Mapped[float] = mapped_column(Float, nullable=False)
     transaction_id: Mapped[str] = Column(String, nullable=False)

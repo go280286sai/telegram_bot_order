@@ -4,6 +4,7 @@ from html import escape
 from database.main import User
 from helps.help import hash_password, generate_transaction
 import logging
+from sqlalchemy import text
 
 RESET_PASSWORD = "0000"
 
@@ -354,3 +355,16 @@ class UserManager:
         except Exception as e:
             logging.exception(e)
             return None
+
+    async def truncate_users_table(self) -> bool:
+        """
+        Truncate the users table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM users"))
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False

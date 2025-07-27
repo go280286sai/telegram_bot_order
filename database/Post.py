@@ -4,6 +4,7 @@ from database.main import Post
 import logging
 from typing import Sequence
 from html import escape
+from sqlalchemy import text
 
 
 class PostManager:
@@ -96,6 +97,19 @@ class PostManager:
             if post_ is None:
                 return False
             await self.session.delete(post_)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_posts_table(self) -> bool:
+        """
+        Truncate the posts table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM posts"))
             await self.session.commit()
             return True
         except Exception as e:

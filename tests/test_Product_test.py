@@ -103,3 +103,11 @@ async def test_delete_product():
         assert query is True
         query = await product_manager.delete_product(1)
         assert query is False
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = ProductManager(session)
+        query = await user_manager.truncate_products_table()
+        assert query is True

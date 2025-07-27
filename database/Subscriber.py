@@ -4,6 +4,7 @@ from database.main import Subscriber
 import logging
 from html import escape
 from helps.help import generate_transaction
+from sqlalchemy import text
 
 
 class SubscriberManager:
@@ -172,5 +173,18 @@ class SubscriberManager:
             await self.session.commit()
             return True
         except Exception as e:
+            logging.exception(e)
+            return False
+
+    async def truncate_subscribers_table(self) -> bool:
+        """
+        Truncate the subscribers table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM subscribers"))
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
             logging.exception(e)
             return False

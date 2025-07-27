@@ -77,3 +77,11 @@ async def test_delete_subscriber():
         subscribe_manager = SubscriberManager(session)
         query = await subscribe_manager.delete_subscriber(1)
         assert query is False
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = SubscriberManager(session)
+        query = await user_manager.truncate_subscribers_table()
+        assert query is True

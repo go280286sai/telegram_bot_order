@@ -5,6 +5,7 @@ from database.main import Address, City
 import logging
 from typing import Sequence, Any
 from html import escape
+from sqlalchemy import text
 
 
 class AddressManager:
@@ -106,6 +107,19 @@ class AddressManager:
             if address_ is None:
                 return False
             await self.session.delete(address_)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_posts_addresses(self) -> bool:
+        """
+        Truncate the addresses table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM addresses"))
             await self.session.commit()
             return True
         except Exception as e:

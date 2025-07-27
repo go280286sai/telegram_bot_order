@@ -5,7 +5,7 @@ import AdminAddSettingModal from "./AdminAddSettingModal";
 import {
     AiOutlineInteraction,
     AiTwotoneFileAdd,
-    AiOutlineDelete, AiFillCopy
+    AiOutlineDelete, AiFillCopy, AiFillDelete
 } from "react-icons/ai";
 export default function AdminSettings() {
     const [content, setContent] = useState([]);
@@ -22,7 +22,6 @@ export default function AdminSettings() {
             if (data.success) {
                 setContent(data.data.settings);
 
-                // Создаём локальное состояние для редактирования
                 const initForm = {};
                 data.data.settings.forEach(item => {
                     initForm[item.id] = {
@@ -47,7 +46,6 @@ export default function AdminSettings() {
             };
         }
     }, [content]);
-    // Обновление значения при вводе
     const handleChange = (id, field, newValue) => {
         setFormData(prev => ({
             ...prev,
@@ -105,6 +103,21 @@ export default function AdminSettings() {
             await log("error", "autoload error", error);
         }
     };
+    const fetchClearAll = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/setting/truncates", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" }
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            await log("error", "truncates", error);
+        }
+    };
     return (
         <div className={"row block_1 p-1"}>
             <div className="mb-2 btn_with">
@@ -120,6 +133,11 @@ export default function AdminSettings() {
                         <td>
                             <button className={"btn btn-link btn_gen"} data-testid={"autoload"} onClick={()=> fetchAutoLoad()}>
                                <AiFillCopy className={"AiTwotoneFileAdd"} title={"Default"}/>
+                            </button>
+                        </td>
+                        <td>
+                            <button className={"btn btn-link btn_gen"} data-testid={"truncate"} onClick={()=> fetchClearAll()}>
+                               <AiFillDelete  className={"AiOutlineDelete"} title={"Delete all"}/>
                             </button>
                         </td>
                     </tr>

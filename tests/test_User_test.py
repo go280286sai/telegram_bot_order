@@ -149,3 +149,11 @@ async def test_delete_user(test_get_user):
         assert query.username == "Alex"
         user_ = await user_manager.delete_user(query.id)
         assert user_ is True
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = UserManager(session)
+        query = await user_manager.truncate_users_table()
+        assert query is True

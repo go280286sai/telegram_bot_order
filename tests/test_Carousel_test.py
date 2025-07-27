@@ -52,3 +52,11 @@ async def test_delete_carousel():
         carousel_manager = CarouselManager(session)
         query = await carousel_manager.delete_items(1)
         assert query is True
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = CarouselManager(session)
+        query = await user_manager.truncate_carousels_table()
+        assert query is True

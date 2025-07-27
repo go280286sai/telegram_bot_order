@@ -4,6 +4,7 @@ from html import escape
 from database.main import Review
 import logging
 from typing import Sequence
+from sqlalchemy import text
 
 
 class ReviewManager:
@@ -94,6 +95,19 @@ class ReviewManager:
             if review is None:
                 return False
             await self.session.delete(review)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_reviews_table(self) -> bool:
+        """
+        Truncate the reviews table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM reviews"))
             await self.session.commit()
             return True
         except Exception as e:

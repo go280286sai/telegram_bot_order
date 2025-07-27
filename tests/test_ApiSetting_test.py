@@ -112,3 +112,18 @@ async def test_delete_api_setting():
             assert data['error'] is None
         result = await client.post("/setting/delete/1")
         assert result.status_code == 400
+
+
+@pytest.mark.asyncio
+async def test_truncates_tables():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(
+            transport=transport,
+            base_url='http://localhost:8000'
+    ) as client:
+        response = await client.post("/setting/truncates")
+        assert response.status_code == 200
+        data = response.json()
+        assert data['success'] is True
+        assert data['data'] is None
+        assert data['error'] is None

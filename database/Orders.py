@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Order, User, Post, City, Address
 import logging
 from html import escape
+from sqlalchemy import text
 
 from helps.predict import Predict
 
@@ -259,3 +260,16 @@ class OrderManager:
         except Exception as e:
             logging.exception(e)
             return None
+
+    async def truncate_orders_table(self) -> bool:
+        """
+        Truncate the orders table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM orders"))
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False

@@ -62,3 +62,11 @@ async def test_delete_post(test_update_post):
         assert query is True
         query = await post_manager.delete_post(int(idx))
         assert query is False
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = PostManager(session)
+        query = await user_manager.truncate_posts_table()
+        assert query is True

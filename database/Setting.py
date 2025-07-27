@@ -4,6 +4,7 @@ from database.main import Setting
 import logging
 from typing import Sequence
 from html import escape
+from sqlalchemy import text
 
 
 class SettingManager:
@@ -100,6 +101,19 @@ class SettingManager:
             if setting_ is None:
                 return False
             await self.session.delete(setting_)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def truncate_settings_table(self) -> bool:
+        """
+        Truncate the settings table
+        """
+        try:
+            await self.session.execute(text("DELETE FROM settings"))
             await self.session.commit()
             return True
         except Exception as e:

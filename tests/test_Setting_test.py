@@ -65,3 +65,11 @@ async def test_delete_setting(test_update_setting):
         assert query is True
         query = await setting_manager.delete_setting(int(idx))
         assert query is False
+
+
+@pytest.mark.asyncio
+async def test_truncate_user():
+    async with async_session_maker() as session:
+        user_manager = SettingManager(session)
+        query = await user_manager.truncate_settings_table()
+        assert query is True
