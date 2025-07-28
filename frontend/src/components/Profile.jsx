@@ -166,6 +166,10 @@ export default function Profile(props) {
                                         <th>Phone</th>
                                         <td>{props.user.phone}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Bonus</th>
+                                        <td>{props.user.bonus}</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                                 <table className={"table table-dark"}>

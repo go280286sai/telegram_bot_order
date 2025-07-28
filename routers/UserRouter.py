@@ -105,7 +105,8 @@ async def is_auth(request: Request) -> JSONResponse:
                     "status": user.status,
                     "is_admin": user.is_admin,
                     "first_name": user.first_name,
-                    "last_name": user.last_name
+                    "last_name": user.last_name,
+                    "bonus": user.bonus
                 }
                 return JSONResponse(
                     status_code=status.HTTP_200_OK,

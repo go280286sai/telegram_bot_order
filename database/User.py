@@ -261,6 +261,7 @@ class UserManager:
                     "is_admin": p.is_admin,
                     "first_name": p.first_name,
                     "last_name": p.last_name,
+                    "bonus": p.bonus,
                     "created_at": p.created_at.strftime("%d-%m-%Y"),
                 } for p in users
             ]
@@ -370,5 +371,29 @@ class UserManager:
             return True
         except Exception as e:
             await self.session.rollback()
+            logging.exception(e)
+            return False
+
+    async def bonus(self, idx: int, target: str, total: int) -> bool:
+        """
+        Add a bonus to a user
+        :param total:
+        :param target:
+        :param idx:
+        :return:
+        """
+        try:
+            query = select(User).where(User.id == int(idx))
+            result = await self.session.execute(query)
+            user = result.scalar_one_or_none()
+            if user is None:
+                return False
+            if target == "add":
+                user.bonus += total
+            elif target == "remove":
+                user.bonus -= total
+            await self.session.commit()
+            return True
+        except Exception as e:
             logging.exception(e)
             return False

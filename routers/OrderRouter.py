@@ -43,6 +43,8 @@ async def create_order(
         total_price = transact.cardTotal
         if not total_price or total_price == 0:
             raise Exception("No total price")
+        pay_bonus = request.cookies.get('bonus', 0)
+        pay_discount = request.cookies.get('discount', 0)
         async with async_session_maker() as session:
             order_manager = OrderManager(session)
             await order_manager.create_order(
@@ -50,8 +52,22 @@ async def create_order(
                 user_id=int(user),
                 delivery=json.dumps(delivery),
                 total=float(total_price),
-                transaction_id=transaction
+                transaction_id=transaction,
+                bonus=int(pay_bonus),
+                discount=int(pay_discount)
             )
+            user_manager = UserManager(session)
+            await user_manager.bonus(
+                idx=int(user),
+                target="add",
+                total=int(total_price*2/100))
+
+            if pay_bonus:
+                await user_manager.bonus(
+                    idx=int(user),
+                    target="remove",
+                    total=int(pay_bonus))
+
             response.delete_cookie("cart")
             return {
                 "success": True,
@@ -313,27 +329,17 @@ async def get_order_view(idx: int, request: Request):
         admin = await is_admin(int(user_id))
         if admin is None or admin is False:
             raise Exception("Cookies missing user_id")
-        discount_raw = request.cookies.get('discount')
-        if discount_raw:
-            if isinstance(discount_raw, str):
-                discount = json.loads(discount_raw).get("discount", 0)
-            else:
-                discount = 0
-        else:
-            discount = 0
         async with async_session_maker() as session:
             order_manager = OrderManager(session)
             orders = await order_manager.get_order(idx=int(idx))
             if not orders:
                 raise Exception("Invoice order failed")
-
             id = orders.id
             products = json.loads(orders.products)
             products_ = []
             product_manager = ProductManager(session)
             for product_id, amount in products.items():
                 product = await product_manager.get_product(product_id)
-                print(product)
                 if product:
                     product_data = product.to_dict() if hasattr(
                         product, "to_dict") else {
@@ -344,14 +350,15 @@ async def get_order_view(idx: int, request: Request):
                         "amounts": product.amount,
                     }
                     product_data["amount"] = amount
-                    product_data["discount"] = discount
                     products_.append(product_data)
 
-            delivery = request.cookies.get('delivery')
+            delivery = orders.delivery
+
             if not delivery:
                 raise Exception("No delivery")
+            obj = json.loads(delivery)
+            delivery = json.loads(obj)
 
-            delivery = json.loads(delivery)
             delivery_manager = OrderManager(session)
 
             delivery_query = await delivery_manager.get_delivery(
@@ -359,10 +366,6 @@ async def get_order_view(idx: int, request: Request):
                 city_id=int(delivery["city_id"]),
                 address_id=int(delivery["address"])
             )
-
-            invoice = orders.invoice
-            created = orders.created_at.strftime("%d-%m-%Y")
-            total = orders.total
 
             user_ = {
                 "first_name": orders.user.first_name,
@@ -375,10 +378,12 @@ async def get_order_view(idx: int, request: Request):
                 "id": id,
                 "delivery": delivery_query,
                 "user": user_,
-                "total": total,
-                "created": created,
-                "invoice": invoice,
-                "products": products_
+                "total": orders.total,
+                "created": orders.created_at.strftime("%d-%m-%Y"),
+                "invoice": orders.invoice,
+                "products": products_,
+                "bonus": orders.bonus,
+                "discount": orders.discount
             }
 
             return JSONResponse(

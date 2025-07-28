@@ -4,11 +4,13 @@ import logging
 from fastapi import APIRouter, Response, Request, Cookie, status
 
 from database.Orders import OrderManager
+from database.User import UserManager
 from helps.help import parse_cart
 from database.Products import ProductManager
 from database.main import async_session_maker
 from models.DeliveryModel import Delivery
 from starlette.responses import JSONResponse
+from models.CartModel import Cart
 
 router = APIRouter()
 
@@ -259,9 +261,42 @@ async def remove_from_cart(
         return {"success": True, "data": {"cart": cart_items}, "error": None}
 
 
+@router.post("/total_bonus")
+async def set_total_bonus(
+        cart: Cart,
+        response: Response,
+        total: str = Cookie(default="{}"),
+        bonus: str = Cookie(default="{}")) -> dict:
+    try:
+        response.set_cookie(
+            key="bonus",
+            value=str(cart.bonus),
+            httponly=True
+        )
+        response.set_cookie(
+            key="total",
+            value=str(cart.total),
+            httponly=True
+        )
+        return {"success": True, "data": None, "error": None}
+    except Exception as e:
+        logging.exception(str(e))
+        return {"success": False, "data": None, "error": str(e)}
+
+
+
 @router.post("/")
 async def get_cart(request: Request) -> JSONResponse:
     try:
+        user_id = request.cookies.get("user_id")
+        if user_id is None:
+            raise Exception("No user_id")
+        pay_bonus = request.cookies.get("bonus")
+        if pay_bonus is None:
+            pay_bonus = 0
+        total = request.cookies.get("total")
+        if total is None:
+            total = 0
         raw_cart_cookie = request.cookies.get("cart", "{}")
         cart_items = parse_cart(raw_cart_cookie)
         discount_raw = request.cookies.get('discount')
@@ -273,6 +308,8 @@ async def get_cart(request: Request) -> JSONResponse:
         else:
             discount = 0
         async with async_session_maker() as session:
+            user_manager = UserManager(session)
+            user = await user_manager.get_user(int(user_id))
             product_manager = ProductManager(session)
             products_ = []
 
@@ -295,7 +332,7 @@ async def get_cart(request: Request) -> JSONResponse:
             status_code=status.HTTP_200_OK,
             content={
                 "success": True,
-                "data": {"cart": products_},
+                "data": {"cart": products_, "bonus": user.bonus, "pay_bonus": pay_bonus, "total": total},
                 "error": None
             }
         )

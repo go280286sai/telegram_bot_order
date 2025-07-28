@@ -36,6 +36,7 @@ export default function AdminUsers() {
                         is_admin: item.is_admin,
                         first_name: item.first_name,
                         last_name: item.last_name,
+                        bonus:item.bonus,
                         created_at: item.created_at.toString()
                     };
                 });
@@ -157,6 +158,7 @@ export default function AdminUsers() {
                     <th>Name</th>
                     <th>First</th>
                     <th>Last</th>
+                    <th>Bonus</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Comments</th>
@@ -197,6 +199,7 @@ export default function AdminUsers() {
                                 onChange={(e) => handleChange(item.id, "last_name", e.target.value)}
                             />
                         </td>
+                        <td>{formData[item.id]?.bonus || ""}</td>
                         <td>
                             <input
                                 type={"text"}

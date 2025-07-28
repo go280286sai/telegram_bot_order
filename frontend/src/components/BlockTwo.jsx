@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import log from "../helps/logs.mjs";
 import {IoBagAdd, IoCardOutline, IoCart} from "react-icons/io5";
 import {AiFillCheckSquare, AiOutlineDelete} from "react-icons/ai";
@@ -7,15 +7,35 @@ export default function BlockTwo() {
     const [showAlert, setShowAlert] = useState(false);
     const [products, setProducts] = useState([]);
     const [discount, setDiscount] = useState(0);
-    const [formData, setFormData] = useState({
-        promotion: ""
-    });
+    const [totalBonus, setTotalBonus] = useState(0);
+    const [formData, setFormData] = useState({promotion: ""});
+    const [formDataBonus, setFormDataBonus] = useState({bonus: 0});
+    const [cartItems, setCartItems] = useState([]);
+
+    const total = useMemo(() => {
+        let bonus = formDataBonus.bonus;
+        if (bonus > totalBonus) {
+            bonus = totalBonus;
+        }
+
+        const rawTotal = cartItems.reduce((sum, item) => sum + item.amount * item.price, 0);
+        let result = rawTotal - (rawTotal * discount) / 100;
+
+        if (result < bonus) {
+            result = 0;
+        } else {
+            result -= bonus;
+        }
+
+        return result.toFixed(2);
+    }, [cartItems, discount, formDataBonus.bonus, totalBonus]);
+
     const addToCart = async (id) => {
         try {
             await fetch(`http://localhost:8000/cart/increase/${id}`, {
                 method: "POST",
                 credentials: "include",
-            })
+            });
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 3000);
             await fetchCart();
@@ -23,22 +43,6 @@ export default function BlockTwo() {
             await log("error", "add to cart", error);
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("http://localhost:8000/product/products");
-                const result = await response.json();
-                setProducts(result.data.products);
-            } catch (error) {
-                await log("error", "get products", error);
-            }
-        };
-
-        fetchData();
-        fetchCart();
-    }, []);
-    const [cartItems, setCartItems] = useState([]);
 
     const decreaseAmount = async (id) => {
         try {
@@ -60,21 +64,12 @@ export default function BlockTwo() {
             });
             const result = await response.json();
             setCartItems(result.data.cart);
+            setTotalBonus(result.data.bonus);
         } catch (error) {
             await log("error", "get all from carts", error);
         }
     };
 
-    const calculateTotal = () => {
-        const total = cartItems
-            .reduce((sum, item) => sum + item.amount * item.price, 0)
-            .toFixed(2);
-        return total - (total * discount) / 100;
-    };
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({...prev, [name]: value}));
-    };
     const removeFromCart = async (id) => {
         try {
             await fetch(`http://localhost:8000/cart/remove/${id}`, {
@@ -86,6 +81,7 @@ export default function BlockTwo() {
             await log("error", "remove from cart", error);
         }
     };
+
     const addDiscount = async () => {
         try {
             await fetch(`http://localhost:8000/cart/discount/add/${discount}`, {
@@ -93,30 +89,74 @@ export default function BlockTwo() {
                 credentials: "include",
             });
         } catch (error) {
-            await log("error", "remove from cart", error);
+            await log("error", "apply discount", error);
         }
     };
 
     const handleDiscount = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8000/setting/get/discount", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data['success']) {
-                        if(data["data"]["settings"]["promotional"] === formData.promotion){
-                            setDiscount(parseInt(data["data"]["settings"]["discount"]))
-                            addDiscount();
-                        }
-                } else {
-                    log("error", "Discount not found", data);
-                    alert("Discount not found")
-                }
-            }).catch(data => log("error", "recover error", data));
+        try {
+            const res = await fetch("http://localhost:8000/setting/get/discount", {
+                method: "GET",
+                headers: {"Content-Type": "application/json"},
+                credentials: "include",
+            });
+            const data = await res.json();
+            if (data.success && data.data.settings.promotional === formData.promotion) {
+                setDiscount(parseInt(data.data.settings.discount));
+                addDiscount();
+            } else {
+                log("error", "Discount not found", data);
+                alert("Discount not found");
+            }
+        } catch (error) {
+            await log("error", "recover error", error);
+        }
+    };
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value}));
+    };
+
+    const handleChangeBonus = (e) => {
+        const {name, value} = e.target;
+        setFormDataBonus((prev) => ({...prev, [name]: parseFloat(value) || 0}));
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:8000/product/products");
+                const result = await response.json();
+                setProducts(result.data.products);
+            } catch (error) {
+                await log("error", "get products", error);
+            }
+        };
+
+        fetchData();
+        fetchCart();
+    }, []);
+    const to_order = async (e) => {
+        try {
+            const bonus = formDataBonus.bonus <= totalBonus ? formDataBonus.bonus : totalBonus
+            const response = await fetch("http://localhost:8000/cart/total_bonus", {
+                method: "POST",
+                credentials: "include",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    total: total,
+                    bonus: bonus
+                })
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.replace("/order");
+            }
+        } catch (error) {
+            await log("error", "apply discount", error);
+        }
     }
     return (
         <div className="row block_1">
@@ -255,7 +295,34 @@ export default function BlockTwo() {
                                             <tfoot>
                                             <tr>
                                                 <td colSpan="4" className="text-end">
-                                                    <strong>Input cod:</strong></td>
+                                                    <strong>Bonus: {totalBonus}</strong></td>
+                                                <td colSpan="2">
+                                                    <form onSubmit={handleDiscount}>
+                                                        <table>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <input
+                                                                        type="number"
+                                                                        className="form-control"
+                                                                        id="bonus"
+                                                                        name="bonus"
+                                                                        autoComplete="bonus"
+                                                                        data-testid="promotion"
+                                                                        value={formDataBonus.bonus}
+                                                                        onChange={handleChangeBonus}
+                                                                        required
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colSpan="4" className="text-end">
+                                                    <strong>Promotion:</strong></td>
                                                 <td colSpan="2">
                                                     <form onSubmit={handleDiscount}>
                                                         <table>
@@ -294,20 +361,18 @@ export default function BlockTwo() {
                                                     data-testid={"discountLabel"}>{discount} %</strong></td>
                                             </tr>
                                             <tr>
-
                                                 <td colSpan="4" className="text-end"><strong>Total:</strong></td>
-                                                <td colSpan="2"><strong
-                                                    data-testid={"calculateTotal"}>{calculateTotal()} $</strong></td>
+                                                <td colSpan="2"><strong data-testid="calculateTotal">{total} $</strong>
+                                                </td>
                                             </tr>
                                             </tfoot>
                                         </table>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <a href="/order">
-                                        <div className="btn btn-link btn_gen"><IoCardOutline className={"IoCardOutline"}
-                                                                                             title={"To pay"}/></div>
-                                    </a>
+                                    <div className="btn btn-link btn_gen"><IoCardOutline className={"IoCardOutline"}
+                                                                                         title={"To pay"}
+                                                                                         onClick={to_order}/></div>
                                 </div>
                             </div>
                         </div>

@@ -12,7 +12,8 @@ export default function BlockOne({ settings }) {
                 "username": "None",
                 "email": "None",
                 "phone": "None",
-                "status": false
+                "status": false,
+                "bonus": 0
             }
     });
     const [statusUser, setStatusUser] = useState(false)

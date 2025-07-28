@@ -26,6 +26,7 @@ class User(Base):
     comments: Mapped[str] = Column(String, nullable=True, default=None)
     hashed_active: Mapped[str] = Column(String, nullable=True)
     is_admin: Mapped[int] = Column(Integer, default=0, nullable=False)
+    bonus: Mapped[int] = Column(Integer, default=0, nullable=False)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
 
     def __init__(
@@ -125,6 +126,8 @@ class Order(Base):
     transaction_id: Mapped[str] = Column(String, nullable=False)
     status: Mapped[int] = Column(Integer, default=0)
     invoice: Mapped[str] = Column(String, nullable=True)
+    bonus: Mapped[int] = Column(Integer, default=0, nullable=False)
+    discount: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     comment: Mapped[str] = Column(Text, nullable=True)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     user: Mapped[User] = relationship("User", lazy="joined")
@@ -135,6 +138,8 @@ class Order(Base):
                  delivery: str,
                  total: float,
                  transaction_id: str,
+                 bonus: int,
+                 discount: int,
                  **kwargs):
         super().__init__(**kwargs)
         self.products = products
@@ -142,6 +147,9 @@ class Order(Base):
         self.delivery = delivery
         self.total = total
         self.transaction_id = transaction_id
+        self.bonus = bonus
+        self.discount = discount
+
 
 
 class Carousel(Base):

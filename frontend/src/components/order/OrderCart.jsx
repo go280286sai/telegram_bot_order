@@ -4,12 +4,8 @@ import log from "../../helps/logs.mjs";
 
 export default function OrderCart(){
     const [cartItems, setCartItems] = useState([]);
-    const calculateTotal = () => {
-
-        return cartItems
-            .reduce((sum, item) => sum + item.amount * item.price-(item.amount * item.price)*item.discount/100, 0)
-            .toFixed(2);
-    };
+    const [totalCart, setTotalCart] = useState(0);
+    const [bonus, setBonus] = useState(0);
     const fetchCart = async () => {
         try {
             const response = await fetch("http://localhost:8000/cart", {
@@ -19,6 +15,8 @@ export default function OrderCart(){
             const result = await response.json();
             if(result['success']){
                  setCartItems(result.data.cart);
+                 setTotalCart(result.data.total)
+                setBonus(result.data.pay_bonus)
             }
 
         } catch (error) {
@@ -57,12 +55,16 @@ export default function OrderCart(){
                     </tbody>
                     <tfoot>
                     <tr>
+                        <td colSpan="4" className="text-end"><strong>Bonus:</strong></td>
+                        <td colSpan="2"><strong>{bonus>0?-bonus:0} $</strong></td>
+                    </tr>
+                    <tr>
                         <td colSpan="4" className="text-end"><strong>Total:</strong></td>
-                        <td colSpan="2"><strong>{calculateTotal()} $</strong></td>
+                        <td colSpan="2"><strong>{totalCart} $</strong></td>
                     </tr>
                     </tfoot>
                 </table>
-            <OrderDelivery total={calculateTotal()}/>
+            <OrderDelivery total={totalCart}/>
         </div>
     )
 }

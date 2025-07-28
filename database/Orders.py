@@ -20,10 +20,14 @@ class OrderManager:
                            user_id: int,
                            delivery: str,
                            total: float,
-                           transaction_id: str
+                           transaction_id: str,
+                           bonus: int = 0,
+                           discount: int = 0,
                            ) -> bool:
         """
         Create a new order
+        :param discount:
+        :param bonus:
         :param transaction_id:
         :param products:
         :param user_id:
@@ -37,7 +41,9 @@ class OrderManager:
                 user_id=int(user_id),
                 delivery=str(delivery),
                 total=float(total),
-                transaction_id=str(transaction_id))
+                transaction_id=str(transaction_id),
+                discount=int(discount),
+                bonus=int(bonus))
             self.session.add(order)
             await self.session.commit()
             return True

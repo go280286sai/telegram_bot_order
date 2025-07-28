@@ -25,7 +25,7 @@ async def test_create_user():
 async def test_is_admin():
     user = await is_admin(1)
     assert isinstance(user, bool)
-    assert user is False
+    assert user is True
 
 
 @pytest.mark.asyncio
@@ -77,6 +77,29 @@ async def test_get_user(test_resset_password):
         assert query.password == hash_password(password)
         assert query.comments == "TEST"
         return password
+
+
+@pytest.mark.asyncio
+async def test_bonus():
+    async with async_session_maker() as session:
+        user_manager = UserManager(session)
+        user_add = await user_manager.bonus(
+            idx=1,
+            target="add",
+            total=50)
+        assert user_add is True
+        query = await user_manager.get_user(1)
+        assert isinstance(query, User)
+        assert query.bonus == 50
+        user_remove = await user_manager.bonus(
+            idx=1,
+            target="remove",
+            total=30
+        )
+        assert user_remove is True
+        query = await user_manager.get_user(1)
+        assert isinstance(query, User)
+        assert query.bonus == 20
 
 
 @pytest.mark.asyncio
