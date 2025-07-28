@@ -15,6 +15,7 @@ from database.Subscriber import SubscriberManager
 from database.Template import TemplateManager
 from database.User import UserManager
 from models.SettingModel import Setting
+from faker import Faker
 
 router = APIRouter()
 
@@ -317,6 +318,95 @@ async def truncates_all() -> JSONResponse:
             query = await users_manager.truncate_users_table()
             if query is False:
                 raise Exception("Failed to truncate users")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "success": True,
+                    "data": None,
+                    "error": None
+                }
+            )
+    except Exception as e:
+        logging.exception(str(e))
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={
+                "success": False,
+                "data": None,
+                "error": str(e)
+            }
+        )
+
+
+@router.post("/demo")
+async def create_demo() -> JSONResponse:
+    """
+    Create demo
+    :return:
+    """
+    try:
+        async with async_session_maker() as session:
+            faker = Faker()
+            address_manager = AddressManager(session)
+            for i in range(1, 101):
+                await address_manager.create_address(
+                    name=faker.address(),
+                    city_id=i
+                )
+            city_manager = CityManager(session)
+            for i in range(1, 11):
+                for j in range(1, 11):
+                    await city_manager.create_city(
+                        name=faker.city(),
+                        post_id=j
+                    )
+            posts_manager = PostManager(session)
+            for i in range(1, 11):
+                await posts_manager.create_post(faker.company())
+            carousel_manager = CarouselManager(session)
+            for i in range(1, 11):
+                await carousel_manager.create_item(
+                    title=faker.name(),
+                    description=faker.text(),
+                    image=faker.name()
+                )
+            products_manager = ProductManager(session)
+            for i in range(1, 51):
+                await products_manager.create_product(
+                    name=faker.name(),
+                    description=faker.text(),
+                    price=faker.random_int(),
+                    amount=faker.random_int()
+                )
+            review_manager = ReviewManager(session)
+            for i in range(1, 31):
+                await review_manager.create_review(
+                    name=faker.first_name() + " " + faker.last_name(),
+                    text=faker.text(),
+                    gender=int(faker.random_element(["0", "1"]))
+                )
+            subscribers_manager = SubscriberManager(session)
+            for i in range(0, 20):
+                await subscribers_manager.create_subscriber(
+                    email=faker.email(),
+                    hash_active=faker.text(max_nb_chars=15),
+                )
+            templates_manager = TemplateManager(session)
+            for i in range(0, 20):
+                await templates_manager.create_template(
+                    title=faker.name(),
+                    header=faker.text(),
+                    body=faker.text()
+                )
+            users_manager = UserManager(session)
+            for i in range(0, 20):
+                await users_manager.create_user(
+                    username=faker.user_name(),
+                    email=faker.email(),
+                    phone=faker.phone_number(),
+                    password="qwertyQWERTY0!",
+                    hash_active=faker.text(max_nb_chars=15)
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={

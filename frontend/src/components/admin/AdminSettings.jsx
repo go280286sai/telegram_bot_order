@@ -5,7 +5,7 @@ import AdminAddSettingModal from "./AdminAddSettingModal";
 import {
     AiOutlineInteraction,
     AiTwotoneFileAdd,
-    AiOutlineDelete, AiFillCopy, AiFillDelete
+    AiOutlineDelete, AiFillCopy, AiFillDelete, AiFillCloud
 } from "react-icons/ai";
 export default function AdminSettings() {
     const [content, setContent] = useState([]);
@@ -118,6 +118,21 @@ export default function AdminSettings() {
             await log("error", "truncates", error);
         }
     };
+    const fetchDemo = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/setting/demo", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" }
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            await log("error", "demo", error);
+        }
+    };
     return (
         <div className={"row block_1 p-1"}>
             <div className="mb-2 btn_with">
@@ -138,6 +153,11 @@ export default function AdminSettings() {
                         <td>
                             <button className={"btn btn-link btn_gen"} data-testid={"truncate"} onClick={()=> fetchClearAll()}>
                                <AiFillDelete  className={"AiOutlineDelete"} title={"Delete all"}/>
+                            </button>
+                        </td>
+                        <td>
+                            <button className={"btn btn-link btn_gen"} data-testid={"demo"} onClick={()=> fetchDemo()}>
+                               <AiFillCloud  className={"AiOutlineDelete"} title={"Download demo"}/>
                             </button>
                         </td>
                     </tr>
