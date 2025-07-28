@@ -67,7 +67,10 @@ async def create_order(
                     idx=int(user),
                     target="remove",
                     total=int(pay_bonus))
-
+            products = json.loads(products)
+            product_manager = ProductManager(session)
+            for product in products.items():
+                await product_manager.set_amount_product(int(product[0]), int(product[1]))
             response.delete_cookie("cart")
             return {
                 "success": True,

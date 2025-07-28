@@ -139,6 +139,9 @@ export default function BlockTwo() {
         fetchCart();
     }, []);
     const to_order = async (e) => {
+        if(cartItems.length<=0){
+            return
+        }
         try {
             const bonus = formDataBonus.bonus <= totalBonus ? formDataBonus.bonus : totalBonus
             const response = await fetch("http://localhost:8000/cart/total_bonus", {
@@ -178,47 +181,51 @@ export default function BlockTwo() {
                     </tr>
                     </thead>
                     <tbody>
-                    {products.map((product, index) => (
-                        <tr key={product.id || index}>
-                            <th scope="row">{product.id}</th>
-                            <td>{product.name}</td>
-                            <td>
-                                <div className="accordion" id="productAccordion">
-                                    <div className="accordion-item">
-                                        <h2 className="accordion-header">
-                                            <button
-                                                className="accordion-button collapsed accordion_color"
-                                                type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target={`#collapse${index}`}
-                                                aria-expanded="false"
-                                                aria-controls={`collapse${index}`}>
-                                                Details
-                                            </button>
-                                        </h2>
-                                        <div
-                                            id={`collapse${index}`}
-                                            className="accordion-collapse collapse"
-                                            data-bs-parent="#productAccordion">
-                                            <div className="accordion-body">
-                                                {product.description}
+                    {products
+                        .filter(product => product.amount > 0)
+                        .map((product, index) => (
+                            <tr key={product.id || index}>
+                                <th scope="row">{product.id}</th>
+                                <td>{product.name}</td>
+                                <td>
+                                    <div className="accordion" id="productAccordion">
+                                        <div className="accordion-item">
+                                            <h2 className="accordion-header">
+                                                <button
+                                                    className="accordion-button collapsed accordion_color"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target={`#collapse${index}`}
+                                                    aria-expanded="false"
+                                                    aria-controls={`collapse${index}`}>
+                                                    Details
+                                                </button>
+                                            </h2>
+                                            <div
+                                                id={`collapse${index}`}
+                                                className="accordion-collapse collapse"
+                                                data-bs-parent="#productAccordion">
+                                                <div className="accordion-body">
+                                                    {product.description}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <strong className="price">${product.price}</strong>
-                            </td>
-                            <td>
-                                <button type="button" className="btn btn-link btn_gen" data-testid={"add_to_cart"}
+                                </td>
+                                <td>
+                                    <strong className="price">${product.price}</strong>
+                                </td>
+                                <td>
+                                    <button
+                                        type="button"
+                                        className="btn btn-link btn_gen"
+                                        data-testid={"add_to_cart"}
                                         onClick={() => addToCart(product.id)}>
-                                    <IoBagAdd className={"IoBagAdd"} title={"Add to cart"}/>
-                                </button>
-
-                            </td>
-                        </tr>
-                    ))}
+                                        <IoBagAdd className={"IoBagAdd"} title={"Add to cart"}/>
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
@@ -377,11 +384,17 @@ export default function BlockTwo() {
                             </div>
                         </div>
                     </div>
-
-                    <div className="btn trash" data-bs-toggle="modal" data-bs-target="#cartModal">
-                        <span className="badge text-bg-danger">{cartItems.length}</span>
-                        <IoCart className={"IoCart"} title="Trash"/>
-                    </div>
+                    {cartItems.length > 0 ? (
+                        <div className="btn trash" data-bs-toggle="modal" data-bs-target="#cartModal">
+                            <span className="badge text-bg-danger">{cartItems.length}</span>
+                            <IoCart className={"IoCart"} title="Trash"/>
+                        </div>
+                    ) : (
+                        <div className="btn trash">
+                            <span className="badge text-bg-danger">{cartItems.length}</span>
+                            <IoCart className={"IoCart"} title="Trash"/>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

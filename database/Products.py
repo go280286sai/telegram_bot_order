@@ -88,6 +88,29 @@ class ProductManager:
             logging.exception(e)
             return False
 
+    async def set_amount_product(self, idx: int, amount: int) -> bool:
+        """
+        Set amount a product.
+        :param amount:
+        :param idx:
+        :return:
+        """
+        try:
+            if amount <= 0:
+                return False
+            query = select(Product).where(Product.id == int(idx))
+            result = await self.session.execute(query)
+            product = result.scalar_one_or_none()
+            if product is None:
+                return False
+            product.amount -= amount
+
+            await self.session.commit()
+            return True
+        except Exception as e:
+            logging.exception(e)
+            return False
+
     async def get_products(self) -> Sequence[Product] | None:
         """
         Gets all products.
