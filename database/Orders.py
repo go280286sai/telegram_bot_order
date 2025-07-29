@@ -108,7 +108,7 @@ class OrderManager:
                     "status": p.status,
                     "invoice": p.invoice,
                     "comment": p.comment,
-                    "created_at": p.created_at.strftime("%d-%m-%Y"),
+                    "created_at": p.created_at.strftime("%Y-%m-%d"),
                 } for p in orders
             ]
             return orders_

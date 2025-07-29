@@ -8,7 +8,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import AdminMain from "./components/admin/AdminMain";
+import AdminBody from "./components/admin/AdminBody";
 import Order from "./components/order/Order";
 import Separation from "./components/Separation";
 import AdminSettings from "./components/admin/AdminSettings";
@@ -35,7 +35,13 @@ root.render(
                         <Separation/>
                     </>
                 }/>
-                <Route path={"/admin"} element={<AdminMain/>}/>
+                <Route path={"/admin"} element={
+                    <>
+                        <AdminHeader/>
+                        <Separation/>
+                        <AdminBody/>
+                    </>
+                }/>
                 <Route path={"/admin/settings"} element={
                     <>
                         <AdminHeader/>
