@@ -3,37 +3,43 @@ import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import img_1 from "../../assets/img/predict_components.png";
 import img_2 from "../../assets/img/predict_forecast.png";
-import {IoArrowRedoCircleSharp } from "react-icons/io5";
+import {IoArrowRedoCircleSharp} from "react-icons/io5";
+
 export default function AdminPredict() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({
-        id:""
+        id: ""
     });
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch(`http://localhost:8000/order/get_predict/${formData.id}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: formData.id,
-            }),
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data.success && data["data"]["predict"]!==null) {
-                    setContent(data["data"]["predict"])
-                } else {
-                    log("error", "add new item post error", data);
-                    alert("There is insufficient data for analysis.")
-                }
-            }).catch(data => log("error", "add new item post error", data));
+
+        try {
+            const response = await fetch(`http://localhost:8000/order/get_predict/${formData.id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({id: formData.id}),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.data.predict !== null) {
+                setContent(data.data.predict);
+            } else {
+                await log("error", "add new item post error", data);
+                alert("There is insufficient data for analysis.");
+            }
+        } catch (error) {
+            await log("error", "add new item post error", error);
+        }
     };
+
     useEffect(() => {
         if (content.length > 0) {
             const dtInstance = new DataTable('#myTable');
@@ -65,7 +71,7 @@ export default function AdminPredict() {
                             /></td>
                             <td>
                                 <button type="submit" className="btn btn-link btn_gen">
-                                    <IoArrowRedoCircleSharp  className={"IoArrowRedoCircleSharp "} title={"Ok"} />
+                                    <IoArrowRedoCircleSharp className={"IoArrowRedoCircleSharp "} title={"Ok"}/>
                                 </button>
                             </td>
                         </tr>

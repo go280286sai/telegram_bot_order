@@ -1,22 +1,35 @@
+"""
+Router module for managing user address-related endpoints.
+Includes operations for listing, creating, updating, and deleting addresses.
+"""
+
 import logging
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Request, HTTPException
 from starlette.responses import JSONResponse
 from database.main import async_session_maker
 from database.Address import AddressManager
+from helps.Middleware import is_admin
 from models.AddressModel import Address
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def create_address(address: Address) -> JSONResponse:
+async def create_address(address: Address, request: Request) -> JSONResponse:
     """
     Create address
+    :param request:
     :param address:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             address_manager = AddressManager(session)
             query = await address_manager.create_address(
@@ -24,7 +37,10 @@ async def create_address(address: Address) -> JSONResponse:
                 city_id=address.city_id
             )
             if query is None:
-                raise Exception("Failed to create address")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Create address failed"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -33,27 +49,38 @@ async def create_address(address: Address) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(str(e))
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": str(e)
+                "error": e.detail
             }
         )
 
 
 @router.post("/update/{idx}")
-async def update_address(idx: int, address: Address) -> JSONResponse:
+async def update_address(
+        idx: int,
+        address: Address,
+        request: Request
+) -> JSONResponse:
     """
     Update address
+    :param request:
     :param idx:
     :param address:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             address_manager = AddressManager(session)
             query = await address_manager.update_address(
@@ -62,7 +89,10 @@ async def update_address(idx: int, address: Address) -> JSONResponse:
                 city_id=address.city_id
             )
             if query is False:
-                raise Exception("Failed to update address")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to update address"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -71,14 +101,14 @@ async def update_address(idx: int, address: Address) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(str(e))
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": str(e)
+                "error": e.detail
             }
         )
 
@@ -94,7 +124,10 @@ async def get_addresses() -> JSONResponse:
             address_manager = AddressManager(session)
             query = await address_manager.get_addresses()
             if query is None:
-                raise Exception("Failed to get address")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to get addresses"
+                )
             address_ = [
                 {
                     "id": p.id,
@@ -102,7 +135,6 @@ async def get_addresses() -> JSONResponse:
                     "city_id": p.city_id
                 } for p in query
             ]
-
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -111,14 +143,14 @@ async def get_addresses() -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(str(e))
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": str(e)
+                "error": e.detail
             }
         )
 
@@ -134,14 +166,16 @@ async def get_address(city_id: int) -> JSONResponse:
             address_manager = AddressManager(session)
             query = await address_manager.get_address(int(city_id))
             if query is None:
-                raise Exception("Failed to fetch address")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to fetch address"
+                )
             address_ = [
                 {
                     "id": p.id,
                     "name": p.name,
                 } for p in query
             ]
-
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -150,31 +184,41 @@ async def get_address(city_id: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(str(e))
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch address"
+                "error": e.detail
             }
         )
 
 
 @router.post("/delete/{idx}")
-async def delete_city(idx: int) -> JSONResponse:
+async def delete_city(idx: int, request: Request) -> JSONResponse:
     """
     Delete address
+    :param request:
     :param idx:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             address_manager = AddressManager(session)
             query = await address_manager.delete_address(idx=idx)
             if query is False:
-                raise Exception("Failed to delete address")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to delete address"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -183,13 +227,13 @@ async def delete_city(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch address: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to delete address"
+                "error": e.detail
             }
         )

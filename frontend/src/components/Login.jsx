@@ -50,16 +50,14 @@ export default function Login() {
                     setError("Incorrect username or password")
                 }
             }).catch(data => {
-                setError("Incorrect username or password");
+            setError("Incorrect username or password");
             log("error", "login error", data);
         });
     };
-
     const handleRecovery = (e) => {
         const {name, value} = e.target;
         setFormRecover(prev => ({...prev, [name]: value}));
     };
-
     const handleSubmitRecovery = (e) => {
         e.preventDefault();
         fetch("http://localhost:8000/user/recovery", {
@@ -82,7 +80,6 @@ export default function Login() {
                 }
             }).catch(data => log("error", "recover error", data));
     };
-
     return (
         <div className="modal fade" id="login" tabIndex="-1" aria-labelledby="loginLabel" aria-hidden="true">
             {recovery ? <div className="modal-dialog">
@@ -177,7 +174,7 @@ export default function Login() {
                             <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
                         </button>
                         <button type="submit" className="btn btn-link btn_gen" title={"Recover password"}
-                        data-testid={"recovery_password"}>
+                                data-testid={"recovery_password"}>
                             <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
                         </button>
                     </div>

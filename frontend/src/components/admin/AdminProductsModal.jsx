@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import log from "../../helps/logs.mjs";
 import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
-export default function AdminProductsModal(){
+export default function AdminProductsModal() {
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -14,33 +14,45 @@ export default function AdminProductsModal(){
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8000/product/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                description: formData.description,
-                amount: formData.amount,
-                price: formData.price,
-                service: formData.service
-            }),
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data.success) {
-                    window.location.reload()
-                } else {
-                    log("error", "add new item product error", data);
-                }
-            }).catch(data => log("error", "add new item product error", data));
+
+        try {
+            const response = await fetch("http://localhost:8000/product/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    description: formData.description,
+                    amount: formData.amount,
+                    price: formData.price,
+                    service: formData.service
+                }),
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`HTTP ${response.status}: ${errorData.message || "Unknown error"}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                window.location.reload();
+            } else {
+                await log("error", "add new item product error", data);
+            }
+        } catch (error) {
+            await log("error", "add new item product error", error);
+        }
     };
+
     return (
         <div className="modal fade" id="addProducts" tabIndex="-1" aria-labelledby="addProducts" aria-hidden="true">
-           <div className="modal-dialog">
+            <div className="modal-dialog">
                 <form className="modal-content" onSubmit={handleSubmit}>
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="ReviewLabel">Add new item product</h1>
@@ -122,7 +134,7 @@ export default function AdminProductsModal(){
                         </button>
                     </div>
                 </form>
-           </div>
+            </div>
         </div>
     )
 }

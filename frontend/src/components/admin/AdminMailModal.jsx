@@ -2,11 +2,8 @@ import React, {useState} from "react";
 import log from "../../helps/logs.mjs";
 import 'draft-js/dist/Draft.css';
 import {
-    AiOutlineInteraction,
-    AiOutlineRest,
-    AiOutlineRightSquare,
-    AiTwotoneFileAdd,
-    AiTwotoneCloseSquare, AiFillCheckSquare
+    AiTwotoneCloseSquare,
+    AiFillCheckSquare
 } from "react-icons/ai";
 
 export default function AdminMailModal() {
@@ -19,27 +16,33 @@ export default function AdminMailModal() {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8000/template/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                header: formData.header,
-                title: formData.title,
-                body: formData.body
-            }),
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data.success) {
-                    window.location.reload()
-                } else {
-                    log("error", "add new item template error", data);
-                }
-            }).catch(data => log("error", "add new item template error", data));
+
+        try {
+            const response = await fetch("http://localhost:8000/template/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    header: formData.header,
+                    title: formData.title,
+                    body: formData.body
+                }),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                window.location.reload();
+            } else {
+                await log("error", "add new item template error", data);
+            }
+        } catch (error) {
+            await log("error", "add new item template error", error);
+        }
     };
     return (
         <div className="modal fade" id="addTemplate" tabIndex="-1" aria-labelledby="addTemplate" aria-hidden="true">

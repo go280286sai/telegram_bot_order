@@ -1,6 +1,6 @@
 import pytest_asyncio
 
-from helps.help import hash_password, generate_transaction
+from helps.helper import hash_password, generate_transaction
 import pytest
 from database.User import UserManager
 from database.main import async_session_maker, User
@@ -18,7 +18,7 @@ async def test_create_user():
             email="admin@admin.com",
             hash_active=generate_transaction()
         )
-        assert isinstance(user, User)
+        assert user is not None
 
 
 @pytest.mark.asyncio
@@ -69,13 +69,11 @@ async def test_get_user(test_resset_password):
         password = str(test_resset_password)
         user_manager = UserManager(session)
         query = await user_manager.get_user(1)
-        assert isinstance(query, User)
-        assert query.username is not None
-        assert query.email is not None
-        assert query.phone == "8000000000"
-        assert query.status == 0
-        assert query.password == hash_password(password)
-        assert query.comments == "TEST"
+        assert query['username'] is not None
+        assert query['email'] is not None
+        assert query['phone'] == "8000000000"
+        assert query['status'] == 0
+        assert query['comments'] == "TEST"
         return password
 
 
@@ -89,8 +87,7 @@ async def test_bonus():
             total=50)
         assert user_add is True
         query = await user_manager.get_user(1)
-        assert isinstance(query, User)
-        assert query.bonus == 50
+        assert query['bonus'] == 50
         user_remove = await user_manager.bonus(
             idx=1,
             target="remove",
@@ -98,8 +95,7 @@ async def test_bonus():
         )
         assert user_remove is True
         query = await user_manager.get_user(1)
-        assert isinstance(query, User)
-        assert query.bonus == 20
+        assert query['bonus'] == 20
 
 
 @pytest.mark.asyncio

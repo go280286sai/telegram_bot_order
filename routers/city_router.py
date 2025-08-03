@@ -1,22 +1,40 @@
+"""
+Router module for managing user city-related endpoints.
+Includes operations for listing, creating, updating, and deleting cities.
+"""
 import logging
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Request, HTTPException
 from starlette.responses import JSONResponse
 from database.main import async_session_maker
 from database.City import CityManager
+from helps.Middleware import is_admin
 from models.CityModel import City
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def create_city(city: City) -> JSONResponse:
+async def create_city(city: City, request: Request) -> JSONResponse:
     """
     Create city
+    :param request:
     :param city:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(
+                status_code=401,
+                detail="User not authenticated"
+            )
+        admin = await is_admin(int(user_id))
+        if admin is None or admin is False:
+            raise HTTPException(
+                status_code=403,
+                detail="Permission denied"
+            )
         async with async_session_maker() as session:
             city_manager = CityManager(session)
             query = await city_manager.create_city(
@@ -24,7 +42,10 @@ async def create_city(city: City) -> JSONResponse:
                 post_id=city.post_id
             )
             if query is None:
-                raise Exception()
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to create city"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -33,27 +54,34 @@ async def create_city(city: City) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(e)
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to create city"
+                "error": e.detail
             }
         )
 
 
 @router.post("/update/{idx}")
-async def update_city(idx: int, city: City) -> JSONResponse:
+async def update_city(idx: int, city: City, request: Request) -> JSONResponse:
     """
     Update city
+    :param request:
     :param idx:
     :param city:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             city_manager = CityManager(session)
             query = await city_manager.update_city(
@@ -62,7 +90,10 @@ async def update_city(idx: int, city: City) -> JSONResponse:
                 post_id=city.post_id
             )
             if query is False:
-                raise Exception("Failed to update city")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to update city"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -71,14 +102,14 @@ async def update_city(idx: int, city: City) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(e)
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to update city"
+                "error": e.detail
             }
         )
 
@@ -94,7 +125,10 @@ async def get_address(post_id: int) -> JSONResponse:
             address_manager = CityManager(session)
             query = await address_manager.get_city(int(post_id))
             if query is None:
-                raise Exception()
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to fetch cities"
+                )
             cities_ = [
                 {
                     "id": p.id,
@@ -110,14 +144,14 @@ async def get_address(post_id: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch cities: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch cities"
+                "error": e.detail
             }
         )
 
@@ -133,7 +167,10 @@ async def get_city() -> JSONResponse:
             city_manager = CityManager(session)
             query = await city_manager.get_cities()
             if query is None:
-                raise Exception("Failed to get city")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to get city"
+                )
             city_ = [
                 {
                     "id": p.id,
@@ -141,7 +178,6 @@ async def get_city() -> JSONResponse:
                     "post_id": p.post_id
                 } for p in query
             ]
-
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -150,31 +186,41 @@ async def get_city() -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch city: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch city"
+                "error": e.detail
             }
         )
 
 
 @router.post("/delete/{idx}")
-async def delete_city(idx: int) -> JSONResponse:
+async def delete_city(idx: int, request: Request) -> JSONResponse:
     """
     Delete city
+    :param request:
     :param idx:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=422, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             city_manager = CityManager(session)
             query = await city_manager.delete_city(idx=idx)
             if query is False:
-                raise Exception("Failed to delete city")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to delete city"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -183,13 +229,13 @@ async def delete_city(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch city: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to delete city"
+                "error": e.detail
             }
         )

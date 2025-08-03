@@ -1,24 +1,35 @@
+"""
+Router module for managing user product-related endpoints.
+Includes operations for listing, creating, updating, and deleting product.
+"""
 import logging
 
-from fastapi import APIRouter, status
-from database.Products import ProductManager
-from database.main import async_session_maker
+from fastapi import APIRouter, status, Request, HTTPException
 from starlette.responses import JSONResponse
+from database import Products, main
+from helps.Middleware import is_admin
 from models.ProductModel import Product
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def product_create(item: Product) -> JSONResponse:
+async def product_create(item: Product, request: Request) -> JSONResponse:
     """
     Create a new product.
+    :param request:
     :param item:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
+        async with main.async_session_maker() as session:
+            product_manager = Products.ProductManager(session)
             query = await product_manager.create_product(
                 name=item.name,
                 description=item.description,
@@ -26,7 +37,10 @@ async def product_create(item: Product) -> JSONResponse:
                 amount=item.amount
             )
             if query is None:
-                raise Exception("Error creating product")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error creating product"
+                )
 
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
@@ -36,29 +50,40 @@ async def product_create(item: Product) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Error creating product: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Error creating product"
+                "error": e.detail
             }
         )
 
 
 @router.post("/update/{idx}")
-async def product_update(idx: int, item: Product) -> JSONResponse:
+async def product_update(
+        idx: int,
+        item: Product,
+        request: Request
+) -> JSONResponse:
     """
     Update an existing product.
+    :param request:
     :param idx:
     :param item:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
+        async with main.async_session_maker() as session:
+            product_manager = Products.ProductManager(session)
             query = await product_manager.update_product(
                 idx=idx,
                 name=item.name,
@@ -68,8 +93,10 @@ async def product_update(idx: int, item: Product) -> JSONResponse:
                 service=item.service
             )
             if query is False:
-                raise Exception("Error updating product")
-
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error updating product"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -78,14 +105,14 @@ async def product_update(idx: int, item: Product) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Error updating product: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Error updating product"
+                "error": e.detail
             }
         )
 
@@ -97,8 +124,8 @@ async def products() -> JSONResponse:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
+        async with main.async_session_maker() as session:
+            product_manager = Products.ProductManager(session)
             query = await product_manager.get_products()
             if query is None:
                 return JSONResponse(
@@ -127,14 +154,14 @@ async def products() -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch products: {e}")
+    except ValueError as e:
+        logging.exception(e)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch products"
+                "error": str(e)
             }
         )
 
@@ -147,11 +174,11 @@ async def product(idx: int) -> JSONResponse:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
+        async with main.async_session_maker() as session:
+            product_manager = Products.ProductManager(session)
             query = await product_manager.get_product(idx=idx)
-            if not query:
-                raise Exception("No products")
+            if query is None:
+                raise HTTPException(status_code=400, detail="No products")
             product_ = [
                 {
                     "id": query.id,
@@ -170,32 +197,44 @@ async def product(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch products: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch products"
+                "error": e.detail
             }
         )
 
 
 @router.post("/delete/{idx}")
-async def product_delete(idx: int) -> JSONResponse:
+async def product_delete(idx: int, request: Request) -> JSONResponse:
     """
     Delete an existing product.
+    :param request:
     :param idx:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ProductManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(
+                status_code=403,
+                detail="Permission denied"
+            )
+        async with main.async_session_maker() as session:
+            product_manager = Products.ProductManager(session)
             query = await product_manager.delete_product(idx=idx)
             if query is False:
-                raise Exception("Error deleting product")
-
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error deleting product"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -204,13 +243,13 @@ async def product_delete(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch products: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch products"
+                "error": e.detail
             }
         )

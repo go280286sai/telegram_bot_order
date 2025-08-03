@@ -12,8 +12,6 @@ import {IoLockClosedSharp, IoLockOpen, IoReloadCircleSharp} from "react-icons/io
 export default function AdminUsers() {
     const [content, setContent] = useState([]);
     const [formData, setFormData] = useState({});
-
-
     const fetchUsers = async () => {
         try {
             await fetchAuth();
@@ -36,7 +34,7 @@ export default function AdminUsers() {
                         is_admin: item.is_admin,
                         first_name: item.first_name,
                         last_name: item.last_name,
-                        bonus:item.bonus,
+                        bonus: item.bonus,
                         created_at: item.created_at.toString()
                     };
                 });

@@ -6,8 +6,8 @@ from database.Orders import OrderManager
 from database.Post import PostManager
 from database.Products import ProductManager
 from database.User import UserManager
-from database.main import async_session_maker, Product, User
-from helps.help import generate_transaction
+from database.main import async_session_maker
+from helps.helper import generate_transaction
 
 
 @pytest.mark.asyncio
@@ -20,12 +20,11 @@ async def test_create_order():
         address_manager = AddressManager(session)
         await address_manager.create_address(name="Test Address", city_id=1)
         product_manager = ProductManager(session)
-        product = await product_manager.create_product(
+        await product_manager.create_product(
             name="Product",
             description="This product is a test",
             amount=10,
             price=10.50)
-        assert isinstance(product, Product)
         order_manager = OrderManager(session)
         order = await order_manager.create_order(
             products="{'1':1}",
@@ -36,14 +35,13 @@ async def test_create_order():
         )
         assert order is True
         user_manager = UserManager(session)
-        user = await user_manager.create_user(
+        await user_manager.create_user(
             username="Alex",
             password="0000",
             phone="0123456789",
             email="admin@admin.com",
             hash_active=generate_transaction()
         )
-        assert isinstance(user, User)
 
 
 @pytest.mark.asyncio

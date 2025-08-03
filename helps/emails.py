@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 from jinja2 import Environment, FileSystemLoader
 from starlette.responses import HTMLResponse
-from helps.help import is_valid_email
+from helps.helper import is_valid_email
 from helps.email_utils import send_html_email
 import os
 

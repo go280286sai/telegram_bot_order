@@ -32,6 +32,7 @@ export default function BlockTwo() {
 
     const addToCart = async (id) => {
         try {
+
             await fetch(`http://localhost:8000/cart/increase/${id}`, {
                 method: "POST",
                 credentials: "include",
@@ -43,19 +44,17 @@ export default function BlockTwo() {
             await log("error", "add to cart", error);
         }
     };
-
     const decreaseAmount = async (id) => {
         try {
             await fetch(`http://localhost:8000/cart/decrease/${id}`, {
                 method: "POST",
                 credentials: "include",
             });
-            fetchCart();
+            await fetchCart();
         } catch (error) {
             await log("error", "decrease into cart", error);
         }
     };
-
     const fetchCart = async () => {
         try {
             const response = await fetch("http://localhost:8000/cart", {
@@ -81,7 +80,6 @@ export default function BlockTwo() {
             await log("error", "remove from cart", error);
         }
     };
-
     const addDiscount = async () => {
         try {
             await fetch(`http://localhost:8000/cart/discount/add/${discount}`, {
@@ -104,7 +102,7 @@ export default function BlockTwo() {
             const data = await res.json();
             if (data.success && data.data.settings.promotional === formData.promotion) {
                 setDiscount(parseInt(data.data.settings.discount));
-                addDiscount();
+                await addDiscount();
             } else {
                 log("error", "Discount not found", data);
                 alert("Discount not found");
@@ -138,9 +136,9 @@ export default function BlockTwo() {
         fetchData();
         fetchCart();
     }, []);
-    const to_order = async (e) => {
-        if(cartItems.length<=0){
-            return
+    const to_order = async () => {
+        if (cartItems.length <= 0) {
+            return;
         }
         try {
             const bonus = formDataBonus.bonus <= totalBonus ? formDataBonus.bonus : totalBonus

@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import Subscriber
 import logging
 from html import escape
-from helps.help import generate_transaction
+from helps.helper import generate_transaction
 from sqlalchemy import text
 
 

@@ -16,9 +16,7 @@ export default function Order() {
                 "status": false
             }
     });
-
     const [statusUser, setStatusUser] = useState(null)
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -31,12 +29,12 @@ export default function Order() {
                 });
                 const data = await response.json();
                 if (data['success']) {
-                    if (data.data.first_name === null || data.data.last_name === null){
+                    if (data.data.first_name === null || data.data.last_name === null) {
                         alert("The name or surname cannot be empty. Edit profile");
                         window.location.replace("/");
                     }
                     setUser(data.data);
-                    if(data.data.status){
+                    if (data.data.status) {
                         setStatusUser(true);
                     }
                 }
@@ -46,8 +44,6 @@ export default function Order() {
         };
         fetchUser();
     }, []);
-
-
     return (
         <div className={"row block_1"}>
             <div className={"order"}>
@@ -73,7 +69,8 @@ export default function Order() {
                     </div>
                 )}
                 <a href="/">
-                    <div className={"btn btn-link mt-5 btn_gen"}><AiTwotoneCloseSquare className={"AiTwotoneCloseSquareMain"} title={"Exit"}/> </div>
+                    <div className={"btn btn-link mt-5 btn_gen"}><AiTwotoneCloseSquare
+                        className={"AiTwotoneCloseSquareMain"} title={"Exit"}/></div>
                 </a>
             </div>
 

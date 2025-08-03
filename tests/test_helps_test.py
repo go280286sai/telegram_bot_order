@@ -1,8 +1,8 @@
 import smtplib
 
-import helps.help
-from helps.help import (is_valid_email, validate_password,
-                        hash_password, generate_transaction)
+import helps.helper
+from helps.helper import (is_valid_email, validate_password,
+                          hash_password, generate_transaction)
 from helps.emails import (register_user_confirm, confirm_email,
                           send_emails, create_subscriber_email)
 from helps.email_utils import send_html_email

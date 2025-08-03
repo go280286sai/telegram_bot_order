@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import log from "../helps/logs.mjs";
 import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
@@ -11,8 +11,8 @@ export default function Register() {
         confirmPassword: ""
     });
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData(prev => ({...prev, [name]: value}));
     };
 
     const handleSubmit = (e) => {
@@ -30,7 +30,8 @@ export default function Register() {
                 username: formData.username,
                 password: formData.password,
                 email: formData.email,
-                phone: formData.phone}),
+                phone: formData.phone
+            }),
             credentials: "include"
         }).then(res => res.json())
             .then((data) => {

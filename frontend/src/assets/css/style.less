@@ -5,7 +5,14 @@ body {
   background-color: @bg-color;
   color: @text-color;
   padding: 2% 12% 2% 12%;
+  p{
+    font-family: "Lato", sans-serif;
+  }
+  strong{
+    font-style: italic;
+  }
 }
+
 .logo_img {
   background-image: url("../img/logo.png");
   background-size: contain;
@@ -15,13 +22,12 @@ body {
   height: 100%;
   text-align: left;
   border-radius: 5px;
-  //box-shadow: 3px 3px 3px black;
 }
 
 .block_1 {
   background-color: #090909;
-  //box-shadow: 5px 5px 5px white;
   border-radius: 5px;
+  width: 100%;
 }
 
 .title_h1 {
@@ -139,10 +145,12 @@ body {
     opacity: 80%;
   }
 }
-.register{
+
+.register {
   padding-top: 10px;
 }
-.lock{
+
+.lock {
   font-size: 20px;
   text-decoration: underline;
   background-color: black;
@@ -150,7 +158,8 @@ body {
   border-radius: 10px;
   padding: 10px;
 }
-.form-style{
+
+.form-style {
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: black;
@@ -158,13 +167,16 @@ body {
   padding: 10px;
   border-radius: 10px;
 }
-.error{
+
+.error {
   color: red;
   margin-left: 10%;
 }
-.success{
+
+.success {
   color: white;
 }
+
 .order {
   margin: 3% 20%;
 }
@@ -173,6 +185,7 @@ body {
   display: flex;
   justify-content: center;
   margin: 20px;
+
   ul {
     display: flex;
     flex-direction: row;
@@ -183,44 +196,50 @@ body {
     li {
       margin: 0 10px;
     }
-    a{
+
+    a {
       text-decoration: none;
       color: white;
       font-size: 20px;
       text-shadow: 2px 2px black;
     }
+
     :hover {
       opacity: 90%;
       border-radius: 15%;
     }
   }
 }
-.auth{
+
+.auth {
   margin-left: 5px;
   color: #d3640a;
   cursor: pointer;
 }
 
-.reviews{
+.reviews {
   color: @text-color;
 }
 
 .contacts {
   margin-top: 3%;
-  .contact_title{
-    color: #d3640a;
-  }
-}
-.btn_with {
-  width: 9%;
-}
-.about_us_text {
-  h5{
+
+  .contact_title {
     color: #d3640a;
   }
 }
 
-.img_predict{
+.btn_with {
+  width: 9%;
+}
+
+.about_us_text {
+  h5 {
+    color: #d3640a;
+  }
+}
+
+.img_predict {
   width: 100%;
   margin: 1%;
 }
@@ -231,112 +250,187 @@ body {
   justify-content: center;
   height: auto;
 }
-.btn_gen{
+
+.btn_gen {
   border: none;
   background: none;
 }
-.AiTwotoneFileAdd{
+
+.AiTwotoneFileAdd {
   color: green;
   font-size: 30px;
   cursor: pointer;
 }
-.AiOutlineInteraction{
+
+.AiOutlineInteraction {
   color: yellow;
   font-size: 30px;
   cursor: pointer;
 }
-.AiOutlineInteractionDark{
+
+.AiOutlineInteractionDark {
   color: black;
   font-size: 30px;
   cursor: pointer;
 }
-.AiOutlineDelete{
+
+.AiOutlineDelete {
   color: red;
   font-size: 30px;
   cursor: pointer;
 }
-.AiFillCheckSquare{
+
+.AiFillCheckSquare {
   color: blue;
   font-size: 30px;
   cursor: pointer;
 }
-.AiTwotoneCloseSquare{
+
+.AiTwotoneCloseSquare {
   color: black;
   font-size: 30px;
   cursor: pointer;
 }
-.AiTwotoneCloseSquareMain{
+
+.AiTwotoneCloseSquareMain {
   color: red;
   font-size: 40px;
   cursor: pointer;
 }
-.AiOutlineMail{
+
+.AiOutlineMail {
   color: white;
   font-size: 30px;
   cursor: pointer;
 }
-.IoTrophySharp{
+
+.IoTrophySharp {
   color: green;
   font-size: 30px;
   cursor: pointer;
 }
-.IoTime{
+
+.IoTime {
   color: red;
   font-size: 30px;
   cursor: pointer;
 }
-.IoSearch{
+
+.IoSearch {
   color: green;
   font-size: 30px;
   cursor: pointer;
 }
-.IoPrint{
+
+.IoPrint {
   color: black;
   font-size: 30px;
   cursor: pointer;
 }
-.IoLockOpen{
+
+.IoLockOpen {
   color: green;
   font-size: 30px;
   cursor: pointer;
 }
-.IoLockClosedSharp{
+
+.IoLockClosedSharp {
   color: red;
   font-size: 30px;
   cursor: pointer;
 }
-.IoReloadCircleSharp{
+
+.IoReloadCircleSharp {
   color: red;
   font-size: 30px;
   cursor: pointer;
 }
+
 .IoArrowRedoCircleSharp {
   color: green;
   font-size: 30px;
   cursor: pointer;
 }
-.IoBagAdd{
+
+.IoBagAdd {
   color: red;
   font-size: 30px;
   cursor: pointer;
 }
-.IoCart{
+
+.IoCart {
   color: white;
   font-size: 100px;
   cursor: pointer;
 }
-.IoCardOutline{
+
+.IoCardOutline {
   color: green;
   font-size: 70px;
   cursor: pointer;
 }
+
 .AiFillTruck {
   color: #ffffff;
   font-size: 70px;
   cursor: pointer;
 }
-.IoWallet{
+
+.IoWallet {
   color: blue;
   font-size: 50px;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 300px) and (max-width: 400px) {
+  body {
+    font-size: 8px;
+    padding: 1px;
+  }
+
+  .block_1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 401px) and (max-width: 500px) {
+  body {
+    font-size: 10px;
+    padding: 1px;
+  }
+
+  .block_1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 501px) and (max-width: 600px) {
+  body {
+    font-size: 12px;
+    padding: 1px;
+  }
+
+  .block_1 {
+    width: 140%;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  body {
+    font-size: 16px;
+    padding: 1px;
+  }
+.block_1 {
+    width: 100%;
+  }
+
+}
+
+@media only screen and (min-width: 1025px) {
+  body {
+    font-size: 18px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+  }
 }

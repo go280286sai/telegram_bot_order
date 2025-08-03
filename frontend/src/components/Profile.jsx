@@ -8,7 +8,6 @@ export default function Profile(props) {
         password: "",
         confirmPassword: ""
     });
-
     const [formDataUser, setFormDataUser] = useState({
         first_name: "",
         last_name: ""
@@ -23,7 +22,6 @@ export default function Profile(props) {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match.");
             return;
@@ -32,7 +30,6 @@ export default function Profile(props) {
             alert("Passwords not be empty");
             return;
         }
-
         fetch("http://localhost:8000/user/update_profile", {
             method: "POST",
             headers: {
@@ -40,8 +37,7 @@ export default function Profile(props) {
             },
             credentials: "include",
             body: JSON.stringify({
-                idx: props.user.id,
-                password: formData.password,
+                password: formData.password
             })
         })
             .then(res => res.json())
@@ -59,7 +55,7 @@ export default function Profile(props) {
     const handleSubmitUser = (e) => {
         e.preventDefault();
 
-        if (formDataUser.first_name.length===0 || formDataUser.last_name.length===0) {
+        if (formDataUser.first_name.length === 0 || formDataUser.last_name.length === 0) {
             alert("First name or last name not is empty");
             return;
         }
@@ -70,7 +66,6 @@ export default function Profile(props) {
             },
             credentials: "include",
             body: JSON.stringify({
-                idx: props.user.id,
                 first_name: formDataUser.first_name,
                 last_name: formDataUser.last_name
             })
@@ -103,7 +98,7 @@ export default function Profile(props) {
             if (Array.isArray(result.data.orders)) {
                 setOrders(result.data.orders);
             } else {
-                log("error","Error format data:", result.data.orders);
+                log("error", "Error format data:", result.data.orders);
             }
         } catch (error) {
             log("error", "Error get orders users", error)
@@ -122,7 +117,7 @@ export default function Profile(props) {
             if (result.success) {
                 alert("To confirm account deletion, please check your email");
             } else {
-                log("error","Error format data:", result.error);
+                log("error", "Error format data:", result.error);
             }
         } catch (error) {
             log("error", "Error get orders users", error)
@@ -235,7 +230,8 @@ export default function Profile(props) {
                     </div>
                     <div>
                         <button className={"btn btn-dark mt-2"} data-testid={"delete_account"}
-                        onClick={fetchDeleteAccount}>Delete account</button>
+                                onClick={fetchDeleteAccount}>Delete account
+                        </button>
                     </div>
                 </div>
 

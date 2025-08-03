@@ -72,6 +72,8 @@ class PostManager:
         :return:
         """
         try:
+            if idx <= 0:
+                return False
             query = select(Post).where(Post.id == idx)
             result = await self.session.execute(query)
             post_ = result.scalar_one_or_none()

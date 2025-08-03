@@ -2,11 +2,9 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from html import escape
 from database.main import User
-from helps.help import hash_password, generate_transaction
+from helps.helper import hash_password, generate_transaction
 import logging
 from sqlalchemy import text
-
-RESET_PASSWORD = "0000"
 
 
 class UserManager:
@@ -19,7 +17,7 @@ class UserManager:
                           phone: str,
                           email: str,
                           hash_active: str
-                          ) -> None | User:
+                          ) -> None | dict[str, str]:
         """
         Create a new user
         :param username:
@@ -43,7 +41,16 @@ class UserManager:
                         phone=phone, email=email, hashed_active=hash_active, is_admin=is_admin)
             self.session.add(user)
             await self.session.commit()
-            return user
+            new_user = {
+                "id": str(user.id),
+                "username": user.username,
+                "email": user.email,
+                "phone": user.phone,
+                "is_admin": str(user.is_admin),
+                "status": str(user.status),
+                "hashed_active": user.hashed_active
+            }
+            return new_user
         except Exception as e:
             await self.session.rollback()
             logging.exception(e)
@@ -222,7 +229,7 @@ class UserManager:
             logging.exception(e)
             return None
 
-    async def get_user(self, idx: int) -> User | None:
+    async def get_user(self, idx: int) -> None | dict:
         """
         Get a user
         :param idx:
@@ -234,7 +241,22 @@ class UserManager:
             user = result.scalar_one_or_none()
             if user is None:
                 return None
-            return user
+            user_ = {
+                "id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "phone": user.phone,
+                "status": user.status,
+                "comments": user.comments,
+                "is_admin": user.is_admin,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "bonus": user.bonus,
+                "hashed_active": user.hashed_active,
+                "created_at": user.created_at.strftime("%Y-%m-%d"),
+            }
+
+            return user_
         except Exception as e:
             logging.exception(e)
             return None

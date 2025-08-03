@@ -11,27 +11,34 @@ export default function AdminCityModal() {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8000/city/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                post_id: formData.post_id
-            }),
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data.success) {
-                    window.location.reload()
-                } else {
-                    log("error", "add new item city error", data);
-                }
-            }).catch(data => log("error", "add new item city error", data));
+
+        try {
+            const response = await fetch("http://localhost:8000/city/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    post_id: formData.post_id
+                }),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                window.location.reload();
+            } else {
+                await log("error", "add new item city error", data);
+            }
+        } catch (error) {
+            await log("error", "add new item city error", error);
+        }
     };
+
     return (
         <div className="modal fade" id="addCity" tabIndex="-1" aria-labelledby="addCity" aria-hidden="true">
             <div className="modal-dialog">

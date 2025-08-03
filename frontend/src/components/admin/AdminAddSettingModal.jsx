@@ -11,26 +11,32 @@ export default function AdminAddSettingModal() {
         const {name, value} = e.target;
         setFormData(prev => ({...prev, [name]: value}));
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        fetch("http://localhost:8000/setting/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: formData.name,
-                value: formData.value
-            }),
-            credentials: "include"
-        }).then(res => res.json())
-            .then((data) => {
-                if (data.success) {
-                    window.location.reload()
-                } else {
-                    log("error", "add new item setting error", data);
-                }
-            }).catch(data => log("error", "add new item setting error", data));
+
+        try {
+            const response = await fetch("http://localhost:8000/setting/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    value: formData.value
+                }),
+                credentials: "include"
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                window.location.reload();
+            } else {
+                await log("error", "add new item setting error", data);
+            }
+        } catch (error) {
+            await log("error", "add new item setting error", error);
+        }
     };
     return (
         <div className="modal fade" id="addSetting" tabIndex="-1" aria-labelledby="addSetting" aria-hidden="true">
@@ -72,7 +78,7 @@ export default function AdminAddSettingModal() {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-link btn_gen" data-bs-dismiss="modal">
-                             <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
+                            <AiTwotoneCloseSquare className={"AiTwotoneCloseSquare"} title={"Exit"}/>
                         </button>
                         <button type="submit" className="btn btn-link btn_gen">
                             <AiFillCheckSquare className={"AiFillCheckSquare"} title={"Send"}/>
@@ -80,7 +86,6 @@ export default function AdminAddSettingModal() {
                     </div>
                 </form>
             </div>
-
         </div>
     )
 }

@@ -3,8 +3,8 @@ import logging
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
-from routers import (CartRouter, UserRouter, OrderRouter, LogsRouter, FrontRouter, ProductRouter, ReviewRouter,
-                     PostRouter, CityRouter, AddressRouter, SubscriberRouter, TemplateRouter, SettingRouter)
+from routers import (cart_router, user_router, order_router, logs_router, front_router, product_router, review_router,
+                     post_router, city_router, address_router, subscriber_router, template_router, setting_router)
 from database.main import engine, Base
 from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
@@ -42,19 +42,19 @@ app.add_middleware(
     SessionMiddleware,
     secret_key="123456789"
 )
-app.include_router(CartRouter.router, prefix="/cart", tags=["Carts"])
-app.include_router(UserRouter.router, prefix="/user", tags=["Users"])
-app.include_router(OrderRouter.router, prefix="/order", tags=["Orders"])
-app.include_router(LogsRouter.router, prefix="/logs", tags=["Logs"])
-app.include_router(FrontRouter.router, prefix="/front", tags=["Fronts"])
-app.include_router(ProductRouter.router, prefix="/product", tags=["Products"])
-app.include_router(ReviewRouter.router, prefix="/review", tags=["Reviews"])
-app.include_router(PostRouter.router, prefix="/post", tags=["Posts"])
-app.include_router(CityRouter.router, prefix="/city", tags=["Cities"])
-app.include_router(AddressRouter.router, prefix="/address", tags=["Addresses"])
-app.include_router(SubscriberRouter.router, prefix="/subscriber", tags=["Subscribers"])
-app.include_router(TemplateRouter.router, prefix="/template", tags=["Templates"])
-app.include_router(SettingRouter.router, prefix="/setting", tags=["Settings"])
+app.include_router(cart_router.router, prefix="/cart", tags=["Carts"])
+app.include_router(user_router.router, prefix="/user", tags=["Users"])
+app.include_router(order_router.router, prefix="/order", tags=["Orders"])
+app.include_router(logs_router.router, prefix="/logs", tags=["Logs"])
+app.include_router(front_router.router, prefix="/front", tags=["Fronts"])
+app.include_router(product_router.router, prefix="/product", tags=["Products"])
+app.include_router(review_router.router, prefix="/review", tags=["Reviews"])
+app.include_router(post_router.router, prefix="/post", tags=["Posts"])
+app.include_router(city_router.router, prefix="/city", tags=["Cities"])
+app.include_router(address_router.router, prefix="/address", tags=["Addresses"])
+app.include_router(subscriber_router.router, prefix="/subscriber", tags=["Subscribers"])
+app.include_router(template_router.router, prefix="/template", tags=["Templates"])
+app.include_router(setting_router.router, prefix="/setting", tags=["Settings"])
 
 
 @app.get("/")

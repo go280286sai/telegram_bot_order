@@ -1,7 +1,7 @@
 import pytest
 from database.main import async_session_maker
 from database.Subscriber import SubscriberManager
-from helps.help import generate_transaction
+from helps.helper import generate_transaction
 
 hash_val = generate_transaction()
 

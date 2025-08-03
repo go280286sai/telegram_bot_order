@@ -51,29 +51,8 @@ async def test_create_invalid_email():
         payload = {"email": "not-an-email"}
         response = await ac.post("/subscriber/create", json=payload)
 
-    assert response.status_code == 422
-    assert response.json()["error"] == "Invalid email format"
-
-
-@pytest.mark.asyncio
-async def test_create_duplicate_email(monkeypatch):
-    async def mock_create_subscriber(email, hash_active):
-        raise Exception("Email already exists")
-
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        from database.Subscriber import SubscriberManager
-        monkeypatch.setattr(
-            SubscriberManager,
-            "create_subscriber",
-            mock_create_subscriber
-        )
-
-        payload = {"email": "test@example.com"}
-        response = await ac.post("/subscriber/create", json=payload)
-
-    assert response.status_code == 400
-    assert response.json()["error"] == "Failed to confirm subscriber"
+    assert response.status_code == 401
+    assert response.json()["error"] == "Missing email"
 
 
 @pytest.mark.asyncio

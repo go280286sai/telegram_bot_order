@@ -9,7 +9,6 @@ export default function AboutUs() {
         0: woman,
         1: man
     };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -22,7 +21,6 @@ export default function AboutUs() {
         };
         fetchData();
     }, []);
-
     return (
         <div className="row block_1">
             <div id="carouselExampleAutoplaying" className="carousel slide" data-bs-ride="carousel">

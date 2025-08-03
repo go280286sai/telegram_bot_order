@@ -8,12 +8,9 @@ import {AiFillTruck, AiOutlineDelete} from "react-icons/ai";
 export default function OrderDelivery({total}) {
     const [delivery, setDelivery] = useState(null);
     const [statusDelivery, setStatusDelivery] = useState(false);
-
     useEffect(() => {
         fetchCurrentDelivery();
     }, []);
-
-
     const fetchCurrentDelivery = async () => {
         try {
             const res = await fetch("http://localhost:8000/cart/delivery/get", {
@@ -30,7 +27,6 @@ export default function OrderDelivery({total}) {
             await log("error", "fetchCurrentDelivery", error);
         }
     };
-
     const deleteDelivery = async () => {
         try {
             const res = await fetch("http://localhost:8000/cart/delivery/delete", {
@@ -47,7 +43,6 @@ export default function OrderDelivery({total}) {
             await log("error", "deleteDelivery", error);
         }
     };
-
     return (
         <div className="col-8">
             {!statusDelivery ? (

@@ -253,6 +253,12 @@ body {
   color: #ffffff;
   padding: 2% 12% 2% 12%;
 }
+body p {
+  font-family: "Lato", sans-serif;
+}
+body strong {
+  font-style: italic;
+}
 .logo_img {
   background-image: url("../img/logo.png");
   background-size: contain;
@@ -266,6 +272,7 @@ body {
 .block_1 {
   background-color: #090909;
   border-radius: 5px;
+  width: 100%;
 }
 .title_h1 {
   padding-top: 15px;
@@ -552,5 +559,51 @@ body {
   color: blue;
   font-size: 50px;
   cursor: pointer;
+}
+@media only screen and (min-width: 300px) and (max-width: 400px) {
+  body {
+    font-size: 8px;
+    padding: 1px;
+  }
+  .block_1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 401px) and (max-width: 500px) {
+  body {
+    font-size: 10px;
+    padding: 1px;
+  }
+  .block_1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 501px) and (max-width: 600px) {
+  body {
+    font-size: 12px;
+    padding: 1px;
+  }
+  .block_1 {
+    width: 140%;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  body {
+    font-size: 16px;
+    padding: 1px;
+  }
+  .block_1 {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 1025px) {
+  body {
+    font-size: 18px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+  }
 }
 /*# sourceMappingURL=style.css.map */

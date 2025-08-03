@@ -5,7 +5,7 @@ import Login from "./Login";
 import Profile from "./Profile";
 import log from "../helps/logs.mjs";
 
-export default function BlockOne({ settings }) {
+export default function BlockOne({settings}) {
     const [user, setUser] = useState({
         "user":
             {
@@ -17,7 +17,6 @@ export default function BlockOne({ settings }) {
             }
     });
     const [statusUser, setStatusUser] = useState(false)
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -31,7 +30,7 @@ export default function BlockOne({ settings }) {
                 const data = await response.json();
                 if (data.data) {
                     setUser(data.data);
-                    if(data.success){
+                    if (data.success) {
                         setStatusUser(true);
                     }
                 }
@@ -73,17 +72,19 @@ export default function BlockOne({ settings }) {
                         <strong data-bs-toggle="offcanvas"
                                 data-bs-target="#profile"
                                 aria-controls="staticBackdrop"
-                        data-testid={"profile_title_mock"}>Profile</strong>
+                                data-testid={"profile_title_mock"}>Profile</strong>
                         <strong className={"auth"}>|</strong>
                         <strong className={"auth"} onClick={logout} data-testid={"logout_title_mock"}>Logout</strong>
                     </div>
                 ) : (
                     <div className="text-end register auth">
                         <strong data-bs-toggle="modal"
-                           data-bs-target="#login" title={"login_modal"} data-testid={"login_title_mock"}>Login</strong>
+                                data-bs-target="#login" title={"login_modal"}
+                                data-testid={"login_title_mock"}>Login</strong>
                         <strong className={"auth"}>|</strong>
                         <strong data-bs-toggle="modal"
-                            data-bs-target="#register" className={"auth"} data-testid={"register_title_mock"}>Register</strong>
+                                data-bs-target="#register" className={"auth"}
+                                data-testid={"register_title_mock"}>Register</strong>
                     </div>
                 )}
                 <h1 className={"title_h1"}>{settings.title}</h1>

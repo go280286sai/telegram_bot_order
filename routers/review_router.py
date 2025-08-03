@@ -1,32 +1,45 @@
+"""
+Router module for managing user review-related endpoints.
+Includes operations for listing, creating, updating, and deleting review.
+"""
 import logging
 
-from fastapi import APIRouter, status
-from database.Review import ReviewManager
-from database.main import async_session_maker
+from fastapi import APIRouter, status, Request, HTTPException
 from starlette.responses import JSONResponse
-from models.ReviewModel import Review
+from database import main, Review
+from helps.Middleware import is_admin
+from models.ReviewModel import Review as ReviewModel
 
 router = APIRouter()
 
 
 @router.post("/create")
-async def review_create(item: Review) -> JSONResponse:
+async def review_create(item: ReviewModel, request: Request) -> JSONResponse:
     """
     Create a new review.
+    :param request:
     :param item:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            review_manager = ReviewManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
+        async with main.async_session_maker() as session:
+            review_manager = Review.ReviewManager(session)
             query = await review_manager.create_review(
                 name=item.name,
                 text=item.text,
                 gender=item.gender,
             )
             if query is False:
-                raise Exception("Error creating review")
-
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error creating review"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -35,29 +48,40 @@ async def review_create(item: Review) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Error creating review: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Error creating review"
+                "error": e.detail
             }
         )
 
 
 @router.post("/update/{idx}")
-async def review_update(idx: int, item: Review) -> JSONResponse:
+async def review_update(
+        idx: int,
+        item: ReviewModel,
+        request: Request
+) -> JSONResponse:
     """
     Update an existing review.
+    :param request:
     :param idx:
     :param item:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ReviewManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
+        async with main.async_session_maker() as session:
+            product_manager = Review.ReviewManager(session)
             query = await product_manager.update_review(
                 idx=idx,
                 name=item.name,
@@ -65,7 +89,10 @@ async def review_update(idx: int, item: Review) -> JSONResponse:
                 gender=item.gender
             )
             if query is False:
-                raise Exception("Error updating review")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error updating review"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -74,14 +101,14 @@ async def review_update(idx: int, item: Review) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Error updating review: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Error updating review"
+                "error": e.detail
             }
         )
 
@@ -93,8 +120,8 @@ async def reviews() -> JSONResponse:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ReviewManager(session)
+        async with main.async_session_maker() as session:
+            product_manager = Review.ReviewManager(session)
             query = await product_manager.get_reviews()
             if query is None:
                 return JSONResponse(
@@ -122,32 +149,44 @@ async def reviews() -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch reviews: {e}")
+    except ValueError as e:
+        logging.exception(e)
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch reviews"
+                "error": str(e)
             }
         )
 
 
 @router.post("/delete/{idx}")
-async def review_delete(idx: int) -> JSONResponse:
+async def review_delete(idx: int, request: Request) -> JSONResponse:
     """
     Delete an existing review.
+    :param request:
     :param idx:
     :return:
     """
     try:
-        async with async_session_maker() as session:
-            product_manager = ReviewManager(session)
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(
+                status_code=403,
+                detail="Permission denied"
+            )
+        async with main.async_session_maker() as session:
+            product_manager = Review.ReviewManager(session)
             query = await product_manager.delete_review(idx=idx)
             if query is False:
-                raise Exception("Error deleting review")
-
+                raise HTTPException(
+                    status_code=400,
+                    detail="Error deleting review"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -156,13 +195,13 @@ async def review_delete(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch reviews: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch reviews"
+                "error": e.detail
             }
         )

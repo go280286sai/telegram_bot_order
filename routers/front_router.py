@@ -1,22 +1,34 @@
+"""
+Router module for managing user frontend-related endpoints.
+Includes operations for listing, creating, updating, and deleting carousel.
+"""
 import logging
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Request, HTTPException
 from starlette.responses import JSONResponse
 from database.main import async_session_maker
 from database.Carousel import CarouselManager
+from helps.Middleware import is_admin
 from models.CarouselModel import Carousel
 
 router = APIRouter()
 
 
 @router.post("/carousel/create")
-async def create_item(carousel: Carousel) -> JSONResponse:
+async def create_item(carousel: Carousel, request: Request) -> JSONResponse:
     """
     Create a carousel item
+    :param request:
     :param carousel:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             carousel_manager = CarouselManager(session)
             query = await carousel_manager.create_item(
@@ -25,7 +37,10 @@ async def create_item(carousel: Carousel) -> JSONResponse:
                 image=carousel.image
             )
             if query is False:
-                raise Exception("Failed to create carousel")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to create carousel"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -34,27 +49,38 @@ async def create_item(carousel: Carousel) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(e)
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to create carousel"
+                "error": e.detail
             }
         )
 
 
 @router.post("/carousel/update/{idx}")
-async def update_item(idx: int, carousel: Carousel) -> JSONResponse:
+async def update_item(
+        idx: int,
+        carousel: Carousel,
+        request: Request
+) -> JSONResponse:
     """
     Update a carousel item
+    :param request:
     :param idx:
     :param carousel:
     :return:
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             carousel_manager = CarouselManager(session)
             query = await carousel_manager.update_item(
@@ -64,7 +90,10 @@ async def update_item(idx: int, carousel: Carousel) -> JSONResponse:
                 image=carousel.image
             )
             if query is False:
-                raise Exception("Failed to update carousel")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to update carousel"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -73,14 +102,14 @@ async def update_item(idx: int, carousel: Carousel) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(e)
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to update carousel"
+                "error": e.detail
             }
         )
 
@@ -96,7 +125,10 @@ async def get_item() -> JSONResponse:
             carousel_manager = CarouselManager(session)
             query = await carousel_manager.get_items()
             if query is None:
-                raise Exception("Failed to get carousels")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to get carousels"
+                )
             carousels_ = [
                 {
                     "id": p.id,
@@ -105,7 +137,6 @@ async def get_item() -> JSONResponse:
                     "image": p.image,
                 } for p in query
             ]
-
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -114,29 +145,38 @@ async def get_item() -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch carousels: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to fetch carousels"
+                "error": e.detail
             }
         )
 
 
 @router.post("/carousel/delete/{idx}")
-async def delete_item(idx: int) -> JSONResponse:
+async def delete_item(idx: int, request: Request) -> JSONResponse:
     """
     Delete item
     """
     try:
+        user_id = request.session.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=401, detail="Missing user_id")
+        admin = await is_admin(int(user_id))
+        if not admin:
+            raise HTTPException(status_code=403, detail="Permission denied")
         async with async_session_maker() as session:
             carousel_manager = CarouselManager(session)
             query = await carousel_manager.delete_items(idx=idx)
             if query is False:
-                raise Exception("Failed to delete carousel")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Failed to delete carousel"
+                )
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -145,13 +185,13 @@ async def delete_item(idx: int) -> JSONResponse:
                     "error": None
                 }
             )
-    except Exception as e:
-        logging.exception(f"Failed to fetch carousels: {e}")
+    except HTTPException as e:
+        logging.exception(e.detail)
         return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=e.status_code,
             content={
                 "success": False,
                 "data": None,
-                "error": "Failed to delete carousel"
+                "error": e.detail
             }
         )

@@ -1,3 +1,8 @@
+"""
+Router module for managing user logs-related endpoints.
+Includes operations for creating log entries and updating log entries.
+"""
+
 import logging
 from fastapi import APIRouter
 from models.LogsModel import Logs
@@ -13,13 +18,13 @@ async def logs(log: Logs):
     :return:
     """
     try:
-        logging.info(f"{log.level} - {log.name} - {log.message}")
+        logging.info("%s - %s - %s", log, log.name, log.message)
         return {
             "success": True,
             "data": None,
             "error": None
         }
-    except Exception as e:
+    except ValueError as e:
         logging.exception("Exception occurred")
         return {
             "success": False,

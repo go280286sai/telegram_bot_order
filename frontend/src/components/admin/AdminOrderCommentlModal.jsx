@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import log from "../../helps/logs.mjs";
 import {AiFillCheckSquare, AiTwotoneCloseSquare} from "react-icons/ai";
 
-export default function AdminOrderCommentModal(){
+export default function AdminOrderCommentModal() {
     const [formData, setFormData] = useState({
         body: "",
         toId: "",
@@ -57,7 +57,8 @@ export default function AdminOrderCommentModal(){
     };
 
     return (
-        <div className="modal fade" id="AddOrderComment" tabIndex="-1" aria-labelledby="AddOrderComment" aria-hidden="true">
+        <div className="modal fade" id="AddOrderComment" tabIndex="-1" aria-labelledby="AddOrderComment"
+             aria-hidden="true">
             <div className="modal-dialog">
                 <form className="modal-content" onSubmit={handleSubmit}>
                     <div className="modal-header">

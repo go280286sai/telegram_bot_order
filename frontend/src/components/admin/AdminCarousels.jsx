@@ -87,13 +87,13 @@ export default function AdminCarousels() {
     };
     return (
         <div className={"row block_1 p-1"}>
-<div className={"center-vertical"}>
-    <button className="btn btn-link mb-2 btn_with btn_gen"
-                 data-bs-toggle="modal"
-                 data-bs-target="#addCarousels">
-        <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add item"}/>
-    </button>
-</div>
+            <div className={"center-vertical"}>
+                <button className="btn btn-link mb-2 btn_with btn_gen"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addCarousels">
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add item"}/>
+                </button>
+            </div>
             <AdminCarouselsModal/>
             <table id="myTable" className="display table table-dark">
                 <thead>

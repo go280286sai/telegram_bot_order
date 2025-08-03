@@ -15,7 +15,6 @@ class UpdateUser(BaseModel):
     """
     Update user model
     """
-    idx: int
     password: str
 
 
@@ -37,6 +36,5 @@ class UpdateUsers(BaseModel):
 
 
 class AddName(BaseModel):
-    idx: int
     first_name: str
     last_name: str

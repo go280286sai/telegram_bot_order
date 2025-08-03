@@ -3,7 +3,6 @@ import DataTable from 'datatables.net-dt';
 import log from "../../helps/logs.mjs";
 import AdminMailModal from "./AdminMailModal";
 import {
-    AiFillCheckSquare,
     AiOutlineDelete,
     AiOutlineInteraction, AiOutlineMail,
     AiTwotoneFileAdd
@@ -125,7 +124,7 @@ export default function AdminMail() {
         <div className={"row block_1 p-1"}>
             <div className="mb-2 btn_with">
                 <button className={"btn btn-link btn_gen"} data-bs-toggle="modal" data-bs-target="#addTemplate">
-                    <AiTwotoneFileAdd  className={"AiTwotoneFileAdd"} title={"Add template"}/>
+                    <AiTwotoneFileAdd className={"AiTwotoneFileAdd"} title={"Add template"}/>
                 </button>
             </div>
             <AdminMailModal/>
@@ -171,19 +170,22 @@ export default function AdminMail() {
                             />
                         </td>
                         <td>
-                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchSendUsers(item.id)}
+                            <button type="button" className="btn btn-link btn_gen"
+                                    onClick={() => fetchSendUsers(item.id)}
                                     data-testid="item_send_user">
                                 <AiOutlineMail className={"AiOutlineMail"} title={"Send email users"}/>
                             </button>
                         </td>
                         <td>
-                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchSendSubscribers(item.id)}
+                            <button type="button" className="btn btn-link btn_gen"
+                                    onClick={() => fetchSendSubscribers(item.id)}
                                     data-testid="item_send_subscriber">
                                 <AiOutlineMail className={"AiOutlineMail"} title={"Send subscribers"}/>
                             </button>
                         </td>
                         <td>
-                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchUpdate(item.id)} data-testid="item_update">
+                            <button type="button" className="btn btn-link btn_gen" onClick={() => fetchUpdate(item.id)}
+                                    data-testid="item_update">
                                 <AiOutlineInteraction className={"AiOutlineInteraction"} title={"Update"}/>
                             </button>
                         </td>
