@@ -8,7 +8,7 @@ export default function OrderCart() {
     const [bonus, setBonus] = useState(0);
     const fetchCart = async () => {
         try {
-            const response = await fetch("http://localhost:8000/cart", {
+            const response = await fetch("http://localhost:8000/cart/", {
                 method: "POST",
                 credentials: "include",
             });

@@ -1,6 +1,10 @@
 import asyncio
 import logging
+import os
+
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from routers import (cart_router, user_router, order_router, logs_router, front_router, product_router, review_router,
@@ -32,7 +36,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -56,11 +60,14 @@ app.include_router(subscriber_router.router, prefix="/subscriber", tags=["Subscr
 app.include_router(template_router.router, prefix="/template", tags=["Templates"])
 app.include_router(setting_router.router, prefix="/setting", tags=["Settings"])
 
+app.mount("/static", StaticFiles(directory="frontend/build/static"), name="static")
 
-@app.get("/")
-async def index():
-    return {"Hello": "World"}
+# Catch-all
+@app.get("/{full_path:path}")
+async def serve_react_app(full_path: str):
+    file_path = os.path.join("frontend/build", "index.html")
+    return FileResponse(file_path)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="localhost", port=8000)
