@@ -40,7 +40,7 @@ async def test_create_order():
             password="0000",
             phone="0123456789",
             email="admin@admin.com",
-            hash_active=generate_transaction()
+            hash_active_=generate_transaction()
         )
 
 
@@ -123,7 +123,7 @@ async def test_get_orders():
 
 @pytest.mark.asyncio
 async def test_get_predict(monkeypatch):
-    def mock_build(self, data):
+    def mock_build(self, *args, **kwargs):
         return True
 
     async with async_session_maker() as session:

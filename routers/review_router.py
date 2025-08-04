@@ -32,7 +32,7 @@ async def review_create(item: ReviewModel, request: Request) -> JSONResponse:
             review_manager = Review.ReviewManager(session)
             query = await review_manager.create_review(
                 name=item.name,
-                text=item.text,
+                text_=item.text,
                 gender=item.gender,
             )
             if query is False:
@@ -85,7 +85,7 @@ async def review_update(
             query = await product_manager.update_review(
                 idx=idx,
                 name=item.name,
-                text=item.text,
+                text_=item.text,
                 gender=item.gender
             )
             if query is False:

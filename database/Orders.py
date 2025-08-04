@@ -1,29 +1,36 @@
-from datetime import datetime
-from typing import Any, Optional
+"""
+Module for order database.
+Includes operations for listing, creating, updating, and deleting order.
+"""
 
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Order, User, Post, City, Address
 import logging
 from html import escape
-from sqlalchemy import text
-
+from datetime import datetime
+from typing import Any, Optional
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Order, User, Post, City, Address
 from helps.predict import Predict
 
 
 class OrderManager:
+    """
+    Class for managing orders.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_order(self,
-                           products: str,
-                           user_id: int,
-                           delivery: str,
-                           total: float,
-                           transaction_id: str,
-                           bonus: int = 0,
-                           discount: int = 0,
-                           ) -> bool:
+    async def create_order(
+        self,
+        products: str,
+        user_id: int,
+        delivery: str,
+        total: float,
+        transaction_id: str,
+        bonus: int = 0,
+        discount: int = 0,
+    ) -> bool:
         """
         Create a new order
         :param discount:
@@ -43,11 +50,12 @@ class OrderManager:
                 total=float(total),
                 transaction_id=str(transaction_id),
                 discount=int(discount),
-                bonus=int(bonus))
+                bonus=int(bonus),
+            )
             self.session.add(order)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -59,12 +67,14 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order)
-                     .join(User, Order.user_id == User.id)
-                     .where(Order.id == int(idx)))
+            query = (
+                select(Order)
+                .join(User, Order.user_id == User.id)
+                .where(Order.id == int(idx))
+            )
             result = await self.session.execute(query)
             return result.scalar_one_or_none()
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -84,7 +94,7 @@ class OrderManager:
             order.status = status
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.error(e)
             return False
 
@@ -109,10 +119,11 @@ class OrderManager:
                     "invoice": p.invoice,
                     "comment": p.comment,
                     "created_at": p.created_at.strftime("%Y-%m-%d"),
-                } for p in orders
+                }
+                for p in orders
             ]
             return orders_
-        except Exception as e:
+        except ValueError as e:
             logging.error(e)
             return None
 
@@ -123,21 +134,24 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order)
-                     .join(User, Order.user_id == User.id)
-                     .where(Order.user_id == idx))
+            query = (
+                select(Order)
+                .join(User, Order.user_id == User.id)
+                .where(Order.user_id == idx)
+            )
             orders = await self.session.execute(query)
             result = orders.scalars().all()
-            orders_ = [{
-                "id": p.id,
-                "total": p.total,
-                "status": p.status,
-                "created_at": p.created_at.strftime("%Y-%m-%d"),
-            }
+            orders_ = [
+                {
+                    "id": p.id,
+                    "total": p.total,
+                    "status": p.status,
+                    "created_at": p.created_at.strftime("%Y-%m-%d"),
+                }
                 for p in result
             ]
             return orders_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -156,7 +170,7 @@ class OrderManager:
             await self.session.delete(order)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -169,8 +183,7 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order)
-                     .where(Order.id == idx))
+            query = select(Order).where(Order.id == idx)
             order = await self.session.execute(query)
             result = order.scalar_one_or_none()
             if result is None:
@@ -179,7 +192,7 @@ class OrderManager:
             result.status = 1
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -191,8 +204,7 @@ class OrderManager:
         :return:
         """
         try:
-            query = (select(Order)
-                     .where(Order.id == idx))
+            query = select(Order).where(Order.id == idx)
             order = await self.session.execute(query)
             result = order.scalar_one_or_none()
             if result is None:
@@ -200,7 +212,7 @@ class OrderManager:
             result.comment = escape(comment)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -210,27 +222,24 @@ class OrderManager:
         :return:
         """
         try:
-            query = select(Order.total.label("total"),
-                           Order.created_at.label("created_at"))
+            query = select(
+                Order.total.label("total"),
+                Order.created_at.label("created_at")
+            )
             result = await self.session.execute(query)
             orders = result.all()
-            data = [
-                list(el) for el in orders
-            ]
+            data = [list(el) for el in orders]
             predict = Predict(term=term)
             results: Optional[
                 list[tuple[float, datetime]]
             ] = predict.build(data=data)
             return results
-        except Exception as e:
+        except ValueError as e:
             logging.error(e)
             return None
 
     async def get_delivery(
-            self,
-            post_id: int,
-            city_id: int,
-            address_id: int
+        self, post_id: int, city_id: int, address_id: int
     ) -> dict | None:
         """
         Gets a delivery and returns it if it was created.
@@ -241,9 +250,11 @@ class OrderManager:
         """
         try:
             query = (
-                select(Post.name.label("name"),
-                       City.name.label("city"),
-                       Address.name.label("address"))
+                select(
+                    Post.name.label("name"),
+                    City.name.label("city"),
+                    Address.name.label("address"),
+                )
                 .join(City, Post.id == City.post_id)
                 .join(Address, City.id == Address.city_id)
                 .where(Post.id == post_id)
@@ -259,11 +270,11 @@ class OrderManager:
                 {
                     "post_name": post_name,
                     "city_name": city_name,
-                    "address_name": address_name
+                    "address_name": address_name,
                 }
                 for post_name, city_name, address_name in rows
             ][0]
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -275,7 +286,7 @@ class OrderManager:
             await self.session.execute(text("DELETE FROM orders"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

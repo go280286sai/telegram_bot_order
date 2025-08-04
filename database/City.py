@@ -1,14 +1,21 @@
-from sqlalchemy import Row, RowMapping
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import City, Post
+"""
+Module for city database.
+Includes operations for listing, creating, updating, and deleting city.
+"""
+
 import logging
 from typing import Sequence, Any
 from html import escape
-from sqlalchemy import text
+from sqlalchemy import Row, RowMapping, text, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import City, Post
 
 
 class CityManager:
+    """
+    Class for managing city databases.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -26,14 +33,13 @@ class CityManager:
             self.session.add(city_)
             await self.session.commit()
             return city_
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
 
     async def get_city(
-            self,
-            post_id: int
+        self, post_id: int
     ) -> Sequence[Row[Any] | RowMapping | Any] | None:
         """
         Gets a city.
@@ -43,23 +49,26 @@ class CityManager:
         try:
             if post_id <= 0:
                 return None
-            query = (select(City)
-                     .join(Post, City.post_id == Post.id)
-                     .where(City.post_id == int(post_id)))
+            query = (
+                select(City)
+                .join(Post, City.post_id == Post.id)
+                .where(City.post_id == int(post_id))
+            )
             result = await self.session.execute(query)
             city_ = result.scalars().all()
             if city_ is None:
                 return None
             return city_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def update_city(self,
-                          idx: int,
-                          name: str,
-                          post_id: int,
-                          ) -> bool:
+    async def update_city(
+        self,
+        idx: int,
+        name: str,
+        post_id: int,
+    ) -> bool:
         """
         Updates a city.
         :param post_id:
@@ -79,7 +88,7 @@ class CityManager:
             city_.post_id = int(post_id)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -92,7 +101,7 @@ class CityManager:
             query = select(City)
             result = await self.session.execute(query)
             return result.scalars().all()
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -111,7 +120,7 @@ class CityManager:
             await self.session.delete(city_)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -124,7 +133,7 @@ class CityManager:
             await self.session.execute(text("DELETE FROM cities"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

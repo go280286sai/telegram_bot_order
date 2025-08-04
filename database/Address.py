@@ -1,14 +1,21 @@
-from sqlalchemy import Row, RowMapping
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Address, City
+"""
+Router module for address database.
+Includes operations for listing, creating, updating, and deleting addresses.
+"""
+
 import logging
 from typing import Sequence, Any
 from html import escape
-from sqlalchemy import text
+from sqlalchemy import Row, RowMapping, select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Address, City
 
 
 class AddressManager:
+    """
+    Class for managing addresses.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -26,14 +33,13 @@ class AddressManager:
             self.session.add(address_)
             await self.session.commit()
             return address_
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
 
     async def get_address(
-            self,
-            city_id: int
+        self, city_id: int
     ) -> Sequence[Row[Any] | RowMapping | Any] | None:
         """
         Gets address.
@@ -43,21 +49,19 @@ class AddressManager:
         try:
             if city_id <= 0:
                 return None
-            query = (select(Address)
-                     .join(City, City.id == Address.city_id)
-                     .where(Address.city_id == city_id))
+            query = (
+                select(Address)
+                .join(City, City.id == Address.city_id)
+                .where(Address.city_id == city_id)
+            )
             result = await self.session.execute(query)
             address_ = result.scalars().all()
             return address_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def update_address(self,
-                             idx: int,
-                             name: str,
-                             city_id: int
-                             ) -> bool:
+    async def update_address(self, idx: int, name: str, city_id: int) -> bool:
         """
         Updates address.
         :param idx:
@@ -77,7 +81,7 @@ class AddressManager:
             address_.city_id = int(city_id)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -90,7 +94,7 @@ class AddressManager:
             query = select(Address)
             result = await self.session.execute(query)
             return result.scalars().all()
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -109,7 +113,7 @@ class AddressManager:
             await self.session.delete(address_)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -122,7 +126,7 @@ class AddressManager:
             await self.session.execute(text("DELETE FROM addresses"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

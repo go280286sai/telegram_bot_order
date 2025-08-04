@@ -1,18 +1,29 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from html import escape
-from database.main import Carousel
+"""
+Router module for carousel database.
+Includes operations for listing, creating, updating, and deleting carousel.
+"""
+
 import logging
 from typing import Sequence
-from sqlalchemy import text
+from html import escape
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Carousel
 
 
 class CarouselManager:
+    """
+    Carousel manager class.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_item(self, title: str, description: str,
-                          image: str) -> bool:
+    async def create_item(self,
+                          title: str,
+                          description: str,
+                          image: str
+                          ) -> bool:
         """
         Creates a new carousel item.
         :param title:
@@ -24,18 +35,22 @@ class CarouselManager:
             title = escape(str(title))
             description = escape(str(description))
             image = escape(str(image))
-            carousel = Carousel(title=title, description=description,
-                                image=image)
+            carousel = Carousel(
+                title=title,
+                description=description,
+                image=image
+            )
             self.session.add(carousel)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
 
-    async def update_item(self, idx: int, title: str, description: str,
-                          image: str) -> bool:
+    async def update_item(
+        self, idx: int, title: str, description: str, image: str
+    ) -> bool:
         """
         Updates a carousel item.
         :param idx:
@@ -55,7 +70,7 @@ class CarouselManager:
             carousel.image = escape(str(image))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -68,7 +83,7 @@ class CarouselManager:
             query = select(Carousel)
             result = await self.session.execute(query)
             return result.scalars().all()
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -87,7 +102,7 @@ class CarouselManager:
             await self.session.delete(carousel)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -100,7 +115,7 @@ class CarouselManager:
             await self.session.execute(text("DELETE FROM carousels"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

@@ -40,7 +40,7 @@ async def register(
                 password=user.password,
                 phone=user.phone,
                 email=user.email,
-                hash_active=helper.generate_transaction()
+                hash_active_=helper.generate_transaction()
             )
             if new_user is None:
                 raise HTTPException(

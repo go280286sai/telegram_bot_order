@@ -1,13 +1,21 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Post
+"""
+Module for post database.
+Includes operations for listing, creating, updating, and deleting post.
+"""
+
 import logging
 from typing import Sequence
 from html import escape
-from sqlalchemy import text
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Post
 
 
 class PostManager:
+    """
+    Class for managing posts.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -23,7 +31,7 @@ class PostManager:
             self.session.add(post_)
             await self.session.commit()
             return post_
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
@@ -41,7 +49,7 @@ class PostManager:
             if post_ is None:
                 return None
             return post_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -57,14 +65,11 @@ class PostManager:
             if post_ is None:
                 return None
             return post_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def update_post(self,
-                          idx: int,
-                          name: str
-                          ) -> bool:
+    async def update_post(self, idx: int, name: str) -> bool:
         """
         Updates a post.
         :param idx:
@@ -82,7 +87,7 @@ class PostManager:
             post_.name = name
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -101,7 +106,7 @@ class PostManager:
             await self.session.delete(post_)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -114,7 +119,7 @@ class PostManager:
             await self.session.execute(text("DELETE FROM posts"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

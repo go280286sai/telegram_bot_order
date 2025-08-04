@@ -1,50 +1,61 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
+"""
+Module for products database.
+Includes operations for listing, creating, updating, and deleting products.
+"""
+
 from html import escape
-from database.main import Review
 import logging
 from typing import Sequence
-from sqlalchemy import text
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Review
 
 
 class ReviewManager:
+    """
+    Class for managing products database.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_review(self, name: str, text: str,
-                            gender: int) -> None | Review:
+    async def create_review(self,
+                            name: str,
+                            text_: str,
+                            gender: int
+                            ) -> None | Review:
         """
         Create a new review
-        :param text:
+        :param text_:
         :param name:
         :param gender:
         :return:
         """
         try:
             name = escape(str(name))
-            text = escape(str(text))
+            text_ = escape(str(text_))
             gender = int(gender)
             if gender not in (0, 1):
                 raise ValueError
-            review_ = Review(name=name, text=text, gender=gender)
+            review_ = Review(name=name, text=text_, gender=gender)
             self.session.add(review_)
             await self.session.commit()
             return review_
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
 
-    async def update_review(
-            self, idx: int,
-            text: str,
-            name: str,
-            gender: int
-    ) -> bool:
+    async def update_review(self,
+                            idx: int,
+                            text_: str,
+                            name: str,
+                            gender: int
+                            ) -> bool:
         """
         Update a review
         :param idx:
-        :param text:
+        :param text_:
         :param name:
         :param gender:
         :return:
@@ -57,12 +68,12 @@ class ReviewManager:
             review = result.scalar_one_or_none()
             if review is None:
                 return False
-            review.text = escape(str(text))
+            review.text = escape(str(text_))
             review.name = escape(str(name))
             review.gender = int(gender)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -78,7 +89,7 @@ class ReviewManager:
             if reviews_ is None:
                 return None
             return reviews_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -97,7 +108,7 @@ class ReviewManager:
             await self.session.delete(review)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -110,7 +121,7 @@ class ReviewManager:
             await self.session.execute(text("DELETE FROM reviews"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

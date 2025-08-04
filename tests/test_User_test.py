@@ -16,7 +16,7 @@ async def test_create_user():
             password="12345678",
             phone="8000000000",
             email="admin@admin.com",
-            hash_active=generate_transaction()
+            hash_active_=generate_transaction()
         )
         assert user is not None
 

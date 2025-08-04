@@ -1,13 +1,21 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Setting
+"""
+Module for setting database.
+Includes operations for listing, creating, updating, and deleting setting.
+"""
+
 import logging
 from typing import Sequence
 from html import escape
-from sqlalchemy import text
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Setting
 
 
 class SettingManager:
+    """
+    Class for managing database settings.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -25,7 +33,7 @@ class SettingManager:
             self.session.add(setting_)
             await self.session.commit()
             return setting_
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
@@ -43,15 +51,16 @@ class SettingManager:
             if setting_ is None:
                 return None
             return setting_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def update_setting(self,
-                             idx: int,
-                             name: str,
-                             value: str,
-                             ) -> bool:
+    async def update_setting(
+        self,
+        idx: int,
+        name: str,
+        value: str,
+    ) -> bool:
         """
         Updates a setting.
         :param idx:
@@ -71,7 +80,7 @@ class SettingManager:
             setting_.value = escape(str(value))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -84,7 +93,7 @@ class SettingManager:
             query = select(Setting)
             result = await self.session.execute(query)
             return result.scalars().all()
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -103,7 +112,7 @@ class SettingManager:
             await self.session.delete(setting_)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -116,7 +125,7 @@ class SettingManager:
             await self.session.execute(text("DELETE FROM settings"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

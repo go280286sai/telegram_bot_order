@@ -1,30 +1,39 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
+"""
+Module for user database.
+Includes operations for listing, creating, updating, and deleting user.
+"""
+
+import logging
 from html import escape
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
 from database.main import User
 from helps.helper import hash_password, generate_transaction
-import logging
-from sqlalchemy import text
 
 
 class UserManager:
+    """
+    Class for managing user database.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_user(self,
-                          username: str,
-                          password: str,
-                          phone: str,
-                          email: str,
-                          hash_active: str
-                          ) -> None | dict[str, str]:
+    async def create_user(
+        self,
+            username: str,
+            password: str,
+            phone: str,
+            email: str,
+            hash_active_: str
+    ) -> None | dict[str, str]:
         """
         Create a new user
         :param username:
         :param password:
         :param phone:
         :param email:
-        :param hash_active:
+        :param hash_active_:
         :return:
         """
         try:
@@ -36,9 +45,15 @@ class UserManager:
             password = hash_password(escape(password))
             phone = escape(phone)
             email = escape(email)
-            hash_active = hash_active
-            user = User(username=username, password=password,
-                        phone=phone, email=email, hashed_active=hash_active, is_admin=is_admin)
+            hash_active = hash_active_
+            user = User(
+                username=username,
+                password=password,
+                phone=phone,
+                email=email,
+                hashed_active=hash_active,
+                is_admin=is_admin,
+            )
             self.session.add(user)
             await self.session.commit()
             new_user = {
@@ -48,10 +63,10 @@ class UserManager:
                 "phone": user.phone,
                 "is_admin": str(user.is_admin),
                 "status": str(user.status),
-                "hashed_active": user.hashed_active
+                "hashed_active": user.hashed_active,
             }
             return new_user
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
@@ -72,16 +87,13 @@ class UserManager:
             user.password = hash_password(escape(password))
             await self.session.commit()
             return user
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
 
     async def update_user_name(
-            self,
-            idx: int,
-            first_name: str,
-            last_name: str
+        self, idx: int, first_name: str, last_name: str
     ) -> bool | User:
         """
         Update a user
@@ -100,19 +112,20 @@ class UserManager:
             user.last_name = escape(last_name)
             await self.session.commit()
             return user
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
 
     async def update_users(
-            self, idx: int,
-            username: str,
-            email: str,
-            phone: str,
-            comments: str,
-            first_name: str,
-            last_name: str
+        self,
+        idx: int,
+        username: str,
+        email: str,
+        phone: str,
+        comments: str,
+        first_name: str,
+        last_name: str,
     ) -> bool:
         """
         Update a user
@@ -139,7 +152,7 @@ class UserManager:
             user.last_name = escape(last_name)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -161,7 +174,7 @@ class UserManager:
             user.hashed_active = ""
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -182,7 +195,7 @@ class UserManager:
             user.is_admin = status
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -203,7 +216,7 @@ class UserManager:
             user.comments = escape(comments)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -224,7 +237,7 @@ class UserManager:
             user.password = hash_password(password)
             await self.session.commit()
             return password
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
@@ -257,7 +270,7 @@ class UserManager:
             }
 
             return user_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -285,10 +298,11 @@ class UserManager:
                     "last_name": p.last_name,
                     "bonus": p.bonus,
                     "created_at": p.created_at.strftime("%Y-%m-%d"),
-                } for p in users
+                }
+                for p in users
             ]
             return users_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -307,13 +321,15 @@ class UserManager:
             await self.session.delete(user)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
 
-    async def get_user_by_username(self, username: str,
-                                   password: str) -> User | None:
+    async def get_user_by_username(self,
+                                   username: str,
+                                   password: str
+                                   ) -> User | None:
         """
         Get a user
         :param username:
@@ -323,22 +339,23 @@ class UserManager:
         try:
             username = escape(username)
             password = hash_password(escape(password))
-            query = (select(User)
-                     .where(User.username == username)
-                     .where(User.password == password))
+            query = (
+                select(User)
+                .where(User.username == username)
+                .where(User.password == password)
+            )
             result = await self.session.execute(query)
             user = result.scalar_one_or_none()
             if user is None:
                 return None
             return user
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def get_user_by_username_email(self,
-                                         username: str,
-                                         email: str
-                                         ) -> None | User:
+    async def get_user_by_username_email(
+        self, username: str, email: str
+    ) -> None | User:
         """
         Get a user
         :param username:
@@ -347,22 +364,23 @@ class UserManager:
         """
         try:
             username = escape(username)
-            query = (select(User)
-                     .where(User.username == username)
-                     .where(User.email == email))
+            query = (
+                select(User)
+                .where(User.username == username)
+                .where(User.email == email)
+            )
             result = await self.session.execute(query)
             user = result.scalar_one_or_none()
             if user is None:
                 return None
             return user
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def set_hashed_active_for_delete(self,
-                                           idx: str,
-                                           hashed_active: str
-                                           ) -> None | str:
+    async def set_hashed_active_for_delete(
+        self, idx: str, hashed_active: str
+    ) -> None | str:
         """
         Set a hashed active for delete
         :param hashed_active:
@@ -370,8 +388,7 @@ class UserManager:
         :return:
         """
         try:
-            query = (select(User)
-                     .where(User.id == int(idx)))
+            query = select(User).where(User.id == int(idx))
             result = await self.session.execute(query)
             user = result.scalar_one_or_none()
             if user is None:
@@ -379,7 +396,7 @@ class UserManager:
             user.hashed_active = hashed_active
             await self.session.commit()
             return user.email
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -391,7 +408,7 @@ class UserManager:
             await self.session.execute(text("DELETE FROM users"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -416,6 +433,6 @@ class UserManager:
                 user.bonus -= total
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False

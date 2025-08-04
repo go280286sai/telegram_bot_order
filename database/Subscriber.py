@@ -1,20 +1,27 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Subscriber
+"""
+Module for subscriber database.
+Includes operations for listing, creating, updating, and deleting subscriber.
+"""
+
 import logging
 from html import escape
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Subscriber
 from helps.helper import generate_transaction
-from sqlalchemy import text
 
 
 class SubscriberManager:
+    """
+    Class for managing subscribers.
+    """
+
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def create_subscriber(self,
-                                email: str,
-                                hash_active: str
-                                ) -> None | Subscriber:
+    async def create_subscriber(
+        self, email: str, hash_active: str
+    ) -> None | Subscriber:
         """
         Create a new subscriber.
         :param email:
@@ -27,7 +34,7 @@ class SubscriberManager:
             self.session.add(sub)
             await self.session.commit()
             return sub
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return None
@@ -56,7 +63,7 @@ class SubscriberManager:
                 await self.session.commit()
                 return True
             return False
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -84,7 +91,7 @@ class SubscriberManager:
                 await self.session.commit()
                 return True
             return False
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -104,11 +111,12 @@ class SubscriberManager:
                     "id": p.id,
                     "email": p.email,
                     "status": p.status,
-                    "created_at": p.created_at.strftime("%Y-%m-%d")
-                } for p in sub
+                    "created_at": p.created_at.strftime("%Y-%m-%d"),
+                }
+                for p in sub
             ]
             return subscribers_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -128,17 +136,16 @@ class SubscriberManager:
                     "id": p.id,
                     "email": p.email,
                     "status": p.status,
-                    "created_at": p.created_at.strftime("%Y-%m-%d")
-                } for p in sub
+                    "created_at": p.created_at.strftime("%Y-%m-%d"),
+                }
+                for p in sub
             ]
             return subscribers_
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def get_hashed_destroy(self,
-                                 idx: int
-                                 ) -> str | None:
+    async def get_hashed_destroy(self, idx: int) -> str | None:
         """
         Get hashed destroy.
         :return:
@@ -152,7 +159,7 @@ class SubscriberManager:
             if sub is None:
                 return None
             return str(sub.hashed_destroy)
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -172,7 +179,7 @@ class SubscriberManager:
             await self.session.delete(sub)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -184,7 +191,7 @@ class SubscriberManager:
             await self.session.execute(text("DELETE FROM subscribers"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

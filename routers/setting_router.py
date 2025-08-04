@@ -462,7 +462,7 @@ async def set_review(faker: Faker) -> None:
         for _ in range(1, 31):
             await review_manager.create_review(
                 name=faker.first_name() + " " + faker.last_name(),
-                text=faker.text(),
+                text_=faker.text(),
                 gender=int(faker.random_element(["0", "1"]))
             )
 
@@ -492,7 +492,7 @@ async def set_subscriber_tmp_users(faker: Faker) -> None:
                 email=faker.email(),
                 phone=faker.phone_number(),
                 password="qwertyQWERTY0!",
-                hash_active=faker.text(max_nb_chars=15)
+                hash_active_=faker.text(max_nb_chars=15)
             )
 
 

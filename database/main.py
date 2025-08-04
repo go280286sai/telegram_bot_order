@@ -1,10 +1,10 @@
 from datetime import datetime
 from sqlalchemy.ext.asyncio import (AsyncSession,
                                     create_async_engine, async_sessionmaker)
-from sqlalchemy.orm import (declarative_base,
-                            relationship, Mapped, mapped_column)
-from sqlalchemy import (Column, Integer, String, Text,
-                        DateTime, Float, ForeignKey)
+from sqlalchemy.orm import (declarative_base, relationship,
+                            Mapped, mapped_column)
+from sqlalchemy import (Column, Integer, String,
+                        Text, DateTime, Float, ForeignKey)
 
 DATABASE_URL = "sqlite+aiosqlite:///./data.db"
 
@@ -14,8 +14,12 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = Column(Integer, primary_key=True,
-                             index=True, autoincrement=True)
+    id: Mapped[int] = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
     username: Mapped[str] = Column(String, unique=True, index=True)
     first_name: Mapped[str] = Column(String, nullable=True)
     last_name: Mapped[str] = Column(String, nullable=True)
@@ -30,14 +34,14 @@ class User(Base):
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
 
     def __init__(
-            self,
-            username: str,
-            password: str,
-            email: str,
-            phone: str,
-            hashed_active: str,
-            is_admin: int,
-            **kwargs
+        self,
+        username: str,
+        password: str,
+        email: str,
+        phone: str,
+        hashed_active: str,
+        is_admin: int,
+        **kwargs
     ):
         super().__init__(**kwargs)
         self.username = username
@@ -50,8 +54,12 @@ class User(Base):
 
 class Product(Base):
     __tablename__ = "products"
-    id: Mapped[int] = Column(Integer, primary_key=True,
-                             index=True, autoincrement=True)
+    id: Mapped[int] = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
     name: Mapped[str] = Column(String, unique=True)
     description: Mapped[str] = Column(String, nullable=True)
     amount: Mapped[int] = Column(Integer, default=None)
@@ -59,8 +67,9 @@ class Product(Base):
     price: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
 
-    def __init__(self, name: str, description: str,
-                 amount: int, price: float, **kwargs):
+    def __init__(
+        self, name: str, description: str, amount: int, price: float, **kwargs
+    ):
         super().__init__(**kwargs)
         self.name = name
         self.description = description
@@ -83,12 +92,11 @@ class City(Base):
     __tablename__ = "cities"
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = Column(String, unique=True)
-    post_id: Mapped[int] = Column(Integer,
-                                  ForeignKey(
-                                      "posts.id",
-                                      onupdate="CASCADE",
-                                      ondelete="CASCADE"
-                                  ), nullable=False)
+    post_id: Mapped[int] = Column(
+        Integer,
+        ForeignKey("posts.id", onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False,
+    )
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     post: Mapped[Post] = relationship("Post", lazy="joined")
 
@@ -101,12 +109,11 @@ class Address(Base):
     __tablename__ = "addresses"
     id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = Column(String, unique=True)
-    city_id: Mapped[int] = Column(Integer,
-                                  ForeignKey(
-                                      "cities.id",
-                                      onupdate="CASCADE",
-                                      ondelete="CASCADE"
-                                  ), nullable=False)
+    city_id: Mapped[int] = Column(
+        Integer,
+        ForeignKey("cities.id", onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False,
+    )
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     city: Mapped[City] = relationship("City", lazy="joined")
 
@@ -117,10 +124,18 @@ class Address(Base):
 
 class Order(Base):
     __tablename__ = "orders"
-    id: Mapped[int] = Column(Integer, primary_key=True,
-                             index=True, autoincrement=True)
+    id: Mapped[int] = Column(
+        Integer,
+        primary_key=True,
+        index=True,
+        autoincrement=True
+    )
     products: Mapped[str] = Column(Text, nullable=False)
-    user_id: Mapped[int] = Column(Integer, ForeignKey(User.id, ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
+    user_id: Mapped[int] = Column(
+        Integer,
+        ForeignKey(User.id, ondelete="CASCADE", onupdate="CASCADE"),
+        nullable=False,
+    )
     delivery: Mapped[str] = Column(String, nullable=False)
     total: Mapped[float] = mapped_column(Float, nullable=False)
     transaction_id: Mapped[str] = Column(String, nullable=False)
@@ -132,15 +147,17 @@ class Order(Base):
     created_at: Mapped[datetime] = Column(DateTime, default=datetime.utcnow)
     user: Mapped[User] = relationship("User", lazy="joined")
 
-    def __init__(self,
-                 products: str,
-                 user_id: int,
-                 delivery: str,
-                 total: float,
-                 transaction_id: str,
-                 bonus: int,
-                 discount: int,
-                 **kwargs):
+    def __init__(
+        self,
+        products: str,
+        user_id: int,
+        delivery: str,
+        total: float,
+        transaction_id: str,
+        bonus: int,
+        discount: int,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         self.products = products
         self.user_id = user_id
@@ -149,7 +166,6 @@ class Order(Base):
         self.transaction_id = transaction_id
         self.bonus = bonus
         self.discount = discount
-
 
 
 class Carousel(Base):
@@ -229,9 +245,8 @@ class Setting(Base):
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 async_session_maker = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False)
+    engine, class_=AsyncSession, expire_on_commit=False
+)
 
 
 async def get_db() -> AsyncSession:

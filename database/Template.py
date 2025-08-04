@@ -1,10 +1,14 @@
-from sqlalchemy.future import select
-from sqlalchemy.ext.asyncio import AsyncSession
-from database.main import Template
+"""
+Module for template database.
+Includes operations for listing, creating, updating, and deleting template.
+"""
+
 import logging
 from typing import Sequence
 from html import escape
-from sqlalchemy import text
+from sqlalchemy import select, text
+from sqlalchemy.ext.asyncio import AsyncSession
+from database.main import Template
 
 
 class TemplateManager:
@@ -24,15 +28,11 @@ class TemplateManager:
         :return:
         """
         try:
-            email = Template(
-                header=header,
-                title=title,
-                body=body
-            )
+            email = Template(header=header, title=title, body=body)
             self.session.add(email)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -50,7 +50,7 @@ class TemplateManager:
             if tmp is None:
                 return None
             return tmp
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
@@ -66,16 +66,17 @@ class TemplateManager:
             if templates is None:
                 return None
             return templates
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return None
 
-    async def update_template(self,
-                              idx: int,
-                              header: str,
-                              title: str,
-                              body: str,
-                              ) -> bool:
+    async def update_template(
+        self,
+        idx: int,
+        header: str,
+        title: str,
+        body: str,
+    ) -> bool:
         """
         Updates a template.
         :param idx:
@@ -97,7 +98,7 @@ class TemplateManager:
             email.body = escape(str(body))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             logging.exception(e)
             return False
 
@@ -116,7 +117,7 @@ class TemplateManager:
             await self.session.delete(email)
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False
@@ -129,7 +130,7 @@ class TemplateManager:
             await self.session.execute(text("DELETE FROM templates"))
             await self.session.commit()
             return True
-        except Exception as e:
+        except ValueError as e:
             await self.session.rollback()
             logging.exception(e)
             return False

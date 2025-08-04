@@ -9,13 +9,13 @@ async def test_create_review():
         review_manager = ReviewManager(session)
         query = await review_manager.create_review(
             name="Author",
-            text="I love Python",
+            text_="I love Python",
             gender=1
         )
         assert isinstance(query, Review)
         query = await review_manager.create_review(
             name="Author",
-            text="I love Python",
+            text_="I love Python",
             gender=5
         )
         assert query is None
@@ -28,21 +28,21 @@ async def test_update_review():
         query = await review_manager.update_review(
             idx=1,
             name="AuthorNew",
-            text="I love Python very well",
+            text_="I love Python very well",
             gender=0
         )
         assert query is True
         query = await review_manager.update_review(
             idx=0,
             name="AuthorNew",
-            text="I love Python very well",
+            text_="I love Python very well",
             gender=0
         )
         assert query is False
         query = await review_manager.update_review(
             idx=1,
             name="AuthorNew",
-            text="I love Python very well",
+            text_="I love Python very well",
             gender=5
         )
         assert query is False
