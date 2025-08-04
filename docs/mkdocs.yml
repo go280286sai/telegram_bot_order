@@ -1,0 +1,19 @@
+site_name: My Docs
+nav:
+  - Main: index.md
+  - API Cart: api_cart.md
+  - API User: api_user.md
+  - API Orders: api_orders.md
+  - API Logs: api_logs.md
+  - API Fronts: api_fronts.md
+  - API Fronts: api_fronts.md
+  - API Products: api_products.md
+  - API Reviews: api_reviews.md
+  - API Posts: api_posts.md
+  - API Cities: api_cities.md
+  - API Addresses: api_addresses.md
+  - API Subscribers: api_subscribers.md
+  - API Templates: api_templates.md
+  - API Settings: api_settings.md
+theme:
+  name: material
